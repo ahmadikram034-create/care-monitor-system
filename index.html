@@ -564,7 +564,7 @@
                 </select>
             </div>
 
-            <button class="btn btn-primary" style="width:100%;" onclick="sahkanNamaPetugas()">Start Shift Session</button>
+            <button class="btn btn-primary" style="width:100%;" onclick="playFeedback(); sahkanNamaPetugas();">Start Shift Session</button>
         </div>
     </div>
 
@@ -576,33 +576,33 @@
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                     <span>CARE MONITOR</span>
                 </div>
-                <button class="hamburger-btn" onclick="toggleMobileMenu()">
+                <button class="hamburger-btn" onclick="playFeedback(); toggleMobileMenu();">
                     <i class="fa-solid fa-bars" id="hamburger-icon"></i>
                 </button>
             </div>
 
             <!-- Mobile Dropdown Navigation -->
             <div class="mobile-dropdown" id="mobileDropdown">
-                <a href="#" id="m-nav-dashboard" class="mobile-drop-item active" onclick="tukarTabDropdown(event, 'view-dashboard')">
+                <a href="#" id="m-nav-dashboard" class="mobile-drop-item active" onclick="playFeedback(); tukarTabDropdown(event, 'view-dashboard')">
                     <i class="fa-solid fa-chart-line" style="width:20px;"></i> Dashboard
                 </a>
-                <a href="#" id="m-nav-log" class="mobile-drop-item" onclick="tukarTabDropdown(event, 'view-log')">
+                <a href="#" id="m-nav-log" class="mobile-drop-item" onclick="playFeedback(); tukarTabDropdown(event, 'view-log')">
                     <i class="fa-solid fa-clock-rotate-left" style="width:20px;"></i> Incident Logs
                 </a>
-                <a href="#" id="m-nav-peta" class="mobile-drop-item" onclick="tukarTabDropdown(event, 'view-peta')">
+                <a href="#" id="m-nav-peta" class="mobile-drop-item" onclick="playFeedback(); tukarTabDropdown(event, 'view-peta')">
                     <i class="fa-solid fa-hospital-user" style="width:20px;"></i> Room Map
                 </a>
-                <a href="#" id="m-nav-tetapan" class="mobile-drop-item" onclick="tukarTabDropdown(event, 'view-tetapan')">
+                <a href="#" id="m-nav-tetapan" class="mobile-drop-item" onclick="playFeedback(); tukarTabDropdown(event, 'view-tetapan')">
                     <i class="fa-solid fa-sliders" style="width:20px;"></i> Settings
                 </a>
             </div>
 
             <!-- Desktop Menu -->
             <ul class="nav-menu">
-                <li><a href="#" class="menu-item active" onclick="tukarTab(event, 'view-dashboard')"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
-                <li><a href="#" class="menu-item" onclick="tukarTab(event, 'view-log')"><i class="fa-solid fa-clock-rotate-left"></i> Incident Logs</a></li>
-                <li><a href="#" class="menu-item" onclick="tukarTab(event, 'view-peta')"><i class="fa-solid fa-hospital-user"></i> Room Map</a></li>
-                <li><a href="#" class="menu-item" onclick="tukarTab(event, 'view-tetapan')"><i class="fa-solid fa-sliders"></i> Settings</a></li>
+                <li><a href="#" class="menu-item active" onclick="playFeedback(); tukarTab(event, 'view-dashboard')"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="#" class="menu-item" onclick="playFeedback(); tukarTab(event, 'view-log')"><i class="fa-solid fa-clock-rotate-left"></i> Incident Logs</a></li>
+                <li><a href="#" class="menu-item" onclick="playFeedback(); tukarTab(event, 'view-peta')"><i class="fa-solid fa-hospital-user"></i> Room Map</a></li>
+                <li><a href="#" class="menu-item" onclick="playFeedback(); tukarTab(event, 'view-tetapan')"><i class="fa-solid fa-sliders"></i> Settings</a></li>
             </ul>
         </div>
 
@@ -618,10 +618,10 @@
             </div>
             
             <div style="display: flex; gap: 8px; margin-top: 8px; border-top: 1px solid var(--border-color); padding-top: 8px;">
-                <button class="btn-staff-action" onclick="tukarBilikSahaja()" title="Change Zone">
+                <button class="btn-staff-action" onclick="playFeedback(); tukarBilikSahaja();" title="Change Zone">
                     <i class="fa-solid fa-arrows-rotate"></i> Change Zone
                 </button>
-                <button class="btn-staff-action btn-logout" onclick="logOutStaff()" title="End Shift & Log Out">
+                <button class="btn-staff-action btn-logout" onclick="playFeedback(); logOutStaff();" title="End Shift & Log Out">
                     <i class="fa-solid fa-right-from-bracket"></i> Log Out
                 </button>
             </div>
@@ -725,7 +725,7 @@
                         <option value="semua">Semua Rekod Log</option>
                     </select>
 
-                    <button class="btn btn-primary" onclick="muatTurunPDFLog()">
+                    <button class="btn btn-primary" onclick="playFeedback(); muatTurunPDFLog();">
                         <i class="fa-solid fa-file-pdf"></i> Download PDF
                     </button>
                 </div>
@@ -802,7 +802,7 @@
                         <input type="range" min="0" max="1" step="0.1" value="0.8" onchange="tukarVolumeSiren(this.value)" style="width:100%; margin-top:10px; accent-color: var(--accent-blue);">
                     </div>
                     <div>
-                        <button class="btn btn-primary" id="btnTestSound" onclick="ujiBunyiSiren()" style="width:100%;">
+                        <button class="btn btn-primary" id="btnTestSound" onclick="playFeedback(); ujiBunyiSiren();" style="width:100%;">
                             <i class="fa-solid fa-play"></i> Run Audio Test
                         </button>
                     </div>
@@ -814,6 +814,36 @@
 
     <!-- CORE INTEGRATED SCRIPT ENGINE -->
     <script>
+        // ================= BUTTON FEEDBACK (VIBRATION & BEEP) =================
+        function playFeedback() {
+            // 1. VIBRATION FEEDBACK (Bagi peranti mudah alih yang menyokongnya)
+            if ("vibrate" in navigator) {
+                navigator.vibrate(50); // Getaran selama 50ms
+            }
+
+            // 2. AUDIO BEEP FEEDBACK (Menggunakan Web Audio API)
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) {
+                    const ctx = new AudioContext();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, ctx.currentTime); // Frekuensi 800Hz
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.08); // Masa bunyi 80ms
+                }
+            } catch (e) {
+                console.log("Audio feedback error/unsupported", e);
+            }
+        }
+
         // ================= DIGITAL CLOCK FUNCTION =================
         function kemaskiniJamDigital() {
             const sekarang = new Date();
@@ -948,7 +978,7 @@
         }
 
         nurseNameInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") { sahkanNamaPetugas(); }
+            if (e.key === "Enter") { playFeedback(); sahkanNamaPetugas(); }
         });
 
         function kemaskiniInterfaceStaf(nama, bilik) {
@@ -1193,7 +1223,7 @@
                             <span style="font-size:0.75rem; background:var(--danger-bg); color:var(--danger); padding:3px 8px; border-radius:10px; border:1px solid var(--danger);">CRITICAL</span>
                         </div>
                         <input type="text" id="txtCatatan_${roomNum}" class="input-box" placeholder="e.g. Attending Room ${roomNum}, patient OK" style="width:100%;">
-                        <button class="btn btn-danger" style="width:100%;" onclick="tekanMuteBilikSpesifik(${roomNum})">
+                        <button class="btn btn-danger" style="width:100%;" onclick="playFeedback(); tekanMuteBilikSpesifik(${roomNum})">
                             <i class="fa-solid fa-bell-slash"></i> Mute Room ${roomNum} Siren
                         </button>
                     </div>
