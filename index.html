@@ -477,6 +477,23 @@
         }
         .btn-primary:active { opacity: 0.8; }
 
+        .btn-audio-unlock {
+            background: #ffbe6b;
+            color: #3e2723;
+            border: 1px solid #ffbe6b;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            animation: pulse-btn 2s infinite;
+        }
+
+        @keyframes pulse-btn {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
         .input-box, .select-box {
             padding: 10px 14px;
             background-color: var(--input-bg);
@@ -532,8 +549,8 @@
 </head>
 <body id="bodyTag">
 
-    <!-- ELEMEN AUDIO SIREN FIZIKAL HTML -->
-    <audio id="sirenAudio" src="siren.mp3" preload="auto" loop></audio>
+    <!-- ELEMEN AUDIO SIREN FIZIKAL BERSAMA ATTRIBUTE MOBILE SAFARI/CHROME -->
+    <audio id="sirenAudio" src="siren.mp3" preload="auto" loop playsinline webkit-playsinline></audio>
 
     <!-- LOGIN & ROOM ASSIGNMENT MODAL -->
     <div class="modal-overlay" id="loginModal">
@@ -555,7 +572,9 @@
                 </select>
             </div>
 
-            <button class="btn btn-primary" style="width:100%;" onclick="playFeedback(); sahkanNamaPetugas();">Start Shift Session</button>
+            <button class="btn btn-primary" style="width:100%;" onclick="paksaBukaAudioFizikal(); sahkanNamaPetugas();">
+                Start Shift & Enable Sound
+            </button>
         </div>
     </div>
 
@@ -567,33 +586,33 @@
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                     <span>CARE MONITOR</span>
                 </div>
-                <button class="hamburger-btn" onclick="playFeedback(); toggleMobileMenu();">
+                <button class="hamburger-btn" onclick="toggleMobileMenu();">
                     <i class="fa-solid fa-bars" id="hamburger-icon"></i>
                 </button>
             </div>
 
             <!-- Mobile Dropdown Navigation -->
             <div class="mobile-dropdown" id="mobileDropdown">
-                <a href="#" id="m-nav-dashboard" class="mobile-drop-item active" onclick="playFeedback(); tukarTabDropdown(event, 'view-dashboard')">
+                <a href="#" id="m-nav-dashboard" class="mobile-drop-item active" onclick="tukarTabDropdown(event, 'view-dashboard')">
                     <i class="fa-solid fa-chart-line" style="width:20px;"></i> Dashboard
                 </a>
-                <a href="#" id="m-nav-log" class="mobile-drop-item" onclick="playFeedback(); tukarTabDropdown(event, 'view-log')">
+                <a href="#" id="m-nav-log" class="mobile-drop-item" onclick="tukarTabDropdown(event, 'view-log')">
                     <i class="fa-solid fa-clock-rotate-left" style="width:20px;"></i> Incident Logs
                 </a>
-                <a href="#" id="m-nav-peta" class="mobile-drop-item" onclick="playFeedback(); tukarTabDropdown(event, 'view-peta')">
+                <a href="#" id="m-nav-peta" class="mobile-drop-item" onclick="tukarTabDropdown(event, 'view-peta')">
                     <i class="fa-solid fa-hospital-user" style="width:20px;"></i> Room Map
                 </a>
-                <a href="#" id="m-nav-tetapan" class="mobile-drop-item" onclick="playFeedback(); tukarTabDropdown(event, 'view-tetapan')">
+                <a href="#" id="m-nav-tetapan" class="mobile-drop-item" onclick="tukarTabDropdown(event, 'view-tetapan')">
                     <i class="fa-solid fa-sliders" style="width:20px;"></i> Settings
                 </a>
             </div>
 
             <!-- Desktop Menu -->
             <ul class="nav-menu">
-                <li><a href="#" class="menu-item active" onclick="playFeedback(); tukarTab(event, 'view-dashboard')"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
-                <li><a href="#" class="menu-item" onclick="playFeedback(); tukarTab(event, 'view-log')"><i class="fa-solid fa-clock-rotate-left"></i> Incident Logs</a></li>
-                <li><a href="#" class="menu-item" onclick="playFeedback(); tukarTab(event, 'view-peta')"><i class="fa-solid fa-hospital-user"></i> Room Map</a></li>
-                <li><a href="#" class="menu-item" onclick="playFeedback(); tukarTab(event, 'view-tetapan')"><i class="fa-solid fa-sliders"></i> Settings</a></li>
+                <li><a href="#" class="menu-item active" onclick="tukarTab(event, 'view-dashboard')"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="#" class="menu-item" onclick="tukarTab(event, 'view-log')"><i class="fa-solid fa-clock-rotate-left"></i> Incident Logs</a></li>
+                <li><a href="#" class="menu-item" onclick="tukarTab(event, 'view-peta')"><i class="fa-solid fa-hospital-user"></i> Room Map</a></li>
+                <li><a href="#" class="menu-item" onclick="tukarTab(event, 'view-tetapan')"><i class="fa-solid fa-sliders"></i> Settings</a></li>
             </ul>
         </div>
 
@@ -609,10 +628,10 @@
             </div>
             
             <div style="display: flex; gap: 8px; margin-top: 8px; border-top: 1px solid var(--border-color); padding-top: 8px;">
-                <button class="btn-staff-action" onclick="playFeedback(); tukarBilikSahaja();" title="Change Zone">
+                <button class="btn-staff-action" onclick="tukarBilikSahaja();" title="Change Zone">
                     <i class="fa-solid fa-arrows-rotate"></i> Change Zone
                 </button>
-                <button class="btn-staff-action btn-logout" onclick="playFeedback(); logOutStaff();" title="End Shift & Log Out">
+                <button class="btn-staff-action btn-logout" onclick="logOutStaff();" title="End Shift & Log Out">
                     <i class="fa-solid fa-right-from-bracket"></i> Log Out
                 </button>
             </div>
@@ -622,18 +641,24 @@
     <!-- MAIN DASHBOARD CONTENT -->
     <div class="main-content">
         
-        <!-- HEADER WITH DIGITAL CLOCK -->
+        <!-- HEADER WITH DIGITAL CLOCK & MOBILE AUDIO UNLOCK -->
         <div class="header-bar">
             <div>
                 <h2>Emergency Panic Trigger</h2>
                 <p style="color: var(--text-sub); font-size: 0.88rem; margin-top: 4px;">IoT ESP32 Real-Time Cloud Telemetry System</p>
             </div>
             
-            <div class="digital-clock-card">
-                <i class="fa-regular fa-clock" style="color: var(--accent-blue); font-size: 1.2rem;"></i>
-                <div>
-                    <div class="clock-time" id="clockTime">00:00:00 AM</div>
-                    <div class="clock-date" id="clockDate">Mon, 1 Jan 2026</div>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <button class="btn-audio-unlock" id="btnAudioUnlocker" onclick="paksaBukaAudioFizikal()">
+                    <i class="fa-solid fa-volume-high"></i> Enable Mobile Audio
+                </button>
+
+                <div class="digital-clock-card">
+                    <i class="fa-regular fa-clock" style="color: var(--accent-blue); font-size: 1.2rem;"></i>
+                    <div>
+                        <div class="clock-time" id="clockTime">00:00:00 AM</div>
+                        <div class="clock-date" id="clockDate">Mon, 1 Jan 2026</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -712,7 +737,7 @@
                         <option value="semua">Semua Rekod Log</option>
                     </select>
 
-                    <button class="btn btn-primary" onclick="playFeedback(); muatTurunPDFLog();">
+                    <button class="btn btn-primary" onclick="muatTurunPDFLog();">
                         <i class="fa-solid fa-file-pdf"></i> Download PDF
                     </button>
                 </div>
@@ -789,10 +814,10 @@
                         <input type="range" min="0" max="1" step="0.1" value="0.8" onchange="tukarVolumeSiren(this.value)" style="width:100%; margin-top:10px; accent-color: var(--accent-blue);">
                     </div>
                     <div>
-                        <button class="btn btn-primary" id="btnEnableNotif" onclick="playFeedback(); mintaKebenaranNotifikasi();" style="width:100%; margin-bottom: 10px;">
+                        <button class="btn btn-primary" id="btnEnableNotif" onclick="mintaKebenaranNotifikasi();" style="width:100%; margin-bottom: 10px;">
                             <i class="fa-solid fa-bell"></i> Enable Emergency Push Notifications
                         </button>
-                        <button class="btn btn-primary" id="btnTestSound" onclick="playFeedback(); ujiBunyiSiren();" style="width:100%;">
+                        <button class="btn btn-primary" id="btnTestSound" onclick="ujiBunyiSiren();" style="width:100%;">
                             <i class="fa-solid fa-play"></i> Run Audio Test
                         </button>
                     </div>
@@ -809,10 +834,10 @@
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('sw.js')
                     .then(function(reg) {
-                        console.log('✅ Service Worker berjaya didaftarkan:', reg.scope);
+                        console.log('✅ Service Worker registered:', reg.scope);
                     })
                     .catch(function(err) {
-                        console.error('❌ Gagal mendaftar Service Worker:', err);
+                        console.error('❌ SW Fail:', err);
                     });
             });
         }
@@ -831,30 +856,41 @@
             }
         }
 
-        // ================= ELEMEN AUDIO FIZIKAL & BUKA KUNCI SMARTPHONE =================
+        // ================= DIRECT AUDIO ELEMENT CONTROL =================
         const audioSiren = document.getElementById('sirenAudio');
         audioSiren.volume = 0.8;
+        let isAudioUnlocked = false;
 
-        // Buka kunci audio peranti serta-merta pada sentuhan pertama
-        function bukaKunciAudioMobile() {
+        function paksaBukaAudioFizikal() {
             if (audioSiren) {
                 audioSiren.play().then(() => {
                     audioSiren.pause();
                     audioSiren.currentTime = 0;
-                }).catch(() => {});
+                    isAudioUnlocked = true;
+
+                    const btnEl = document.getElementById('btnAudioUnlocker');
+                    if (btnEl) {
+                        btnEl.style.background = 'var(--success-bg)';
+                        btnEl.style.color = 'var(--success)';
+                        btnEl.style.borderColor = 'var(--success)';
+                        btnEl.innerHTML = `<i class="fa-solid fa-check"></i> Audio Enabled`;
+                        btnEl.style.animation = 'none';
+                    }
+                    console.log("✅ Audio Siren Berjaya Dibuka Kunci pada Peranti Mobile!");
+                }).catch(err => {
+                    console.warn("Ralat membuka kunci audio:", err);
+                });
             }
-        }
 
-        window.addEventListener('touchstart', bukaKunciAudioMobile, { once: true });
-        window.addEventListener('click', bukaKunciAudioMobile, { once: true });
-
-        // Maklum balas getaran butang
-        function playFeedback() {
-            bukaKunciAudioMobile();
             if ("vibrate" in navigator) {
                 navigator.vibrate(50);
             }
         }
+
+        // Jalankan percubaan sentuhan automatik
+        document.addEventListener('touchstart', function() {
+            if(!isAudioUnlocked) paksaBukaAudioFizikal();
+        }, { once: true });
 
         // ================= DIGITAL CLOCK FUNCTION =================
         function kemaskiniJamDigital() {
@@ -985,7 +1021,7 @@
         }
 
         nurseNameInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") { playFeedback(); sahkanNamaPetugas(); }
+            if (e.key === "Enter") { paksaBukaAudioFizikal(); sahkanNamaPetugas(); }
         });
 
         function kemaskiniInterfaceStaf(nama, bilik) {
@@ -1088,12 +1124,12 @@
         }
 
         function ujiBunyiSiren() {
-            bukaKunciAudioMobile();
+            paksaBukaAudioFizikal();
             const btnTest = document.getElementById('btnTestSound');
             if (!isTestingSound) {
                 isTestingSound = true;
                 btnTest.innerHTML = `<i class="fa-solid fa-stop"></i> Stop Test`;
-                audioSiren.play().catch(e => console.log("Perlu sentuh skrin dahulu"));
+                audioSiren.play().catch(e => console.log("Direct sound play failed:", e));
             } else {
                 isTestingSound = false;
                 btnTest.innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
@@ -1215,8 +1251,10 @@
                     document.getElementById('btnTestSound').innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
                 }
 
-                // Mainkan audio siren terus daripada elemen fizikal HTML
-                audioSiren.play().catch(e => console.log("Aktiviti audio disekat oleh pelayar:", e));
+                // Mainkan bunyi siren terus tanpa halangan
+                audioSiren.play().catch(e => {
+                    console.warn("⚠️ Autoplay disekat oleh telefon. Sila tekan butang 'Enable Mobile Audio' di atas skrin:", e);
+                });
             } else {
                 bodyTag.classList.remove('kecemasan-aktif');
                 statusPaparan.innerText = "✅ System Standby: All Sectors Secured";
@@ -1245,7 +1283,7 @@
                             <span style="font-size:0.75rem; background:var(--danger-bg); color:var(--danger); padding:3px 8px; border-radius:10px; border:1px solid var(--danger);">CRITICAL</span>
                         </div>
                         <input type="text" id="txtCatatan_${roomNum}" class="input-box" placeholder="e.g. Attending Room ${roomNum}, patient OK" style="width:100%;">
-                        <button class="btn btn-danger" style="width:100%;" onclick="playFeedback(); tekanMuteBilikSpesifik(${roomNum})">
+                        <button class="btn btn-danger" style="width:100%;" onclick="tekanMuteBilikSpesifik(${roomNum})">
                             <i class="fa-solid fa-bell-slash"></i> Mute Room ${roomNum} Siren
                         </button>
                     </div>
