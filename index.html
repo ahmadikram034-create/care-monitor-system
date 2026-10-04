@@ -844,33 +844,68 @@
             }
         }
 
-        // ================= BUTTON FEEDBACK (VIBRATION & BEEP) =================
-        function playFeedback() {
-            // 1. VIBRATION FEEDBACK (Bagi peranti mudah alih yang menyokongnya)
-            if ("vibrate" in navigator) {
-                navigator.vibrate(50); // Getaran selama 50ms
-            }
+        // ================= MOBILE AUDIO CONTEXT UNLOCKER =================
+        let globalAudioCtx = null;
 
-            // 2. AUDIO BEEP FEEDBACK (Menggunakan Web Audio API)
-            try {
+        function initAudioContext() {
+            if (!globalAudioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 if (AudioContext) {
-                    const ctx = new AudioContext();
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
+                    globalAudioCtx = new AudioContext();
+                }
+            }
+            if (globalAudioCtx && globalAudioCtx.state === 'suspended') {
+                globalAudioCtx.resume();
+            }
+        }
+
+        // Buka kunci AudioContext & Audio Siren pada sentuhan pertama di smartphone
+        window.addEventListener('touchstart', () => {
+            initAudioContext();
+            if (audioSiren) {
+                audioSiren.play().then(() => {
+                    audioSiren.pause();
+                    audioSiren.currentTime = 0;
+                }).catch(() => {});
+            }
+        }, { once: true });
+
+        window.addEventListener('click', () => {
+            initAudioContext();
+            if (audioSiren) {
+                audioSiren.play().then(() => {
+                    audioSiren.pause();
+                    audioSiren.currentTime = 0;
+                }).catch(() => {});
+            }
+        }, { once: true });
+
+        // ================= BUTTON FEEDBACK (VIBRATION & BEEP) =================
+        function playFeedback() {
+            // 1. VIBRATION FEEDBACK
+            if ("vibrate" in navigator) {
+                navigator.vibrate(50);
+            }
+
+            // 2. AUDIO BEEP FEEDBACK (Optimized for Mobile)
+            try {
+                initAudioContext();
+                if (globalAudioCtx) {
+                    const osc = globalAudioCtx.createOscillator();
+                    const gain = globalAudioCtx.createGain();
 
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(800, ctx.currentTime); // Frekuensi 800Hz
-                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    osc.frequency.setValueAtTime(800, globalAudioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.1, globalAudioCtx.currentTime);
 
                     osc.connect(gain);
-                    gain.connect(ctx.destination);
+                    gain.connect(globalAudioCtx.destination);
 
                     osc.start();
-                    osc.stop(ctx.currentTime + 0.08); // Masa bunyi 80ms
+                    osc.stop(globalAudioCtx.currentTime + 0.08);
                 }
             } catch (e) {
-                console.log("Audio feedback error/unsupported", e);
+                console.log("Audio feedback error", e);
             }
         }
 
@@ -1113,6 +1148,7 @@
         }
 
         function ujiBunyiSiren() {
+            initAudioContext();
             const btnTest = document.getElementById('btnTestSound');
             if (!isTestingSound) {
                 isTestingSound = true;
@@ -1239,6 +1275,7 @@
                     document.getElementById('btnTestSound').innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
                 }
 
+                initAudioContext();
                 // Play Audio Siren continuously as long as at least 1 room is active
                 audioSiren.play().catch(e => console.log("Audio play blocked by browser policy"));
             } else {
