@@ -795,13 +795,16 @@
         <!-- TAB 4: SETTINGS -->
         <div id="view-tetapan" class="tab-view">
             <div class="card">
-                <h3 style="font-size: 1.1rem; font-weight: 600;">Audio & Driver Settings</h3>
+                <h3 style="font-size: 1.1rem; font-weight: 600;">Audio, Drivers & Notification Settings</h3>
                 <div style="margin-top:20px; display:flex; flex-direction:column; gap:18px;">
                     <div>
                         <label style="font-size: 0.9rem; color: var(--text-sub);">Siren Volume Driver: <strong id="lblVolume" style="color:var(--text-main);">80%</strong></label>
                         <input type="range" min="0" max="1" step="0.1" value="0.8" onchange="tukarVolumeSiren(this.value)" style="width:100%; margin-top:10px; accent-color: var(--accent-blue);">
                     </div>
                     <div>
+                        <button class="btn btn-primary" id="btnEnableNotif" onclick="playFeedback(); mintaKebenaranNotifikasi();" style="width:100%; margin-bottom: 10px;">
+                            <i class="fa-solid fa-bell"></i> Enable Emergency Push Notifications
+                        </button>
                         <button class="btn btn-primary" id="btnTestSound" onclick="playFeedback(); ujiBunyiSiren();" style="width:100%;">
                             <i class="fa-solid fa-play"></i> Run Audio Test
                         </button>
@@ -814,6 +817,33 @@
 
     <!-- CORE INTEGRATED SCRIPT ENGINE -->
     <script>
+        // ================= SERVICE WORKER REGISTRATION =================
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js')
+                    .then(function(reg) {
+                        console.log('✅ Service Worker berjaya didaftarkan di skop:', reg.scope);
+                    })
+                    .catch(function(err) {
+                        console.error('❌ Gagal mendaftar Service Worker:', err);
+                    });
+            });
+        }
+
+        function mintaKebenaranNotifikasi() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(function(permission) {
+                    if (permission === 'granted') {
+                        alert('✅ Kebenaran notifikasi diluluskan! Amaran kecemasan akan muncul di skrin peranti.');
+                    } else {
+                        alert('⚠️ Kebenaran notifikasi ditolak.');
+                    }
+                });
+            } else {
+                alert('Pelayar ini tidak menyokong fungsi Notifikasi.');
+            }
+        }
+
         // ================= BUTTON FEEDBACK (VIBRATION & BEEP) =================
         function playFeedback() {
             // 1. VIBRATION FEEDBACK (Bagi peranti mudah alih yang menyokongnya)
@@ -926,7 +956,9 @@
                 kemaskiniInterfaceStaf(namaAktif, bilikAktif || "All Rooms");
             }
 
-            if ("Notification" in window) { Notification.requestPermission(); }
+            if ("Notification" in window && Notification.permission === "default") {
+                Notification.requestPermission();
+            }
             kekalkanSkrin();
             
             setInterval(semakDeviceHeartbeat, 5000);
@@ -990,10 +1022,25 @@
 
         function hantarNotifikasiBrowser(mesejKecemasan) {
             if ("Notification" in window && Notification.permission === "granted") {
-                new Notification("🚨 EMERGENCY ALERT!", {
-                    body: mesejKecemasan,
-                    icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png"
-                });
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.ready.then(function(reg) {
+                        reg.showNotification("🚨 EMERGENCY ALERT!", {
+                            body: mesejKecemasan,
+                            icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
+                            badge: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
+                            tag: "emergency-panic-alert",
+                            renotify: true,
+                            requireInteraction: true,
+                            vibrate: [500, 200, 500, 200, 500, 200, 1000],
+                            data: { url: '/' }
+                        });
+                    });
+                } else {
+                    new Notification("🚨 EMERGENCY ALERT!", {
+                        body: mesejKecemasan,
+                        icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png"
+                    });
+                }
             }
         }
 
