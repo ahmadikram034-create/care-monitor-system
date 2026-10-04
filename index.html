@@ -532,7 +532,7 @@
 </head>
 <body id="bodyTag">
 
-    <!-- ELEMEN AUDIO FIZIKAL HTML -->
+    <!-- ELEMEN AUDIO SIREN FIZIKAL HTML -->
     <audio id="sirenAudio" src="siren.mp3" preload="auto" loop></audio>
 
     <!-- LOGIN & ROOM ASSIGNMENT MODAL -->
@@ -835,8 +835,8 @@
         const audioSiren = document.getElementById('sirenAudio');
         audioSiren.volume = 0.8;
 
-        // Buka kunci audio fizikal sebaik sahaja skrin disentuh
-        function unlockAudioOnTouch() {
+        // Buka kunci audio peranti serta-merta pada sentuhan pertama
+        function bukaKunciAudioMobile() {
             if (audioSiren) {
                 audioSiren.play().then(() => {
                     audioSiren.pause();
@@ -845,12 +845,12 @@
             }
         }
 
-        window.addEventListener('touchstart', unlockAudioOnTouch, { once: true });
-        window.addEventListener('click', unlockAudioOnTouch, { once: true });
+        window.addEventListener('touchstart', bukaKunciAudioMobile, { once: true });
+        window.addEventListener('click', bukaKunciAudioMobile, { once: true });
 
-        // Maklum balas getaran sahaja untuk elak konflik AudioContext
+        // Maklum balas getaran butang
         function playFeedback() {
-            unlockAudioOnTouch();
+            bukaKunciAudioMobile();
             if ("vibrate" in navigator) {
                 navigator.vibrate(50);
             }
@@ -1088,7 +1088,7 @@
         }
 
         function ujiBunyiSiren() {
-            unlockAudioOnTouch();
+            bukaKunciAudioMobile();
             const btnTest = document.getElementById('btnTestSound');
             if (!isTestingSound) {
                 isTestingSound = true;
@@ -1215,7 +1215,7 @@
                     document.getElementById('btnTestSound').innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
                 }
 
-                // Mainkan audio siren terus secara langsung
+                // Mainkan audio siren terus daripada elemen fizikal HTML
                 audioSiren.play().catch(e => console.log("Aktiviti audio disekat oleh pelayar:", e));
             } else {
                 bodyTag.classList.remove('kecemasan-aktif');
