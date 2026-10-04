@@ -5,21 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Care Monitor - Targeted Mute System</title>
 
-    <!-- Apple Web App / PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Care Monitor">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/564/564619.png">
 
-    <!-- Font Awesome Icons & Google Font (Outfit) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- FIREBASE SDK LIBRARIES -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-    <!-- JSPDF & AUTO-TABLE FOR PDF EXPORT -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
@@ -485,13 +481,6 @@
             padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
-            animation: pulse-btn 2s infinite;
-        }
-
-        @keyframes pulse-btn {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
         }
 
         .input-box, .select-box {
@@ -549,9 +538,6 @@
 </head>
 <body id="bodyTag">
 
-    <!-- ELEMEN AUDIO SIREN FIZIKAL BERSAMA ATTRIBUTE MOBILE SAFARI/CHROME -->
-    <audio id="sirenAudio" src="siren.mp3" preload="auto" loop playsinline webkit-playsinline></audio>
-
     <!-- LOGIN & ROOM ASSIGNMENT MODAL -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
@@ -572,7 +558,7 @@
                 </select>
             </div>
 
-            <button class="btn btn-primary" style="width:100%;" onclick="paksaBukaAudioFizikal(); sahkanNamaPetugas();">
+            <button class="btn btn-primary" style="width:100%;" onclick="bukaKunciAudioSintesis(); sahkanNamaPetugas();">
                 Start Shift & Enable Sound
             </button>
         </div>
@@ -591,7 +577,6 @@
                 </button>
             </div>
 
-            <!-- Mobile Dropdown Navigation -->
             <div class="mobile-dropdown" id="mobileDropdown">
                 <a href="#" id="m-nav-dashboard" class="mobile-drop-item active" onclick="tukarTabDropdown(event, 'view-dashboard')">
                     <i class="fa-solid fa-chart-line" style="width:20px;"></i> Dashboard
@@ -607,7 +592,6 @@
                 </a>
             </div>
 
-            <!-- Desktop Menu -->
             <ul class="nav-menu">
                 <li><a href="#" class="menu-item active" onclick="tukarTab(event, 'view-dashboard')"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
                 <li><a href="#" class="menu-item" onclick="tukarTab(event, 'view-log')"><i class="fa-solid fa-clock-rotate-left"></i> Incident Logs</a></li>
@@ -616,7 +600,6 @@
             </ul>
         </div>
 
-        <!-- KAD DUTY STAFF -->
         <div class="staff-card">
             <div class="staff-detail">
                 <span style="color: var(--text-sub); font-size: 0.78rem;">DUTY STAFF:</span>
@@ -641,7 +624,6 @@
     <!-- MAIN DASHBOARD CONTENT -->
     <div class="main-content">
         
-        <!-- HEADER WITH DIGITAL CLOCK & MOBILE AUDIO UNLOCK -->
         <div class="header-bar">
             <div>
                 <h2>Emergency Panic Trigger</h2>
@@ -649,7 +631,7 @@
             </div>
             
             <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                <button class="btn-audio-unlock" id="btnAudioUnlocker" onclick="paksaBukaAudioFizikal()">
+                <button class="btn-audio-unlock" id="btnAudioUnlocker" onclick="bukaKunciAudioSintesis()">
                     <i class="fa-solid fa-volume-high"></i> Enable Mobile Audio
                 </button>
 
@@ -663,7 +645,6 @@
             </div>
         </div>
 
-        <!-- TAB 1: DASHBOARD -->
         <div id="view-dashboard" class="tab-view active">
             <div class="status-banner">
                 <h3 id="statusPaparan" style="margin-bottom: 4px; font-weight: 600; font-size: 1.1rem;">✅ System Standby: All Sectors Secured</h3>
@@ -720,7 +701,6 @@
             </div>
         </div>
 
-        <!-- TAB 2: INCIDENT LOGS & PDF -->
         <div id="view-log" class="tab-view">
             <div class="card">
                 <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px;">
@@ -763,7 +743,6 @@
             </div>
         </div>
 
-        <!-- TAB 3: ROOM MAP -->
         <div id="view-peta" class="tab-view">
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
@@ -804,15 +783,10 @@
             </div>
         </div>
 
-        <!-- TAB 4: SETTINGS -->
         <div id="view-tetapan" class="tab-view">
             <div class="card">
                 <h3 style="font-size: 1.1rem; font-weight: 600;">Audio, Drivers & Notification Settings</h3>
                 <div style="margin-top:20px; display:flex; flex-direction:column; gap:18px;">
-                    <div>
-                        <label style="font-size: 0.9rem; color: var(--text-sub);">Siren Volume Driver: <strong id="lblVolume" style="color:var(--text-main);">80%</strong></label>
-                        <input type="range" min="0" max="1" step="0.1" value="0.8" onchange="tukarVolumeSiren(this.value)" style="width:100%; margin-top:10px; accent-color: var(--accent-blue);">
-                    </div>
                     <div>
                         <button class="btn btn-primary" id="btnEnableNotif" onclick="mintaKebenaranNotifikasi();" style="width:100%; margin-bottom: 10px;">
                             <i class="fa-solid fa-bell"></i> Enable Emergency Push Notifications
@@ -829,7 +803,6 @@
 
     <!-- CORE INTEGRATED SCRIPT ENGINE -->
     <script>
-        // ================= SERVICE WORKER REGISTRATION =================
         if ('serviceWorker' in navigator && 'PushManager' in window) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('sw.js')
@@ -856,46 +829,88 @@
             }
         }
 
-        // ================= DIRECT AUDIO ELEMENT CONTROL =================
-        const audioSiren = document.getElementById('sirenAudio');
-        audioSiren.volume = 0.8;
-        let isAudioUnlocked = false;
+        // ================= WEB AUDIO SYNTHESIS SIREN ENGINE =================
+        let audioCtx = null;
+        let sirenOsc = null;
+        let sirenGain = null;
+        let isSirenPlaying = false;
+        let sirenInterval = null;
 
-        function paksaBukaAudioFizikal() {
-            if (audioSiren) {
-                audioSiren.play().then(() => {
-                    audioSiren.pause();
-                    audioSiren.currentTime = 0;
-                    isAudioUnlocked = true;
-
-                    const btnEl = document.getElementById('btnAudioUnlocker');
-                    if (btnEl) {
-                        btnEl.style.background = 'var(--success-bg)';
-                        btnEl.style.color = 'var(--success)';
-                        btnEl.style.borderColor = 'var(--success)';
-                        btnEl.innerHTML = `<i class="fa-solid fa-check"></i> Audio Enabled`;
-                        btnEl.style.animation = 'none';
-                    }
-                    console.log("✅ Audio Siren Berjaya Dibuka Kunci pada Peranti Mobile!");
-                }).catch(err => {
-                    console.warn("Ralat membuka kunci audio:", err);
-                });
+        function bukaKunciAudioSintesis() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
             }
 
             if ("vibrate" in navigator) {
                 navigator.vibrate(50);
             }
+
+            const btnEl = document.getElementById('btnAudioUnlocker');
+            if (btnEl) {
+                btnEl.style.background = 'var(--success-bg)';
+                btnEl.style.color = 'var(--success)';
+                btnEl.style.borderColor = 'var(--success)';
+                btnEl.innerHTML = `<i class="fa-solid fa-check"></i> Audio Enabled`;
+            }
         }
 
-        // Jalankan percubaan sentuhan automatik
-        document.addEventListener('touchstart', function() {
-            if(!isAudioUnlocked) paksaBukaAudioFizikal();
-        }, { once: true });
+        document.addEventListener('touchstart', bukaKunciAudioSintesis, { once: true });
+        document.addEventListener('click', bukaKunciAudioSintesis, { once: true });
+
+        function mulaMembunyikanSirenSintesis() {
+            bukaKunciAudioSintesis();
+            if (isSirenPlaying) return;
+
+            try {
+                sirenOsc = audioCtx.createOscillator();
+                sirenGain = audioCtx.createGain();
+
+                sirenOsc.type = 'sawtooth';
+                sirenOsc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                sirenGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+
+                sirenOsc.connect(sirenGain);
+                sirenGain.connect(audioCtx.destination);
+
+                sirenOsc.start();
+                isSirenPlaying = true;
+
+                // Modulasi frekuensi siren tinggi-rendah
+                let highPitch = false;
+                sirenInterval = setInterval(() => {
+                    if (audioCtx && sirenOsc) {
+                        let targetFreq = highPitch ? 600 : 950;
+                        sirenOsc.frequency.exponentialRampToValueAtTime(targetFreq, audioCtx.currentTime + 0.35);
+                        highPitch = !highPitch;
+                    }
+                }, 400);
+            } catch (e) {
+                console.warn("Synthesis audio play failed:", e);
+            }
+        }
+
+        function hentikanSirenSintesis() {
+            if (sirenInterval) {
+                clearInterval(sirenInterval);
+                sirenInterval = null;
+            }
+            if (sirenOsc) {
+                try {
+                    sirenOsc.stop();
+                    sirenOsc.disconnect();
+                } catch(e){}
+                sirenOsc = null;
+            }
+            isSirenPlaying = false;
+        }
 
         // ================= DIGITAL CLOCK FUNCTION =================
         function kemaskiniJamDigital() {
             const sekarang = new Date();
-            
             let jam = sekarang.getHours();
             let minit = sekarang.getMinutes();
             let saat = sekarang.getSeconds();
@@ -948,7 +963,6 @@
         const statusPaparan = document.getElementById('statusPaparan');
         const logTableBody = document.getElementById('logTableBody');
         const fullLogTableBody = document.getElementById('fullLogTableBody');
-        const lblVolume = document.getElementById('lblVolume');
         const statKes = document.getElementById('statKes');
         const statActiveKes = document.getElementById('statActiveKes');
         const activeEmergencyContainer = document.getElementById('activeEmergencyContainer');
@@ -1021,7 +1035,7 @@
         }
 
         nurseNameInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") { paksaBukaAudioFizikal(); sahkanNamaPetugas(); }
+            if (e.key === "Enter") { bukaKunciAudioSintesis(); sahkanNamaPetugas(); }
         });
 
         function kemaskiniInterfaceStaf(nama, bilik) {
@@ -1118,23 +1132,17 @@
             if (menuItems[targetIdx]) menuItems[targetIdx].classList.add('active');
         }
 
-        function tukarVolumeSiren(nilai) {
-            audioSiren.volume = nilai;
-            lblVolume.innerText = Math.round(nilai * 100) + "%";
-        }
-
         function ujiBunyiSiren() {
-            paksaBukaAudioFizikal();
+            bukaKunciAudioSintesis();
             const btnTest = document.getElementById('btnTestSound');
             if (!isTestingSound) {
                 isTestingSound = true;
                 btnTest.innerHTML = `<i class="fa-solid fa-stop"></i> Stop Test`;
-                audioSiren.play().catch(e => console.log("Direct sound play failed:", e));
+                mulaMembunyikanSirenSintesis();
             } else {
                 isTestingSound = false;
                 btnTest.innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
-                audioSiren.pause();
-                audioSiren.currentTime = 0;
+                hentikanSirenSintesis();
             }
         }
 
@@ -1251,16 +1259,13 @@
                     document.getElementById('btnTestSound').innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
                 }
 
-                // Mainkan bunyi siren terus tanpa halangan
-                audioSiren.play().catch(e => {
-                    console.warn("⚠️ Autoplay disekat oleh telefon. Sila tekan butang 'Enable Mobile Audio' di atas skrin:", e);
-                });
+                // Mainkan siren sintesis
+                mulaMembunyikanSirenSintesis();
             } else {
                 bodyTag.classList.remove('kecemasan-aktif');
                 statusPaparan.innerText = "✅ System Standby: All Sectors Secured";
                 
-                audioSiren.pause();
-                audioSiren.currentTime = 0;
+                hentikanSirenSintesis();
             }
 
             binaButangMuteSpesifik();
@@ -1293,7 +1298,6 @@
             activeEmergencyContainer.innerHTML = htmlContent;
         }
 
-        // ================= TARGETED ACKNOWLEDGE & MUTE CONTROL =================
         function tekanMuteBilikSpesifik(roomNum) {
             const inputEl = document.getElementById(`txtCatatan_${roomNum}`);
             let mesejCatatan = inputEl ? inputEl.value.trim() : "";
@@ -1324,7 +1328,6 @@
             alert(`Siren bagi Room ${roomNum} telah di-mute dan dikemaskini!`);
         }
 
-        // ================= REAL-TIME HISTORY LOG LISTENER =================
         database.ref('history').on('value', (snapshot) => {
             logTableBody.innerHTML = "";
             arraySemuaLog = [];
@@ -1416,7 +1419,6 @@
             binaJadualPenuh(hasilTapis);
         }
 
-        // ================= PDF EXPORT ENGINE =================
         function muatTurunPDFLog() {
             if (arraySemuaLog.length === 0) {
                 alert("Tiada rekod log untuk dimuat turun.");
