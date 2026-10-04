@@ -544,6 +544,9 @@
 </head>
 <body id="bodyTag">
 
+    <!-- ELEMEN AUDIO SIREN FIZIKAL DALAM HTML -->
+    <audio id="sirenAudio" src="siren.mp3" preload="auto" loop></audio>
+
     <!-- LOGIN & ROOM ASSIGNMENT MODAL -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
@@ -844,51 +847,45 @@
             }
         }
 
-        // ================= GLOBAL AUDIO DECLARATION =================
-        const audioSiren = new Audio('siren.mp3');
-        audioSiren.loop = true;
-        audioSiren.volume = 0.8; 
+        // ================= AMBIL ELEMEN AUDIO HTML FIZIKAL =================
+        const audioSiren = document.getElementById('sirenAudio');
+        audioSiren.volume = 0.8;
 
         let globalAudioCtx = null;
         let isAudioUnlocked = false;
 
-        // ================= MOBILE AUDIO UNLOCKER ENGINE =================
         function bukaKunciAudioSensitif() {
-            // 1. Inisialisasi & Resume Web Audio Context
             if (!globalAudioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 if (AudioContext) {
                     globalAudioCtx = new AudioContext();
                 }
             }
-            
             if (globalAudioCtx && globalAudioCtx.state === 'suspended') {
                 globalAudioCtx.resume();
             }
 
-            // 2. Mainkan & Hentikan Fail Siren serta-merta untuk Melepaskan Sekatan Pelayar Mobile
+            // Mainkan elemen audio HTML secara senyap seketika untuk membuka sekatan autoplay mobile
             if (audioSiren && !isAudioUnlocked) {
                 audioSiren.play().then(() => {
                     audioSiren.pause();
                     audioSiren.currentTime = 0;
                     isAudioUnlocked = true;
-                    console.log("✅ Audio Siren Mobile Berjaya Dibuka Kunci!");
+                    console.log("✅ Audio HTML Fizikal Berjaya Dibuka Kunci!");
                 }).catch(err => {
-                    console.warn("⚠️ Menunggu Sentuhan Pengguna Pertama Untuk Memicu Audio:", err);
+                    console.warn("⚠️ Menunggu interaksi pengguna:", err);
                 });
             }
 
-            // 3. Maklum Balas Getaran
             if ("vibrate" in navigator) {
                 navigator.vibrate(50);
             }
         }
 
-        // Buka kunci secara automatik apabila pengguna mengetik di mana-mana bahagian skrin
         window.addEventListener('touchstart', bukaKunciAudioSensitif, { once: true });
         window.addEventListener('click', bukaKunciAudioSensitif, { once: true });
 
-        // ================= BUTTON FEEDBACK (VIBRATION & BEEP) =================
+        // ================= BUTTON FEEDBACK =================
         function playFeedback() {
             bukaKunciAudioSensitif();
             try {
@@ -955,8 +952,6 @@
 
         let isTestingSound = false; 
         let arraySemuaLog = []; 
-        
-        // Multi-Room Active Emergency Tracking Array
         let activeEmergencyRooms = {}; 
 
         let deviceNodesState = {
@@ -996,7 +991,6 @@
             
             setInterval(semakDeviceHeartbeat, 5000);
             
-            // Susun Listener Bagi Ketiga-tiga Bilik Wad
             dengarTriggerBilik(1);
             dengarTriggerBilik(2);
             dengarTriggerBilik(3);
@@ -1217,7 +1211,7 @@
             if (!node.isEmergency) {
                 if (isOfflineTimeout) {
                     bedCard.className = "bed-card status-offline";
-                    if (txtPeta) txtPeta.innerText = "⚠️️ Offline";
+                    if (txtPeta) txtPeta.innerText = "⚠️ Offline";
                     if (nodeStatusEl) nodeStatusEl.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="color: var(--warning)"></i> No Signal`;
                 } else {
                     bedCard.className = "bed-card status-normal";
@@ -1274,9 +1268,8 @@
                 }
 
                 bukaKunciAudioSensitif();
-                // Play Audio Siren continuously as long as at least 1 room is active
                 audioSiren.play().catch(e => {
-                    console.log("Siren audio disekat oleh polisi pelayar mobile:", e);
+                    console.log("Siren audio disekat:", e);
                 });
             } else {
                 bodyTag.classList.remove('kecemasan-aktif');
@@ -1326,7 +1319,6 @@
             let bilikPetugas = sessionStorage.getItem("bilik_jururawat") || "All Rooms";
             let rekodPetugasFull = `${namaPetugas} (${bilikPetugas})`;
 
-            // Cari rekod log paling terkini bagi bilik berkenaan
             let targetLogId = null;
             for (let i = 0; i < arraySemuaLog.length; i++) {
                 if (arraySemuaLog[i].numBilik == roomNum) {
@@ -1342,7 +1334,6 @@
                 });
             }
             
-            // Setkan nilai trigger khusus bagi bilik tersebut ke false
             database.ref(`emergency/room${roomNum}/isTriggered`).set(false);
             database.ref(`patients/room${roomNum}/bed1/status`).set("NORMAL");
 
