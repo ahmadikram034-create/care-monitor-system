@@ -564,7 +564,7 @@
                 </select>
             </div>
 
-            <button class="btn btn-primary" style="width:100%;" onclick="playFeedback(); sahkanNamaPetugas();">Start Shift Session</button>
+            <button class="btn btn-primary" style="width:100%;" onclick="bukaKunciAudioSensitif(); sahkanNamaPetugas();">Start Shift Session & Enable Audio</button>
         </div>
     </div>
 
@@ -844,53 +844,55 @@
             }
         }
 
-        // ================= MOBILE AUDIO CONTEXT UNLOCKER =================
-        let globalAudioCtx = null;
+        // ================= GLOBAL AUDIO DECLARATION =================
+        const audioSiren = new Audio('siren.mp3');
+        audioSiren.loop = true;
+        audioSiren.volume = 0.8; 
 
-        function initAudioContext() {
+        let globalAudioCtx = null;
+        let isAudioUnlocked = false;
+
+        // ================= MOBILE AUDIO UNLOCKER ENGINE =================
+        function bukaKunciAudioSensitif() {
+            // 1. Inisialisasi & Resume Web Audio Context
             if (!globalAudioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 if (AudioContext) {
                     globalAudioCtx = new AudioContext();
                 }
             }
+            
             if (globalAudioCtx && globalAudioCtx.state === 'suspended') {
                 globalAudioCtx.resume();
             }
-        }
 
-        // Buka kunci AudioContext & Audio Siren pada sentuhan pertama di smartphone
-        window.addEventListener('touchstart', () => {
-            initAudioContext();
-            if (audioSiren) {
+            // 2. Mainkan & Hentikan Fail Siren serta-merta untuk Melepaskan Sekatan Pelayar Mobile
+            if (audioSiren && !isAudioUnlocked) {
                 audioSiren.play().then(() => {
                     audioSiren.pause();
                     audioSiren.currentTime = 0;
-                }).catch(() => {});
+                    isAudioUnlocked = true;
+                    console.log("✅ Audio Siren Mobile Berjaya Dibuka Kunci!");
+                }).catch(err => {
+                    console.warn("⚠️ Menunggu Sentuhan Pengguna Pertama Untuk Memicu Audio:", err);
+                });
             }
-        }, { once: true });
 
-        window.addEventListener('click', () => {
-            initAudioContext();
-            if (audioSiren) {
-                audioSiren.play().then(() => {
-                    audioSiren.pause();
-                    audioSiren.currentTime = 0;
-                }).catch(() => {});
-            }
-        }, { once: true });
-
-        // ================= BUTTON FEEDBACK (VIBRATION & BEEP) =================
-        function playFeedback() {
-            // 1. VIBRATION FEEDBACK
+            // 3. Maklum Balas Getaran
             if ("vibrate" in navigator) {
                 navigator.vibrate(50);
             }
+        }
 
-            // 2. AUDIO BEEP FEEDBACK (Optimized for Mobile)
+        // Buka kunci secara automatik apabila pengguna mengetik di mana-mana bahagian skrin
+        window.addEventListener('touchstart', bukaKunciAudioSensitif, { once: true });
+        window.addEventListener('click', bukaKunciAudioSensitif, { once: true });
+
+        // ================= BUTTON FEEDBACK (VIBRATION & BEEP) =================
+        function playFeedback() {
+            bukaKunciAudioSensitif();
             try {
-                initAudioContext();
-                if (globalAudioCtx) {
+                if (globalAudioCtx && globalAudioCtx.state === 'running') {
                     const osc = globalAudioCtx.createOscillator();
                     const gain = globalAudioCtx.createGain();
 
@@ -950,10 +952,6 @@
             firebase.initializeApp(firebaseConfig);
         }
         const database = firebase.database();
-
-        const audioSiren = new Audio('siren.mp3');
-        audioSiren.loop = true;
-        audioSiren.volume = 0.8; 
 
         let isTestingSound = false; 
         let arraySemuaLog = []; 
@@ -1045,7 +1043,7 @@
         }
 
         nurseNameInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") { playFeedback(); sahkanNamaPetugas(); }
+            if (e.key === "Enter") { bukaKunciAudioSensitif(); sahkanNamaPetugas(); }
         });
 
         function kemaskiniInterfaceStaf(nama, bilik) {
@@ -1148,7 +1146,7 @@
         }
 
         function ujiBunyiSiren() {
-            initAudioContext();
+            bukaKunciAudioSensitif();
             const btnTest = document.getElementById('btnTestSound');
             if (!isTestingSound) {
                 isTestingSound = true;
@@ -1219,7 +1217,7 @@
             if (!node.isEmergency) {
                 if (isOfflineTimeout) {
                     bedCard.className = "bed-card status-offline";
-                    if (txtPeta) txtPeta.innerText = "⚠️ Offline";
+                    if (txtPeta) txtPeta.innerText = "⚠️️ Offline";
                     if (nodeStatusEl) nodeStatusEl.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="color: var(--warning)"></i> No Signal`;
                 } else {
                     bedCard.className = "bed-card status-normal";
@@ -1275,14 +1273,15 @@
                     document.getElementById('btnTestSound').innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
                 }
 
-                initAudioContext();
+                bukaKunciAudioSensitif();
                 // Play Audio Siren continuously as long as at least 1 room is active
-                audioSiren.play().catch(e => console.log("Audio play blocked by browser policy"));
+                audioSiren.play().catch(e => {
+                    console.log("Siren audio disekat oleh polisi pelayar mobile:", e);
+                });
             } else {
                 bodyTag.classList.remove('kecemasan-aktif');
                 statusPaparan.innerText = "✅ System Standby: All Sectors Secured";
                 
-                // Mute Audio Siren ONLY when ALL emergency triggers are cleared
                 audioSiren.pause();
                 audioSiren.currentTime = 0;
             }
