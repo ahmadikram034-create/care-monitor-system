@@ -25,7 +25,6 @@
 
     <style>
         :root {
-            /* Gemini Dark Palette */
             --bg-dark: #131314;
             --sidebar-bg: #1e1f20;
             --card-bg: #1e1f20;
@@ -63,7 +62,6 @@
             overflow: hidden;
         }
 
-        /* Responsive Breakpoints */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -151,7 +149,6 @@
             color: var(--accent-blue);
         }
 
-        /* Sidebar Styling */
         .sidebar {
             width: 280px;
             background-color: var(--sidebar-bg);
@@ -220,7 +217,6 @@
             font-weight: 600;
         }
 
-        /* Staff Card & Dual Action Buttons */
         .staff-card {
             background-color: var(--input-bg);
             padding: 14px 18px;
@@ -269,7 +265,6 @@
             border-color: var(--danger);
         }
 
-        /* Header Bar & Digital Clock */
         .main-content {
             flex: 1;
             padding: 32px;
@@ -325,7 +320,6 @@
 
         .tab-view.active { display: flex; }
 
-        /* Gemini Status Banner */
         .status-banner {
             background-color: var(--success-bg);
             border: 1px solid rgba(109, 213, 140, 0.3);
@@ -348,7 +342,6 @@
             100% { box-shadow: 0 0 0 0 rgba(242, 184, 181, 0); }
         }
 
-        /* Cards Layout */
         .grid-2 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -363,7 +356,6 @@
             transition: background 0.2s ease;
         }
 
-        /* Active Emergency Items Container */
         .alert-item-card {
             background: rgba(242, 184, 181, 0.1);
             border: 1px solid var(--danger);
@@ -375,7 +367,6 @@
             gap: 10px;
         }
 
-        /* Table Styling */
         .table-responsive { width: 100%; }
 
         table {
@@ -402,7 +393,6 @@
 
         td { color: var(--text-main); }
 
-        /* Bed Map Matrix */
         .bed-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -460,7 +450,6 @@
             font-weight: 500;
         }
 
-        /* Controls & Inputs */
         .btn {
             padding: 10px 18px;
             border: none;
@@ -510,7 +499,6 @@
             flex-wrap: wrap;
         }
 
-        /* Modal Overlay */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -544,7 +532,7 @@
 </head>
 <body id="bodyTag">
 
-    <!-- ELEMEN AUDIO SIREN FIZIKAL DALAM HTML -->
+    <!-- ELEMEN AUDIO FIZIKAL HTML -->
     <audio id="sirenAudio" src="siren.mp3" preload="auto" loop></audio>
 
     <!-- LOGIN & ROOM ASSIGNMENT MODAL -->
@@ -567,7 +555,7 @@
                 </select>
             </div>
 
-            <button class="btn btn-primary" style="width:100%;" onclick="bukaKunciAudioSensitif(); sahkanNamaPetugas();">Start Shift Session & Enable Audio</button>
+            <button class="btn btn-primary" style="width:100%;" onclick="playFeedback(); sahkanNamaPetugas();">Start Shift Session</button>
         </div>
     </div>
 
@@ -652,14 +640,12 @@
 
         <!-- TAB 1: DASHBOARD -->
         <div id="view-dashboard" class="tab-view active">
-            <!-- Alert Banner -->
             <div class="status-banner">
                 <h3 id="statusPaparan" style="margin-bottom: 4px; font-weight: 600; font-size: 1.1rem;">✅ System Standby: All Sectors Secured</h3>
                 <p style="font-size: 0.85rem; opacity: 0.9;">Live Multi-Node Firebase Listener active.</p>
             </div>
 
             <div class="grid-2">
-                <!-- Targeted Action Card -->
                 <div class="card">
                     <h3 style="font-size: 1.1rem; font-weight: 600;"><i class="fa-solid fa-shield-halved" style="color:var(--accent-blue); margin-right: 8px;"></i> Active Sector Controls</h3>
                     <p style="color: var(--text-sub); font-size: 0.85rem; margin-top: 6px;">Mute & acknowledge emergency alerts per specific room.</p>
@@ -669,7 +655,6 @@
                     </div>
                 </div>
 
-                <!-- Stats Summary Card -->
                 <div class="card">
                     <h3 style="font-size: 1.1rem; font-weight: 600;"><i class="fa-solid fa-chart-pie" style="color:var(--accent-blue); margin-right: 8px;"></i> Telemetry Summary</h3>
                     <div style="margin-top: 18px; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem;">
@@ -687,7 +672,6 @@
                 </div>
             </div>
 
-            <!-- Recent Log Summary Table -->
             <div class="card">
                 <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 8px;">Recent Incident Alerts</h3>
                 <div class="table-responsive">
@@ -825,7 +809,7 @@
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('sw.js')
                     .then(function(reg) {
-                        console.log('✅ Service Worker berjaya didaftarkan di skop:', reg.scope);
+                        console.log('✅ Service Worker berjaya didaftarkan:', reg.scope);
                     })
                     .catch(function(err) {
                         console.error('❌ Gagal mendaftar Service Worker:', err);
@@ -837,7 +821,7 @@
             if ('Notification' in window) {
                 Notification.requestPermission().then(function(permission) {
                     if (permission === 'granted') {
-                        alert('✅ Kebenaran notifikasi diluluskan! Amaran kecemasan akan muncul di skrin peranti.');
+                        alert('✅ Kebenaran notifikasi diluluskan!');
                     } else {
                         alert('⚠️ Kebenaran notifikasi ditolak.');
                     }
@@ -847,64 +831,28 @@
             }
         }
 
-        // ================= AMBIL ELEMEN AUDIO HTML FIZIKAL =================
+        // ================= ELEMEN AUDIO FIZIKAL & BUKA KUNCI SMARTPHONE =================
         const audioSiren = document.getElementById('sirenAudio');
         audioSiren.volume = 0.8;
 
-        let globalAudioCtx = null;
-        let isAudioUnlocked = false;
-
-        function bukaKunciAudioSensitif() {
-            if (!globalAudioCtx) {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (AudioContext) {
-                    globalAudioCtx = new AudioContext();
-                }
-            }
-            if (globalAudioCtx && globalAudioCtx.state === 'suspended') {
-                globalAudioCtx.resume();
-            }
-
-            // Mainkan elemen audio HTML secara senyap seketika untuk membuka sekatan autoplay mobile
-            if (audioSiren && !isAudioUnlocked) {
+        // Buka kunci audio fizikal sebaik sahaja skrin disentuh
+        function unlockAudioOnTouch() {
+            if (audioSiren) {
                 audioSiren.play().then(() => {
                     audioSiren.pause();
                     audioSiren.currentTime = 0;
-                    isAudioUnlocked = true;
-                    console.log("✅ Audio HTML Fizikal Berjaya Dibuka Kunci!");
-                }).catch(err => {
-                    console.warn("⚠️ Menunggu interaksi pengguna:", err);
-                });
-            }
-
-            if ("vibrate" in navigator) {
-                navigator.vibrate(50);
+                }).catch(() => {});
             }
         }
 
-        window.addEventListener('touchstart', bukaKunciAudioSensitif, { once: true });
-        window.addEventListener('click', bukaKunciAudioSensitif, { once: true });
+        window.addEventListener('touchstart', unlockAudioOnTouch, { once: true });
+        window.addEventListener('click', unlockAudioOnTouch, { once: true });
 
-        // ================= BUTTON FEEDBACK =================
+        // Maklum balas getaran sahaja untuk elak konflik AudioContext
         function playFeedback() {
-            bukaKunciAudioSensitif();
-            try {
-                if (globalAudioCtx && globalAudioCtx.state === 'running') {
-                    const osc = globalAudioCtx.createOscillator();
-                    const gain = globalAudioCtx.createGain();
-
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(800, globalAudioCtx.currentTime);
-                    gain.gain.setValueAtTime(0.1, globalAudioCtx.currentTime);
-
-                    osc.connect(gain);
-                    gain.connect(globalAudioCtx.destination);
-
-                    osc.start();
-                    osc.stop(globalAudioCtx.currentTime + 0.08);
-                }
-            } catch (e) {
-                console.log("Audio feedback error", e);
+            unlockAudioOnTouch();
+            if ("vibrate" in navigator) {
+                navigator.vibrate(50);
             }
         }
 
@@ -1037,7 +985,7 @@
         }
 
         nurseNameInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") { bukaKunciAudioSensitif(); sahkanNamaPetugas(); }
+            if (e.key === "Enter") { playFeedback(); sahkanNamaPetugas(); }
         });
 
         function kemaskiniInterfaceStaf(nama, bilik) {
@@ -1140,12 +1088,12 @@
         }
 
         function ujiBunyiSiren() {
-            bukaKunciAudioSensitif();
+            unlockAudioOnTouch();
             const btnTest = document.getElementById('btnTestSound');
             if (!isTestingSound) {
                 isTestingSound = true;
                 btnTest.innerHTML = `<i class="fa-solid fa-stop"></i> Stop Test`;
-                audioSiren.play().catch(e => console.log("User interaction required first"));
+                audioSiren.play().catch(e => console.log("Perlu sentuh skrin dahulu"));
             } else {
                 isTestingSound = false;
                 btnTest.innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
@@ -1267,10 +1215,8 @@
                     document.getElementById('btnTestSound').innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
                 }
 
-                bukaKunciAudioSensitif();
-                audioSiren.play().catch(e => {
-                    console.log("Siren audio disekat:", e);
-                });
+                // Mainkan audio siren terus secara langsung
+                audioSiren.play().catch(e => console.log("Aktiviti audio disekat oleh pelayar:", e));
             } else {
                 bodyTag.classList.remove('kecemasan-aktif');
                 statusPaparan.innerText = "✅ System Standby: All Sectors Secured";
