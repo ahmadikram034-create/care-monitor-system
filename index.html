@@ -559,7 +559,7 @@
             </div>
 
             <button class="btn btn-primary" style="width:100%;" onclick="bukaKunciAudioSintesis(); sahkanNamaPetugas();">
-                Start Shift & Enable Sound
+                Start Shift & Enable Sound/Vibration
             </button>
         </div>
     </div>
@@ -792,7 +792,7 @@
                             <i class="fa-solid fa-bell"></i> Enable Emergency Push Notifications
                         </button>
                         <button class="btn btn-primary" id="btnTestSound" onclick="ujiBunyiSiren();" style="width:100%;">
-                            <i class="fa-solid fa-play"></i> Run Audio Test
+                            <i class="fa-solid fa-play"></i> Run Audio & Vibration Test
                         </button>
                     </div>
                 </div>
@@ -829,12 +829,13 @@
             }
         }
 
-        // ================= WEB AUDIO SYNTHESIS SIREN ENGINE =================
+        // ================= WEB AUDIO SYNTHESIS & VIBRATION ENGINE =================
         let audioCtx = null;
         let sirenOsc = null;
         let sirenGain = null;
         let isSirenPlaying = false;
         let sirenInterval = null;
+        let vibrateInterval = null;
 
         function bukaKunciAudioSintesis() {
             if (!audioCtx) {
@@ -854,15 +855,43 @@
                 btnEl.style.background = 'var(--success-bg)';
                 btnEl.style.color = 'var(--success)';
                 btnEl.style.borderColor = 'var(--success)';
-                btnEl.innerHTML = `<i class="fa-solid fa-check"></i> Audio Enabled`;
+                btnEl.innerHTML = `<i class="fa-solid fa-check"></i> Audio & Haptics Active`;
             }
         }
 
         document.addEventListener('touchstart', bukaKunciAudioSintesis, { once: true });
         document.addEventListener('click', bukaKunciAudioSintesis, { once: true });
 
+        // Fungsi Memulakan Getaran Berterusan (Emergency Vibration Pattern)
+        function mulaGetaranKecemasan() {
+            if ("vibrate" in navigator) {
+                // Getar terus dengan corak kecemasan
+                navigator.vibrate([500, 200, 500, 200, 800]);
+                
+                if (!vibrateInterval) {
+                    vibrateInterval = setInterval(() => {
+                        if ("vibrate" in navigator && isSirenPlaying) {
+                            navigator.vibrate([500, 200, 500, 200, 800]);
+                        }
+                    }, 2200);
+                }
+            }
+        }
+
+        function hentikanGetaranKecemasan() {
+            if (vibrateInterval) {
+                clearInterval(vibrateInterval);
+                vibrateInterval = null;
+            }
+            if ("vibrate" in navigator) {
+                navigator.vibrate(0); // Henti semua getaran
+            }
+        }
+
         function mulaMembunyikanSirenSintesis() {
             bukaKunciAudioSintesis();
+            mulaGetaranKecemasan();
+
             if (isSirenPlaying) return;
 
             try {
@@ -879,7 +908,6 @@
                 sirenOsc.start();
                 isSirenPlaying = true;
 
-                // Modulasi frekuensi siren tinggi-rendah
                 let highPitch = false;
                 sirenInterval = setInterval(() => {
                     if (audioCtx && sirenOsc) {
@@ -894,6 +922,8 @@
         }
 
         function hentikanSirenSintesis() {
+            hentikanGetaranKecemasan();
+
             if (sirenInterval) {
                 clearInterval(sirenInterval);
                 sirenInterval = null;
@@ -1259,7 +1289,6 @@
                     document.getElementById('btnTestSound').innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
                 }
 
-                // Mainkan siren sintesis
                 mulaMembunyikanSirenSintesis();
             } else {
                 bodyTag.classList.remove('kecemasan-aktif');
