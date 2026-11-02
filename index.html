@@ -862,10 +862,8 @@
         document.addEventListener('touchstart', bukaKunciAudioSintesis, { once: true });
         document.addEventListener('click', bukaKunciAudioSintesis, { once: true });
 
-        // Fungsi Memulakan Getaran Berterusan (Emergency Vibration Pattern)
         function mulaGetaranKecemasan() {
             if ("vibrate" in navigator) {
-                // Getar terus dengan corak kecemasan
                 navigator.vibrate([500, 200, 500, 200, 800]);
                 
                 if (!vibrateInterval) {
@@ -884,7 +882,7 @@
                 vibrateInterval = null;
             }
             if ("vibrate" in navigator) {
-                navigator.vibrate(0); // Henti semua getaran
+                navigator.vibrate(0);
             }
         }
 
@@ -1338,9 +1336,20 @@
 
             let targetLogId = null;
             for (let i = 0; i < arraySemuaLog.length; i++) {
-                if (arraySemuaLog[i].numBilik == roomNum) {
-                    targetLogId = arraySemuaLog[i].id;
-                    break;
+                if (parseInt(arraySemuaLog[i].numBilik) === parseInt(roomNum)) {
+                    if (!arraySemuaLog[i].dikendalikan_oleh || arraySemuaLog[i].dikendalikan_oleh.includes("Unassigned")) {
+                        targetLogId = arraySemuaLog[i].id;
+                        break;
+                    }
+                }
+            }
+            
+            if (!targetLogId) {
+                for (let i = 0; i < arraySemuaLog.length; i++) {
+                    if (parseInt(arraySemuaLog[i].numBilik) === parseInt(roomNum)) {
+                        targetLogId = arraySemuaLog[i].id;
+                        break;
+                    }
                 }
             }
 
@@ -1366,7 +1375,9 @@
                 snapshot.forEach((childSnapshot) => {
                     let logData = childSnapshot.val();
                     
-                    let dateObj = logData.time ? new Date(logData.time) : new Date();
+                    let rawTime = logData.time ? logData.time : Date.now();
+                    let dateObj = new Date(rawTime);
+                    
                     let tarikhFormatted = dateObj.toLocaleDateString('ms-MY');
                     let masaFormatted = dateObj.toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit' });
 
@@ -1383,9 +1394,11 @@
                         dikendalikan_oleh: logData.dikendalikan_oleh || null
                     };
                     
-                    arraySemuaLog.unshift(record);
+                    arraySemuaLog.push(record);
                     countKes++;
                 });
+
+                arraySemuaLog.sort((a, b) => b.rawTimestamp - a.rawTimestamp);
 
                 statKes.innerText = countKes + (countKes === 1 ? " Incident" : " Incidents");
 
