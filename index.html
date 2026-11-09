@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -1262,18 +1261,12 @@
         kemaskiniJamDigital();
 
         // ================= INCIDENT DATE/TIME CONVERSION =================
-        // FIX: ESP32 stores date in Firebase using the "datetime" field.
-        // Example: 2026-11-05_11-22-22
-
         function parseIncidentDateTime(logData) {
 
             if (!logData) return null;
 
-            // Support Unix timestamp in milliseconds or seconds
             if (typeof logData.timestamp === "number") {
-
                 const timestamp = logData.timestamp;
-
                 return new Date(
                     timestamp < 1000000000000
                         ? timestamp * 1000
@@ -1281,11 +1274,9 @@
                 );
             }
 
-            // Read datetime first, then time as fallback
             const value = logData.datetime || logData.time;
 
             if (typeof value === "number") {
-
                 return new Date(
                     value < 1000000000000
                         ? value * 1000
@@ -1294,13 +1285,11 @@
             }
 
             if (typeof value === "string") {
-
                 const match = value.match(
                     /^(\d{4})-(\d{2})-(\d{2})[_ T](\d{2})[-:](\d{2})[-:](\d{2})$/
                 );
 
                 if (match) {
-
                     const year = Number(match[1]);
                     const month = Number(match[2]) - 1;
                     const day = Number(match[3]);
@@ -1318,7 +1307,6 @@
                         second
                     );
 
-                    // Reject invalid dates rather than silently changing them
                     if (
                         date.getFullYear() !== year ||
                         date.getMonth() !== month ||
@@ -1333,7 +1321,6 @@
                     return date;
                 }
 
-                // Support standard ISO date strings
                 const parsedDate = new Date(value);
 
                 if (!Number.isNaN(parsedDate.getTime())) {
@@ -1341,13 +1328,12 @@
                 }
             }
 
-            // Important: Never use Date.now() for missing historical dates
             return null;
         }
 
         // ================= FIREBASE CONFIG =================
         const firebaseConfig = {
-            apiKey: "YOUR_FIREBASE_API_KEY",
+            apiKey: "AIzaSyA5m8zKt61dcXGYUS3T77G21KFgw9lWjbg",
             authDomain: "panic-button-10305.firebaseapp.com",
             databaseURL: "https://panic-button-10305-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "panic-button-10305",
@@ -1368,24 +1354,9 @@
         let activeEmergencyRooms = {};
 
         let deviceNodesState = {
-
-            1: {
-                lastSeen: 0,
-                battery: 100,
-                isEmergency: false
-            },
-
-            2: {
-                lastSeen: 0,
-                battery: 100,
-                isEmergency: false
-            },
-
-            3: {
-                lastSeen: 0,
-                battery: 100,
-                isEmergency: false
-            }
+            1: { lastSeen: 0, battery: 100, isEmergency: false },
+            2: { lastSeen: 0, battery: 100, isEmergency: false },
+            3: { lastSeen: 0, battery: 100, isEmergency: false }
         };
 
         const bodyTag = document.getElementById('bodyTag');
@@ -1451,31 +1422,18 @@
                 return;
             }
 
-            sessionStorage.setItem(
-                "nama_jururawat",
-                namaDimasukkan
-            );
-
-            sessionStorage.setItem(
-                "bilik_jururawat",
-                bilikDipilih
-            );
+            sessionStorage.setItem("nama_jururawat", namaDimasukkan);
+            sessionStorage.setItem("bilik_jururawat", bilikDipilih);
 
             loginModal.classList.remove('active');
 
-            kemaskiniInterfaceStaf(
-                namaDimasukkan,
-                bilikDipilih
-            );
+            kemaskiniInterfaceStaf(namaDimasukkan, bilikDipilih);
         }
 
         function tukarBilikSahaja() {
 
-            let namaSemasa =
-                sessionStorage.getItem("nama_jururawat") || "";
-
-            let bilikSemasa =
-                sessionStorage.getItem("bilik_jururawat") || "All Rooms";
+            let namaSemasa = sessionStorage.getItem("nama_jururawat") || "";
+            let bilikSemasa = sessionStorage.getItem("bilik_jururawat") || "All Rooms";
 
             nurseNameInput.value = namaSemasa;
             roomSelectInput.value = bilikSemasa;
@@ -1503,7 +1461,6 @@
         nurseNameInput.addEventListener("keypress", (e) => {
 
             if (e.key === "Enter") {
-
                 bukaKunciAudioSintesis();
                 sahkanNamaPetugas();
             }
@@ -1538,22 +1495,13 @@
                         reg.showNotification("🚨 EMERGENCY ALERT!", {
 
                             body: mesejKecemasan,
-
                             icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
-
                             badge: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
-
                             tag: "emergency-panic-alert",
-
                             renotify: true,
-
                             requireInteraction: true,
-
                             vibrate: [500, 200, 500, 200, 500, 200, 1000],
-
-                            data: {
-                                url: '/'
-                            }
+                            data: { url: '/' }
                         });
                     });
 
@@ -1562,7 +1510,6 @@
                     new Notification("🚨 EMERGENCY ALERT!", {
 
                         body: mesejKecemasan,
-
                         icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png"
                     });
                 }
@@ -1587,7 +1534,6 @@
         function tukarTabDropdown(event, targetViewId) {
 
             event.preventDefault();
-
             toggleMobileMenu();
 
             document.querySelectorAll('.mobile-drop-item').forEach(item => {
@@ -1631,7 +1577,6 @@
             });
 
             const mapId = {
-
                 'view-dashboard': 'm-nav-dashboard',
                 'view-log': 'm-nav-log',
                 'view-peta': 'm-nav-peta',
@@ -1654,7 +1599,6 @@
             const menuItems = document.querySelectorAll('.menu-item');
 
             const indexMap = {
-
                 'view-dashboard': 0,
                 'view-log': 1,
                 'view-peta': 2,
@@ -1679,8 +1623,7 @@
 
                 isTestingSound = true;
 
-                btnTest.innerHTML =
-                    `<i class="fa-solid fa-stop"></i> Stop Test`;
+                btnTest.innerHTML = `<i class="fa-solid fa-stop"></i> Stop Test`;
 
                 mulaMembunyikanSirenSintesis();
 
@@ -1688,8 +1631,7 @@
 
                 isTestingSound = false;
 
-                btnTest.innerHTML =
-                    `<i class="fa-solid fa-play"></i> Run Test`;
+                btnTest.innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
 
                 hentikanSirenSintesis();
             }
@@ -1752,17 +1694,10 @@
 
         function kemaskiniPaparanNodePeta(idx, isOfflineTimeout = false) {
 
-            const bedCard =
-                document.getElementById(`peta-katil-${idx}`);
-
-            const txtPeta =
-                document.getElementById(`txt-peta-${idx}`);
-
-            const nodeStatusEl =
-                document.getElementById(`node-status-${idx}`);
-
-            const batValEl =
-                document.getElementById(`bat-val-${idx}`);
+            const bedCard = document.getElementById(`peta-katil-${idx}`);
+            const txtPeta = document.getElementById(`txt-peta-${idx}`);
+            const nodeStatusEl = document.getElementById(`node-status-${idx}`);
+            const batValEl = document.getElementById(`bat-val-${idx}`);
 
             if (!bedCard) return;
 
@@ -1772,18 +1707,14 @@
             let batColor = '#6dd58c';
 
             if (node.battery < 20) {
-
                 batIcon = 'fa-battery-quarter';
                 batColor = '#f2b8b5';
-
             } else if (node.battery < 50) {
-
                 batIcon = 'fa-battery-half';
                 batColor = '#ffbe6b';
             }
 
             if (batValEl) {
-
                 batValEl.innerHTML =
                     `<i class="fa-solid ${batIcon}" style="color:${batColor}"></i> ${node.battery}%`;
             }
@@ -1799,7 +1730,6 @@
                     }
 
                     if (nodeStatusEl) {
-
                         nodeStatusEl.innerHTML =
                             `<i class="fa-solid fa-circle-exclamation" style="color: var(--warning)"></i> No Signal`;
                     }
@@ -1813,7 +1743,6 @@
                     }
 
                     if (nodeStatusEl) {
-
                         nodeStatusEl.innerHTML =
                             `<i class="fa-solid fa-circle-dot" style="color: var(--success)"></i> Node Active`;
                     }
@@ -1833,19 +1762,13 @@
                     activeEmergencyRooms[roomNumber] = true;
 
                     deviceNodesState[roomNumber].isEmergency = true;
-
                     deviceNodesState[roomNumber].lastSeen = Date.now();
 
-                    const targetBed =
-                        document.getElementById(`peta-katil-${roomNumber}`);
-
-                    const targetTxt =
-                        document.getElementById(`txt-peta-${roomNumber}`);
+                    const targetBed = document.getElementById(`peta-katil-${roomNumber}`);
+                    const targetTxt = document.getElementById(`txt-peta-${roomNumber}`);
 
                     if (targetBed && targetTxt) {
-
                         targetBed.className = "bed-card status-emergency";
-
                         targetTxt.innerText = "🚨 INCIDENT!";
                     }
 
@@ -1856,7 +1779,6 @@
                 } else {
 
                     delete activeEmergencyRooms[roomNumber];
-
                     deviceNodesState[roomNumber].isEmergency = false;
 
                     kemaskiniPaparanNodePeta(roomNumber);
@@ -1870,13 +1792,10 @@
         function kemaskiniKeadaanKecemasanGlobal() {
 
             const keysActive = Object.keys(activeEmergencyRooms);
-
             const totalActive = keysActive.length;
 
             if (statActiveKes) {
-
                 statActiveKes.innerText = `${totalActive} Active`;
-
                 statActiveKes.style.color =
                     totalActive > 0
                         ? "var(--danger)"
@@ -1891,9 +1810,7 @@
                     `🚨 CRITICAL EMERGENCY: ${totalActive} Sector(s) Requiring Attention!`;
 
                 if (isTestingSound) {
-
                     isTestingSound = false;
-
                     document.getElementById('btnTestSound').innerHTML =
                         `<i class="fa-solid fa-play"></i> Run Test`;
                 }
@@ -1903,9 +1820,7 @@
             } else {
 
                 bodyTag.classList.remove('kecemasan-aktif');
-
-                statusPaparan.innerText =
-                    "✅ System Standby: All Sectors Secured";
+                statusPaparan.innerText = "✅ System Standby: All Sectors Secured";
 
                 hentikanSirenSintesis();
             }
@@ -1931,11 +1846,9 @@
             keysActive.forEach((roomNum) => {
 
                 htmlContent += `
-
                     <div class="alert-item-card">
 
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-
                             <strong style="color:var(--danger); font-size:1rem;">
                                 🚨 Room ${roomNum} - Bed 1
                             </strong>
@@ -1943,7 +1856,6 @@
                             <span style="font-size:0.75rem; background:var(--danger-bg); color:var(--danger); padding:3px 8px; border-radius:10px; border:1px solid var(--danger);">
                                 CRITICAL
                             </span>
-
                         </div>
 
                         <input
@@ -1973,17 +1885,14 @@
         // ================= MUTE SPECIFIC ROOM =================
         function tekanMuteBilikSpesifik(roomNum) {
 
-            const inputEl =
-                document.getElementById(`txtCatatan_${roomNum}`);
+            const inputEl = document.getElementById(`txtCatatan_${roomNum}`);
 
             let mesejCatatan = inputEl
                 ? inputEl.value.trim()
                 : "";
 
             if (mesejCatatan === "") {
-
-                mesejCatatan =
-                    `Attended Room ${roomNum} Bed 1 & acknowledged`;
+                mesejCatatan = `Attended Room ${roomNum} Bed 1 & acknowledged`;
             }
 
             let namaPetugas =
@@ -1994,12 +1903,10 @@
                 sessionStorage.getItem("bilik_jururawat") ||
                 "All Rooms";
 
-            let rekodPetugasFull =
-                `${namaPetugas} (${bilikPetugas})`;
+            let rekodPetugasFull = `${namaPetugas} (${bilikPetugas})`;
 
             let targetLogId = null;
 
-            // Find the latest unassigned incident for this room
             for (let i = 0; i < arraySemuaLog.length; i++) {
 
                 if (
@@ -2011,15 +1918,12 @@
                         !arraySemuaLog[i].dikendalikan_oleh ||
                         arraySemuaLog[i].dikendalikan_oleh.includes("Unassigned")
                     ) {
-
                         targetLogId = arraySemuaLog[i].id;
-
                         break;
                     }
                 }
             }
 
-            // Fallback: find the latest incident for this room
             if (!targetLogId) {
 
                 for (let i = 0; i < arraySemuaLog.length; i++) {
@@ -2028,9 +1932,7 @@
                         parseInt(arraySemuaLog[i].numBilik) ===
                         parseInt(roomNum)
                     ) {
-
                         targetLogId = arraySemuaLog[i].id;
-
                         break;
                     }
                 }
@@ -2041,41 +1943,25 @@
                 database.ref('history/' + targetLogId).update({
 
                     catatan: mesejCatatan,
-
                     dikendalikan_oleh: rekodPetugasFull
 
                 }).catch(error => {
-
                     console.error("History update failed:", error);
-
                     alert("Failed to update incident record.");
                 });
             }
 
-            database.ref(
-                `emergency/room${roomNum}/isTriggered`
-            ).set(false);
+            database.ref(`emergency/room${roomNum}/isTriggered`).set(false);
+            database.ref(`patients/room${roomNum}/bed1/status`).set("NORMAL");
 
-            database.ref(
-                `patients/room${roomNum}/bed1/status`
-            ).set("NORMAL");
-
-            alert(
-                `Siren bagi Room ${roomNum} telah di-mute dan dikemaskini!`
-            );
+            alert(`Siren bagi Room ${roomNum} telah di-mute dan dikemaskini!`);
         }
 
         // ================= FIREBASE HISTORY LISTENER =================
-        // IMPORTANT FIX:
-        // Reads logData.datetime instead of only logData.time.
-        // Does not use Date.now() for historical incident records.
-
         database.ref('history').on('value', (snapshot) => {
 
             logTableBody.innerHTML = "";
-
             arraySemuaLog = [];
-
             let countKes = 0;
 
             if (snapshot.exists()) {
@@ -2084,7 +1970,6 @@
 
                     let logData = childSnapshot.val();
 
-                    // Convert original Firebase date and time
                     let dateObj = parseIncidentDateTime(logData);
 
                     let validDate =
@@ -2103,56 +1988,43 @@
                         })
                         : "Unknown";
 
-                    let roomNumber = logData.room || "1";
-                    let bedNumber = logData.bed || "1";
+                    // PEMBAIKAN: Menyokong pelbagai variasi kunci bilik (room, roomNumber, roomNum)
+                    let roomNumber = logData.room || logData.roomNumber || logData.roomNum || "1";
+                    let bedNumber = logData.bed || logData.bedNumber || logData.bedNum || "1";
 
                     let record = {
 
                         id: childSnapshot.key,
 
-                        // Original incident timestamp
                         rawTimestamp: validDate
                             ? dateObj.getTime()
                             : 0,
 
                         tarikh: tarikhFormatted,
-
                         masa: masaFormatted,
 
                         numBilik: roomNumber,
-
                         numKatil: bedNumber,
 
                         bilik: "Room " + roomNumber,
-
                         katil: "Bed " + bedNumber,
 
                         catatan: logData.catatan || null,
-
-                        dikendalikan_oleh:
-                            logData.dikendalikan_oleh || null
+                        dikendalikan_oleh: logData.dikendalikan_oleh || null
                     };
 
                     arraySemuaLog.push(record);
-
                     countKes++;
                 });
 
-                // Newest incident first
                 arraySemuaLog.sort((a, b) => {
-
                     return b.rawTimestamp - a.rawTimestamp;
                 });
 
                 statKes.innerText = countKes +
-                    (countKes === 1
-                        ? " Incident"
-                        : " Incidents");
+                    (countKes === 1 ? " Incident" : " Incidents");
 
-                // Show latest 5 incidents on dashboard
-                let ringkasanData =
-                    arraySemuaLog.slice(0, 5);
-
+                let ringkasanData = arraySemuaLog.slice(0, 5);
                 let counter = 1;
 
                 ringkasanData.forEach((data) => {
@@ -2166,28 +2038,18 @@
                         : `<span style="color:var(--text-sub);">Unassigned</span>`;
 
                     logTableBody.innerHTML += `
-
                         <tr>
-
                             <td><b>${counter++}</b></td>
-
                             <td>${data.tarikh}</td>
-
                             <td>${data.masa}</td>
-
                             <td>${data.bilik}</td>
-
                             <td>${data.katil}</td>
-
                             <td>${isiCatatan}</td>
-
                             <td><strong>${petugas}</strong></td>
-
                         </tr>
                     `;
                 });
 
-                // Display all historical records
                 binaJadualPenuh(arraySemuaLog);
 
             } else {
@@ -2195,21 +2057,14 @@
                 statKes.innerText = "0 Incidents";
 
                 let emptyRow = `
-
                     <tr>
-
-                        <td
-                            colspan="7"
-                            style="text-align:center; color:var(--text-sub); padding:20px;"
-                        >
+                        <td colspan="7" style="text-align:center; color:var(--text-sub); padding:20px;">
                             No telemetry log history records found.
                         </td>
-
                     </tr>
                 `;
 
                 logTableBody.innerHTML = emptyRow;
-
                 fullLogTableBody.innerHTML = emptyRow;
             }
         });
@@ -2218,7 +2073,6 @@
         function binaJadualPenuh(dataArray) {
 
             fullLogTableBody.innerHTML = "";
-
             let counter = 1;
 
             dataArray.forEach((data) => {
@@ -2232,23 +2086,14 @@
                     : `<span style="color:var(--text-sub);">Unassigned</span>`;
 
                 fullLogTableBody.innerHTML += `
-
                     <tr>
-
                         <td><b>${counter++}</b></td>
-
                         <td>${data.tarikh}</td>
-
                         <td>${data.masa}</td>
-
                         <td>${data.bilik}</td>
-
                         <td>${data.katil}</td>
-
                         <td>${isiCatatan}</td>
-
                         <td><strong>${petugas}</strong></td>
-
                     </tr>
                 `;
             });
@@ -2265,29 +2110,18 @@
             let hasilTapis = arraySemuaLog.filter(item => {
 
                 let tarikh = (item.tarikh || "").toLowerCase();
-
                 let masa = (item.masa || "").toLowerCase();
-
                 let bilik = (item.bilik || "").toLowerCase();
-
                 let katil = (item.katil || "").toLowerCase();
-
                 let catatan = (item.catatan || "").toLowerCase();
-
                 let staff = (item.dikendalikan_oleh || "").toLowerCase();
 
                 return (
-
                     tarikh.includes(carian) ||
-
                     masa.includes(carian) ||
-
                     bilik.includes(carian) ||
-
                     katil.includes(carian) ||
-
                     catatan.includes(carian) ||
-
                     staff.includes(carian)
                 );
             });
@@ -2299,40 +2133,27 @@
         function muatTurunPDFLog() {
 
             if (arraySemuaLog.length === 0) {
-
                 alert("Tiada rekod log untuk dimuat turun.");
-
                 return;
             }
 
-            const pilihanJulat =
-                document.getElementById('selectPdfRange').value;
-
+            const pilihanJulat = document.getElementById('selectPdfRange').value;
             const sekarangMs = new Date().getTime();
 
-            const msSeminggu =
-                7 * 24 * 60 * 60 * 1000;
-
-            const msSebulan =
-                30 * 24 * 60 * 60 * 1000;
+            const msSeminggu = 7 * 24 * 60 * 60 * 1000;
+            const msSebulan = 30 * 24 * 60 * 60 * 1000;
 
             let logDitapis = arraySemuaLog.filter(item => {
 
-                // Ignore records without a valid original date
                 if (!item.rawTimestamp) {
                     return pilihanJulat === "semua";
                 }
 
                 if (pilihanJulat === "minggu") {
-
                     const age = sekarangMs - item.rawTimestamp;
-
                     return age >= 0 && age <= msSeminggu;
-
                 } else if (pilihanJulat === "bulan") {
-
                     const age = sekarangMs - item.rawTimestamp;
-
                     return age >= 0 && age <= msSebulan;
                 }
 
@@ -2340,7 +2161,6 @@
             });
 
             if (logDitapis.length === 0) {
-
                 alert(
                     `Tiada rekod log ditemui bagi julat: ${
                         pilihanJulat === 'minggu'
@@ -2348,26 +2168,17 @@
                             : '1 Bulan Terakhir'
                     }`
                 );
-
                 return;
             }
 
             const { jsPDF } = window.jspdf;
-
             const doc = new jsPDF();
 
             doc.setFontSize(18);
-
             doc.setTextColor(30, 31, 32);
-
-            doc.text(
-                "CARE MONITOR - INCIDENT TELEMETRY REPORT",
-                14,
-                20
-            );
+            doc.text("CARE MONITOR - INCIDENT TELEMETRY REPORT", 14, 20);
 
             doc.setFontSize(10);
-
             doc.setTextColor(100);
 
             let tajukJulat =
@@ -2379,114 +2190,58 @@
                             : "Semua Rekod Log"
                     );
 
-            doc.text(
-                `Julat Masa Laporan: ${tajukJulat}`,
-                14,
-                27
-            );
-
-            doc.text(
-                `Jumlah Kes: ${logDitapis.length} Rekod Insiden`,
-                14,
-                33
-            );
-
-            doc.text(
-                `Tarikh Dijana: ${new Date().toLocaleString('ms-MY')}`,
-                14,
-                39
-            );
+            doc.text(`Julat Masa Laporan: ${tajukJulat}`, 14, 27);
+            doc.text(`Jumlah Kes: ${logDitapis.length} Rekod Insiden`, 14, 33);
+            doc.text(`Tarikh Dijana: ${new Date().toLocaleString('ms-MY')}`, 14, 39);
 
             doc.setLineWidth(0.5);
-
             doc.setDrawColor(200, 200, 200);
-
             doc.line(14, 43, 196, 43);
 
             const tableRows = [];
 
             logDitapis.forEach((item, index) => {
-
                 tableRows.push([
-
                     index + 1,
-
                     item.tarikh,
-
                     item.masa,
-
                     item.bilik,
-
                     item.katil,
-
-                    item.catatan
-                        ? item.catatan
-                        : "Tiada Catatan",
-
-                    item.dikendalikan_oleh
-                        ? item.dikendalikan_oleh
-                        : "Unassigned"
+                    item.catatan ? item.catatan : "Tiada Catatan",
+                    item.dikendalikan_oleh ? item.dikendalikan_oleh : "Unassigned"
                 ]);
             });
 
             doc.autoTable({
-
                 startY: 47,
-
-                head: [[
-                    '#',
-                    'Tarikh',
-                    'Masa',
-                    'Bilik',
-                    'Katil',
-                    'Catatan',
-                    'Petugas'
-                ]],
-
+                head: [['#', 'Tarikh', 'Masa', 'Bilik', 'Katil', 'Catatan', 'Petugas']],
                 body: tableRows,
-
                 theme: 'striped',
-
                 headStyles: {
                     fillColor: [40, 56, 80],
                     textColor: [168, 199, 250],
                     fontStyle: 'bold'
                 },
-
                 styles: {
                     fontSize: 8,
                     cellPadding: 3
                 },
-
                 alternateRowStyles: {
                     fillColor: [245, 247, 250]
                 }
             });
 
-            const namaFail =
-                `Incident_Log_${pilihanJulat}_${new Date().toISOString().slice(0,10)}.pdf`;
-
-            const isIOS =
-                /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-                !window.MSStream;
+            const namaFail = `Incident_Log_${pilihanJulat}_${new Date().toISOString().slice(0,10)}.pdf`;
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
             if (isIOS) {
-
                 const pdfBlob = doc.output('blob');
-
                 const blobUrl = URL.createObjectURL(pdfBlob);
-
                 const newWindow = window.open(blobUrl, '_blank');
-
                 if (!newWindow) {
-
-                    alert(
-                        "Sila izinkan Pop-up pada Safari anda untuk memuat turun PDF."
-                    );
+                    alert("Sila izinkan Pop-up pada Safari anda untuk memuat turun PDF.");
                 }
-
             } else {
-
                 doc.save(namaFail);
             }
         }
@@ -2495,16 +2250,11 @@
         let wakeLock = null;
 
         async function kekalkanSkrin() {
-
             try {
-
                 if ('wakeLock' in navigator) {
-
                     wakeLock = await navigator.wakeLock.request('screen');
                 }
-
             } catch (e) {
-
                 console.log("Wake Lock unavailable:", e);
             }
         }
