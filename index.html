@@ -1237,7 +1237,7 @@
             loginModal.classList.remove('active');
             kemaskiniInterfaceStaf(namaDimasukkan, bilikDipilih);
             
-            // Semak semula status kecemasan semasa mengikut zon bilik baru
+            // Kemaskini status dan siren sejurus selepas tukar zon bilik
             kemaskiniKeadaanKecemasanGlobal();
         }
 
@@ -1376,6 +1376,9 @@
                 const targetRoom = document.getElementById(`peta-bilik-${roomNumber}`);
                 const targetTxt = document.getElementById(`txt-peta-${roomNumber}`);
 
+                let assignedZone = sessionStorage.getItem("bilik_jururawat") || "All Rooms";
+                let isRelevantForMe = (assignedZone === "All Rooms" || assignedZone === `Room ${roomNumber}`);
+
                 if (isEmergency === true) {
                     activeEmergencyRooms[roomNumber] = true;
                     if (targetRoom && targetTxt) {
@@ -1383,9 +1386,8 @@
                         targetTxt.innerText = "🚨 INCIDENT!";
                     }
                     
-                    // Semak sama ada peranti ini ditugaskan untuk bilik ini atau All Rooms
-                    let assignedZone = sessionStorage.getItem("bilik_jururawat") || "All Rooms";
-                    if (assignedZone === "All Rooms" || assignedZone === `Room ${roomNumber}`) {
+                    // Hanya hantar push notification jika bilik ini relevan dengan zon jururawat
+                    if (isRelevantForMe) {
                         hantarNotifikasiBrowser(`ROOM ${roomNumber} REQUIRES IMMEDIATE HELP!`);
                     }
                 } else {
@@ -1403,7 +1405,6 @@
         function kemaskiniKeadaanKecemasanGlobal() {
             let assignedZone = sessionStorage.getItem("bilik_jururawat") || "All Rooms";
             
-            // Tapis kecemasan aktif khusus mengikut zon jururawat yang sedang log masuk
             let relevantActiveRooms = [];
             Object.keys(activeEmergencyRooms).forEach(roomNum => {
                 if (assignedZone === "All Rooms" || assignedZone === `Room ${roomNum}`) {
@@ -1419,6 +1420,7 @@
                 statActiveKes.style.color = totalGlobal > 0 ? "var(--danger)" : "var(--success)";
             }
 
+            // KUNCI UTAMA: Siren dan status banner HANYA aktif jika ada kecemasan di bilik JURURAWAT TERSEBUT
             if (totalRelevant > 0) {
                 bodyTag.classList.add('kecemasan-aktif');
                 statusPaparan.innerText = `🚨 CRITICAL EMERGENCY: Room(s) ${relevantActiveRooms.join(', ')} Requiring Attention!`;
