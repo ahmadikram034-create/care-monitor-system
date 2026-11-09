@@ -1375,7 +1375,17 @@
                 snapshot.forEach((childSnapshot) => {
                     let logData = childSnapshot.val();
                     
-                    let rawTime = logData.time ? logData.time : Date.now();
+                    // Sokongan fleksibel untuk baca 'time' (milisaat/saat) atau 'datetime' (string teks dari ESP32)
+                    let rawTime;
+                    if (logData.time) {
+                        rawTime = typeof logData.time === 'number' && logData.time < 10000000000 ? logData.time * 1000 : logData.time;
+                    } else if (logData.datetime) {
+                        let formattedStr = logData.datetime.replace('_', ' ').replace(/-/g, '/').replace(' ', 'T');
+                        rawTime = new Date(formattedStr).getTime();
+                        if (isNaN(rawTime)) rawTime = Date.now();
+                    } else {
+                        rawTime = Date.now();
+                    }
                     let dateObj = new Date(rawTime);
                     
                     let tarikhFormatted = dateObj.toLocaleDateString('ms-MY');
