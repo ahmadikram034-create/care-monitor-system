@@ -1236,6 +1236,9 @@
             sessionStorage.setItem("bilik_jururawat", bilikDipilih);
             loginModal.classList.remove('active');
             kemaskiniInterfaceStaf(namaDimasukkan, bilikDipilih);
+            
+            // Semak semula status kecemasan semasa mengikut zon bilik baru
+            kemaskiniKeadaanKecemasanGlobal();
         }
 
         function tukarBilikSahaja() {
@@ -1379,7 +1382,12 @@
                         targetRoom.className = "room-card status-emergency";
                         targetTxt.innerText = "🚨 INCIDENT!";
                     }
-                    hantarNotifikasiBrowser(`ROOM ${roomNumber} REQUIRES IMMEDIATE HELP!`);
+                    
+                    // Semak sama ada peranti ini ditugaskan untuk bilik ini atau All Rooms
+                    let assignedZone = sessionStorage.getItem("bilik_jururawat") || "All Rooms";
+                    if (assignedZone === "All Rooms" || assignedZone === `Room ${roomNumber}`) {
+                        hantarNotifikasiBrowser(`ROOM ${roomNumber} REQUIRES IMMEDIATE HELP!`);
+                    }
                 } else {
                     delete activeEmergencyRooms[roomNumber];
                     if (targetRoom && targetTxt) {
@@ -1393,17 +1401,27 @@
 
         // ================= GLOBAL EMERGENCY STATUS =================
         function kemaskiniKeadaanKecemasanGlobal() {
-            const keysActive = Object.keys(activeEmergencyRooms);
-            const totalActive = keysActive.length;
+            let assignedZone = sessionStorage.getItem("bilik_jururawat") || "All Rooms";
+            
+            // Tapis kecemasan aktif khusus mengikut zon jururawat yang sedang log masuk
+            let relevantActiveRooms = [];
+            Object.keys(activeEmergencyRooms).forEach(roomNum => {
+                if (assignedZone === "All Rooms" || assignedZone === `Room ${roomNum}`) {
+                    relevantActiveRooms.push(roomNum);
+                }
+            });
+
+            const totalRelevant = relevantActiveRooms.length;
+            const totalGlobal = Object.keys(activeEmergencyRooms).length;
 
             if (statActiveKes) {
-                statActiveKes.innerText = `${totalActive} Active`;
-                statActiveKes.style.color = totalActive > 0 ? "var(--danger)" : "var(--success)";
+                statActiveKes.innerText = `${totalGlobal} Active`;
+                statActiveKes.style.color = totalGlobal > 0 ? "var(--danger)" : "var(--success)";
             }
 
-            if (totalActive > 0) {
+            if (totalRelevant > 0) {
                 bodyTag.classList.add('kecemasan-aktif');
-                statusPaparan.innerText = `🚨 CRITICAL EMERGENCY: ${totalActive} Sector(s) Requiring Attention!`;
+                statusPaparan.innerText = `🚨 CRITICAL EMERGENCY: Room(s) ${relevantActiveRooms.join(', ')} Requiring Attention!`;
                 if (isTestingSound) {
                     isTestingSound = false;
                     document.getElementById('btnTestSound').innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
@@ -1415,19 +1433,18 @@
                 hentikanSirenSintesis();
             }
 
-            binaButangMuteSpesifik();
+            binaButangMuteSpesifik(relevantActiveRooms);
         }
 
         // ================= ROOM MUTE BUTTONS =================
-        function binaButangMuteSpesifik() {
-            const keysActive = Object.keys(activeEmergencyRooms);
-            if (keysActive.length === 0) {
-                activeEmergencyContainer.innerHTML = `<p style="color: var(--text-sub); font-size: 0.88rem; margin-top:14px;">🟢 No active emergency triggers at the moment.</p>`;
+        function binaButangMuteSpesifik(relevantRooms) {
+            if (!relevantRooms || relevantRooms.length === 0) {
+                activeEmergencyContainer.innerHTML = `<p style="color: var(--text-sub); font-size: 0.88rem; margin-top:14px;">🟢 No active emergency triggers for your assigned zone.</p>`;
                 return;
             }
 
             let htmlContent = "";
-            keysActive.forEach((roomNum) => {
+            relevantRooms.forEach((roomNum) => {
                 htmlContent += `
                     <div class="alert-item-card">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
