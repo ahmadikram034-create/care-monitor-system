@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -12,7 +13,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -66,6 +67,7 @@
                 overflow-x: hidden;
                 overflow-y: auto;
             }
+
             .sidebar {
                 width: 100% !important;
                 height: auto !important;
@@ -76,30 +78,37 @@
                 border-right: none !important;
                 border-bottom: 1px solid var(--border-color);
             }
+
             .main-content {
                 padding: 16px !important;
                 overflow-y: visible !important;
                 gap: 16px !important;
             }
+
             .nav-menu { display: none !important; }
             .hamburger-btn { display: block !important; }
             .grid-2 { grid-template-columns: 1fr !important; }
+
             .header-bar {
                 flex-direction: column;
                 align-items: flex-start !important;
                 gap: 12px;
             }
+
             .digital-clock-card {
                 width: 100%;
                 justify-content: flex-start;
             }
+
             .table-responsive {
                 width: 100%;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
                 margin-top: 10px;
             }
+
             table { min-width: 600px; }
+
             .export-bar {
                 flex-direction: column !important;
                 align-items: stretch !important;
@@ -140,7 +149,8 @@
             font-weight: 500;
         }
 
-        .mobile-drop-item.active, .mobile-drop-item:hover {
+        .mobile-drop-item.active,
+        .mobile-drop-item:hover {
             background: var(--accent-blue-bg);
             color: var(--accent-blue);
         }
@@ -252,9 +262,7 @@
             border-color: var(--accent-blue);
         }
 
-        .btn-staff-action.btn-logout {
-            color: var(--danger);
-        }
+        .btn-staff-action.btn-logout { color: var(--danger); }
 
         .btn-staff-action.btn-logout:hover {
             background: var(--danger-bg);
@@ -465,12 +473,14 @@
             color: #f2b8b5;
             border: 1px solid #f2b8b5;
         }
+
         .btn-danger:active { background: #601410; }
 
         .btn-primary {
             background: var(--accent-blue);
             color: #00325b;
         }
+
         .btn-primary:active { opacity: 0.8; }
 
         .btn-audio-unlock {
@@ -494,7 +504,9 @@
             transition: border-color 0.2s;
         }
 
-        .input-box:focus, .select-box:focus { border-color: var(--accent-blue); }
+        .input-box:focus, .select-box:focus {
+            border-color: var(--accent-blue);
+        }
 
         .export-bar {
             display: flex;
@@ -507,7 +519,10 @@
 
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(8px);
             display: flex;
@@ -536,21 +551,43 @@
         }
     </style>
 </head>
+
 <body id="bodyTag">
 
     <!-- LOGIN & ROOM ASSIGNMENT MODAL -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-box">
             <i class="fa-solid fa-hospital-user" style="font-size: 2.8rem; color: var(--accent-blue);"></i>
+
             <h3 style="margin-top:16px; font-weight:600;">Shift Registration</h3>
-            <p style="color: var(--text-sub); font-size: 0.88rem; margin-top:6px;">Set your staff name and assigned duty zone.</p>
-            
+
+            <p style="color: var(--text-sub); font-size: 0.88rem; margin-top:6px;">
+                Set your staff name and assigned duty zone.
+            </p>
+
             <div style="text-align: left; margin-top: 18px;">
-                <label style="font-size:0.8rem; color:var(--text-sub); font-weight:500;">STAFF / NURSE NAME</label>
-                <input type="text" id="nurseNameInput" class="input-box" placeholder="e.g. Nurse Sarah / Ikram" style="width:100%; margin-top:6px; margin-bottom:14px;">
-                
-                <label style="font-size:0.8rem; color:var(--text-sub); font-weight:500;">ASSIGNED SECTOR / ROOM</label>
-                <select id="roomSelectInput" class="select-box" style="width:100%; margin-top:6px; margin-bottom:20px;">
+
+                <label style="font-size:0.8rem; color:var(--text-sub); font-weight:500;">
+                    STAFF / NURSE NAME
+                </label>
+
+                <input
+                    type="text"
+                    id="nurseNameInput"
+                    class="input-box"
+                    placeholder="e.g. Nurse Sarah / Ikram"
+                    style="width:100%; margin-top:6px; margin-bottom:14px;"
+                >
+
+                <label style="font-size:0.8rem; color:var(--text-sub); font-weight:500;">
+                    ASSIGNED SECTOR / ROOM
+                </label>
+
+                <select
+                    id="roomSelectInput"
+                    class="select-box"
+                    style="width:100%; margin-top:6px; margin-bottom:20px;"
+                >
                     <option value="All Rooms">All Sectors (Supervisory / Chief Nurse)</option>
                     <option value="Room 1">Room 1 (Wad Utama 1)</option>
                     <option value="Room 2">Room 2 (Wad Utama 2)</option>
@@ -558,7 +595,11 @@
                 </select>
             </div>
 
-            <button class="btn btn-primary" style="width:100%;" onclick="bukaKunciAudioSintesis(); sahkanNamaPetugas();">
+            <button
+                class="btn btn-primary"
+                style="width:100%;"
+                onclick="bukaKunciAudioSintesis(); sahkanNamaPetugas();"
+            >
                 Start Shift & Enable Sound/Vibration
             </button>
         </div>
@@ -566,54 +607,104 @@
 
     <!-- SIDEBAR NAVIGATION -->
     <div class="sidebar">
+
         <div>
             <div class="brand">
+
                 <div class="brand-title">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                     <span>CARE MONITOR</span>
                 </div>
+
                 <button class="hamburger-btn" onclick="toggleMobileMenu();">
                     <i class="fa-solid fa-bars" id="hamburger-icon"></i>
                 </button>
             </div>
 
             <div class="mobile-dropdown" id="mobileDropdown">
-                <a href="#" id="m-nav-dashboard" class="mobile-drop-item active" onclick="tukarTabDropdown(event, 'view-dashboard')">
-                    <i class="fa-solid fa-chart-line" style="width:20px;"></i> Dashboard
+
+                <a href="#" id="m-nav-dashboard" class="mobile-drop-item active"
+                    onclick="tukarTabDropdown(event, 'view-dashboard')">
+                    <i class="fa-solid fa-chart-line" style="width:20px;"></i>
+                    Dashboard
                 </a>
-                <a href="#" id="m-nav-log" class="mobile-drop-item" onclick="tukarTabDropdown(event, 'view-log')">
-                    <i class="fa-solid fa-clock-rotate-left" style="width:20px;"></i> Incident Logs
+
+                <a href="#" id="m-nav-log" class="mobile-drop-item"
+                    onclick="tukarTabDropdown(event, 'view-log')">
+                    <i class="fa-solid fa-clock-rotate-left" style="width:20px;"></i>
+                    Incident Logs
                 </a>
-                <a href="#" id="m-nav-peta" class="mobile-drop-item" onclick="tukarTabDropdown(event, 'view-peta')">
-                    <i class="fa-solid fa-hospital-user" style="width:20px;"></i> Room Map
+
+                <a href="#" id="m-nav-peta" class="mobile-drop-item"
+                    onclick="tukarTabDropdown(event, 'view-peta')">
+                    <i class="fa-solid fa-hospital-user" style="width:20px;"></i>
+                    Room Map
                 </a>
-                <a href="#" id="m-nav-tetapan" class="mobile-drop-item" onclick="tukarTabDropdown(event, 'view-tetapan')">
-                    <i class="fa-solid fa-sliders" style="width:20px;"></i> Settings
+
+                <a href="#" id="m-nav-tetapan" class="mobile-drop-item"
+                    onclick="tukarTabDropdown(event, 'view-tetapan')">
+                    <i class="fa-solid fa-sliders" style="width:20px;"></i>
+                    Settings
                 </a>
             </div>
 
             <ul class="nav-menu">
-                <li><a href="#" class="menu-item active" onclick="tukarTab(event, 'view-dashboard')"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
-                <li><a href="#" class="menu-item" onclick="tukarTab(event, 'view-log')"><i class="fa-solid fa-clock-rotate-left"></i> Incident Logs</a></li>
-                <li><a href="#" class="menu-item" onclick="tukarTab(event, 'view-peta')"><i class="fa-solid fa-hospital-user"></i> Room Map</a></li>
-                <li><a href="#" class="menu-item" onclick="tukarTab(event, 'view-tetapan')"><i class="fa-solid fa-sliders"></i> Settings</a></li>
+                <li>
+                    <a href="#" class="menu-item active"
+                        onclick="tukarTab(event, 'view-dashboard')">
+                        <i class="fa-solid fa-chart-line"></i> Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" class="menu-item"
+                        onclick="tukarTab(event, 'view-log')">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Incident Logs
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" class="menu-item"
+                        onclick="tukarTab(event, 'view-peta')">
+                        <i class="fa-solid fa-hospital-user"></i> Room Map
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" class="menu-item"
+                        onclick="tukarTab(event, 'view-tetapan')">
+                        <i class="fa-solid fa-sliders"></i> Settings
+                    </a>
+                </li>
             </ul>
         </div>
 
         <div class="staff-card">
+
             <div class="staff-detail">
-                <span style="color: var(--text-sub); font-size: 0.78rem;">DUTY STAFF:</span>
-                <strong id="nama-staff" style="color: var(--accent-blue);">Loading...</strong>
+                <span style="color: var(--text-sub); font-size: 0.78rem;">
+                    DUTY STAFF:
+                </span>
+                <strong id="nama-staff" style="color: var(--accent-blue);">
+                    Loading...
+                </strong>
             </div>
+
             <div class="staff-detail">
-                <span style="color: var(--text-sub); font-size: 0.78rem;">ASSIGNED ZONE:</span>
-                <strong id="bilik-staff" style="color: var(--success);">All Rooms</strong>
+                <span style="color: var(--text-sub); font-size: 0.78rem;">
+                    ASSIGNED ZONE:
+                </span>
+                <strong id="bilik-staff" style="color: var(--success);">
+                    All Rooms
+                </strong>
             </div>
-            
+
             <div style="display: flex; gap: 8px; margin-top: 8px; border-top: 1px solid var(--border-color); padding-top: 8px;">
+
                 <button class="btn-staff-action" onclick="tukarBilikSahaja();" title="Change Zone">
                     <i class="fa-solid fa-arrows-rotate"></i> Change Zone
                 </button>
+
                 <button class="btn-staff-action btn-logout" onclick="logOutStaff();" title="End Shift & Log Out">
                     <i class="fa-solid fa-right-from-bracket"></i> Log Out
                 </button>
@@ -623,63 +714,115 @@
 
     <!-- MAIN DASHBOARD CONTENT -->
     <div class="main-content">
-        
+
         <div class="header-bar">
+
             <div>
                 <h2>Emergency Panic Trigger</h2>
-                <p style="color: var(--text-sub); font-size: 0.88rem; margin-top: 4px;">IoT ESP32 Real-Time Cloud Telemetry System</p>
+
+                <p style="color: var(--text-sub); font-size: 0.88rem; margin-top: 4px;">
+                    IoT ESP32 Real-Time Cloud Telemetry System
+                </p>
             </div>
-            
+
             <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                <button class="btn-audio-unlock" id="btnAudioUnlocker" onclick="bukaKunciAudioSintesis()">
+
+                <button class="btn-audio-unlock" id="btnAudioUnlocker"
+                    onclick="bukaKunciAudioSintesis()">
                     <i class="fa-solid fa-volume-high"></i> Enable Mobile Audio
                 </button>
 
                 <div class="digital-clock-card">
-                    <i class="fa-regular fa-clock" style="color: var(--accent-blue); font-size: 1.2rem;"></i>
+
+                    <i class="fa-regular fa-clock"
+                        style="color: var(--accent-blue); font-size: 1.2rem;"></i>
+
                     <div>
-                        <div class="clock-time" id="clockTime">00:00:00 AM</div>
-                        <div class="clock-date" id="clockDate">Mon, 1 Jan 2026</div>
+                        <div class="clock-time" id="clockTime">
+                            00:00:00 AM
+                        </div>
+
+                        <div class="clock-date" id="clockDate">
+                            Mon, 1 Jan 2026
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- DASHBOARD -->
         <div id="view-dashboard" class="tab-view active">
+
             <div class="status-banner">
-                <h3 id="statusPaparan" style="margin-bottom: 4px; font-weight: 600; font-size: 1.1rem;">✅ System Standby: All Sectors Secured</h3>
-                <p style="font-size: 0.85rem; opacity: 0.9;">Live Multi-Node Firebase Listener active.</p>
+                <h3 id="statusPaparan"
+                    style="margin-bottom: 4px; font-weight: 600; font-size: 1.1rem;">
+                    ✅ System Standby: All Sectors Secured
+                </h3>
+
+                <p style="font-size: 0.85rem; opacity: 0.9;">
+                    Live Multi-Node Firebase Listener active.
+                </p>
             </div>
 
             <div class="grid-2">
+
                 <div class="card">
-                    <h3 style="font-size: 1.1rem; font-weight: 600;"><i class="fa-solid fa-shield-halved" style="color:var(--accent-blue); margin-right: 8px;"></i> Active Sector Controls</h3>
-                    <p style="color: var(--text-sub); font-size: 0.85rem; margin-top: 6px;">Mute & acknowledge emergency alerts per specific room.</p>
-                    
+
+                    <h3 style="font-size: 1.1rem; font-weight: 600;">
+                        <i class="fa-solid fa-shield-halved"
+                            style="color:var(--accent-blue); margin-right: 8px;"></i>
+                        Active Sector Controls
+                    </h3>
+
+                    <p style="color: var(--text-sub); font-size: 0.85rem; margin-top: 6px;">
+                        Mute & acknowledge emergency alerts per specific room.
+                    </p>
+
                     <div id="activeEmergencyContainer">
-                        <p style="color: var(--text-sub); font-size: 0.88rem; margin-top:14px;">🟢 No active emergency triggers at the moment.</p>
+                        <p style="color: var(--text-sub); font-size: 0.88rem; margin-top:14px;">
+                            🟢 No active emergency triggers at the moment.
+                        </p>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3 style="font-size: 1.1rem; font-weight: 600;"><i class="fa-solid fa-chart-pie" style="color:var(--accent-blue); margin-right: 8px;"></i> Telemetry Summary</h3>
+
+                    <h3 style="font-size: 1.1rem; font-weight: 600;">
+                        <i class="fa-solid fa-chart-pie"
+                            style="color:var(--accent-blue); margin-right: 8px;"></i>
+                        Telemetry Summary
+                    </h3>
+
                     <div style="margin-top: 18px; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem;">
                         <span style="color: var(--text-sub);">Total Trigger Events:</span>
-                        <strong id="statKes" style="font-size: 1.2rem; color: var(--accent-blue);">0 Incidents</strong>
+                        <strong id="statKes" style="font-size: 1.2rem; color: var(--accent-blue);">
+                            0 Incidents
+                        </strong>
                     </div>
+
                     <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem;">
                         <span style="color: var(--text-sub);">Active Emergencies:</span>
-                        <strong id="statActiveKes" style="font-size: 1.1rem; color: var(--success);">0 Active</strong>
+                        <strong id="statActiveKes" style="font-size: 1.1rem; color: var(--success);">
+                            0 Active
+                        </strong>
                     </div>
+
                     <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem;">
                         <span style="color: var(--text-sub);">Cloud Database Sync:</span>
-                        <span style="color: var(--success); font-weight: 600;"><i class="fa-solid fa-wifi" style="margin-right:4px;"></i> Connected</span>
+                        <span style="color: var(--success); font-weight: 600;">
+                            <i class="fa-solid fa-wifi" style="margin-right:4px;"></i>
+                            Connected
+                        </span>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 8px;">Recent Incident Alerts</h3>
+
+                <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 8px;">
+                    Recent Incident Alerts
+                </h3>
+
                 <div class="table-responsive">
                     <table>
                         <thead>
@@ -693,24 +836,46 @@
                                 <th>Duty Staff</th>
                             </tr>
                         </thead>
+
                         <tbody id="logTableBody">
-                            <tr><td colspan="7" style="text-align:center; color:var(--text-sub);">Waiting for live telemetry records...</td></tr>
+                            <tr>
+                                <td colspan="7" style="text-align:center; color:var(--text-sub);">
+                                    Waiting for live telemetry records...
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
+        <!-- INCIDENT LOGS -->
         <div id="view-log" class="tab-view">
+
             <div class="card">
+
                 <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px;">
-                    <h3 style="font-size: 1.1rem; font-weight: 600;">Historical Incident Telemetry</h3>
-                    <p style="color: var(--text-sub); font-size: 0.85rem;">Filter and export official incident reports for audit purposes.</p>
+
+                    <h3 style="font-size: 1.1rem; font-weight: 600;">
+                        Historical Incident Telemetry
+                    </h3>
+
+                    <p style="color: var(--text-sub); font-size: 0.85rem;">
+                        Filter and export official incident reports for audit purposes.
+                    </p>
                 </div>
 
                 <div class="export-bar">
-                    <input type="text" id="logSearchInput" class="input-box" placeholder="Search log records..." onkeyup="tapisLogJadual()" style="flex:1;">
-                    
+
+                    <input
+                        type="text"
+                        id="logSearchInput"
+                        class="input-box"
+                        placeholder="Search log records..."
+                        onkeyup="tapisLogJadual()"
+                        style="flex:1;"
+                    >
+
                     <select id="selectPdfRange" class="select-box">
                         <option value="minggu">1 Minggu Terakhir</option>
                         <option value="bulan">1 Bulan Terakhir</option>
@@ -718,11 +883,13 @@
                     </select>
 
                     <button class="btn btn-primary" onclick="muatTurunPDFLog();">
-                        <i class="fa-solid fa-file-pdf"></i> Download PDF
+                        <i class="fa-solid fa-file-pdf"></i>
+                        Download PDF
                     </button>
                 </div>
 
                 <div class="table-responsive">
+
                     <table>
                         <thead>
                             <tr>
@@ -735,64 +902,127 @@
                                 <th>Duty Staff</th>
                             </tr>
                         </thead>
+
                         <tbody id="fullLogTableBody">
-                            <tr><td colspan="7" style="text-align:center; color:var(--text-sub);">No history records available.</td></tr>
+                            <tr>
+                                <td colspan="7" style="text-align:center; color:var(--text-sub);">
+                                    No history records available.
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
+        <!-- ROOM MAP -->
         <div id="view-peta" class="tab-view">
+
             <div class="card">
+
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+
                     <div>
-                        <h3 style="font-size: 1.1rem; font-weight: 600;">Ward Sector Floor Plan (3 Dedicated Sectors)</h3>
-                        <p style="color: var(--text-sub); font-size: 0.82rem; margin-top:2px;">Real-time hardware heartbeat & battery telemetry monitoring</p>
+                        <h3 style="font-size: 1.1rem; font-weight: 600;">
+                            Ward Sector Floor Plan (3 Dedicated Sectors)
+                        </h3>
+
+                        <p style="color: var(--text-sub); font-size: 0.82rem; margin-top:2px;">
+                            Real-time hardware heartbeat & battery telemetry monitoring
+                        </p>
                     </div>
                 </div>
 
                 <div class="bed-grid">
+
                     <div class="bed-card status-normal" id="peta-katil-1">
                         <div>Room 1 - Bed 1</div>
-                        <div id="txt-peta-1" style="font-size: 0.9rem; margin-top:6px;">🟢 Secured</div>
+
+                        <div id="txt-peta-1" style="font-size: 0.9rem; margin-top:6px;">
+                            🟢 Secured
+                        </div>
+
                         <div class="bed-meta-bar">
-                            <span id="node-status-1"><i class="fa-solid fa-circle-dot"></i> Node Active</span>
-                            <span id="bat-val-1"><i class="fa-solid fa-battery-full"></i> 100%</span>
+                            <span id="node-status-1">
+                                <i class="fa-solid fa-circle-dot"></i> Node Active
+                            </span>
+
+                            <span id="bat-val-1">
+                                <i class="fa-solid fa-battery-full"></i> 100%
+                            </span>
                         </div>
                     </div>
 
                     <div class="bed-card status-normal" id="peta-katil-2">
                         <div>Room 2 - Bed 1</div>
-                        <div id="txt-peta-2" style="font-size: 0.9rem; margin-top:6px;">🟢 Secured</div>
+
+                        <div id="txt-peta-2" style="font-size: 0.9rem; margin-top:6px;">
+                            🟢 Secured
+                        </div>
+
                         <div class="bed-meta-bar">
-                            <span id="node-status-2"><i class="fa-solid fa-circle-dot"></i> Node Active</span>
-                            <span id="bat-val-2"><i class="fa-solid fa-battery-full"></i> 100%</span>
+                            <span id="node-status-2">
+                                <i class="fa-solid fa-circle-dot"></i> Node Active
+                            </span>
+
+                            <span id="bat-val-2">
+                                <i class="fa-solid fa-battery-full"></i> 100%
+                            </span>
                         </div>
                     </div>
 
                     <div class="bed-card status-normal" id="peta-katil-3">
                         <div>Room 3 - Bed 1</div>
-                        <div id="txt-peta-3" style="font-size: 0.9rem; margin-top:6px;">🟢 Secured</div>
+
+                        <div id="txt-peta-3" style="font-size: 0.9rem; margin-top:6px;">
+                            🟢 Secured
+                        </div>
+
                         <div class="bed-meta-bar">
-                            <span id="node-status-3"><i class="fa-solid fa-circle-dot"></i> Node Active</span>
-                            <span id="bat-val-3"><i class="fa-solid fa-battery-full"></i> 100%</span>
+                            <span id="node-status-3">
+                                <i class="fa-solid fa-circle-dot"></i> Node Active
+                            </span>
+
+                            <span id="bat-val-3">
+                                <i class="fa-solid fa-battery-full"></i> 100%
+                            </span>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
 
+        <!-- SETTINGS -->
         <div id="view-tetapan" class="tab-view">
+
             <div class="card">
-                <h3 style="font-size: 1.1rem; font-weight: 600;">Audio, Drivers & Notification Settings</h3>
+
+                <h3 style="font-size: 1.1rem; font-weight: 600;">
+                    Audio, Drivers & Notification Settings
+                </h3>
+
                 <div style="margin-top:20px; display:flex; flex-direction:column; gap:18px;">
+
                     <div>
-                        <button class="btn btn-primary" id="btnEnableNotif" onclick="mintaKebenaranNotifikasi();" style="width:100%; margin-bottom: 10px;">
-                            <i class="fa-solid fa-bell"></i> Enable Emergency Push Notifications
+                        <button
+                            class="btn btn-primary"
+                            id="btnEnableNotif"
+                            onclick="mintaKebenaranNotifikasi();"
+                            style="width:100%; margin-bottom: 10px;"
+                        >
+                            <i class="fa-solid fa-bell"></i>
+                            Enable Emergency Push Notifications
                         </button>
-                        <button class="btn btn-primary" id="btnTestSound" onclick="ujiBunyiSiren();" style="width:100%;">
-                            <i class="fa-solid fa-play"></i> Run Audio & Vibration Test
+
+                        <button
+                            class="btn btn-primary"
+                            id="btnTestSound"
+                            onclick="ujiBunyiSiren();"
+                            style="width:100%;"
+                        >
+                            <i class="fa-solid fa-play"></i>
+                            Run Audio & Vibration Test
                         </button>
                     </div>
                 </div>
@@ -803,33 +1033,44 @@
 
     <!-- CORE INTEGRATED SCRIPT ENGINE -->
     <script>
+
+        // ================= SERVICE WORKER =================
         if ('serviceWorker' in navigator && 'PushManager' in window) {
+
             window.addEventListener('load', function() {
+
                 navigator.serviceWorker.register('sw.js')
+
                     .then(function(reg) {
                         console.log('✅ Service Worker registered:', reg.scope);
                     })
+
                     .catch(function(err) {
                         console.error('❌ SW Fail:', err);
                     });
             });
         }
 
+        // ================= NOTIFICATION PERMISSION =================
         function mintaKebenaranNotifikasi() {
+
             if ('Notification' in window) {
+
                 Notification.requestPermission().then(function(permission) {
+
                     if (permission === 'granted') {
                         alert('✅ Kebenaran notifikasi diluluskan!');
                     } else {
                         alert('⚠️ Kebenaran notifikasi ditolak.');
                     }
                 });
+
             } else {
                 alert('Pelayar ini tidak menyokong fungsi Notifikasi.');
             }
         }
 
-        // ================= WEB AUDIO SYNTHESIS & VIBRATION ENGINE =================
+        // ================= WEB AUDIO & VIBRATION =================
         let audioCtx = null;
         let sirenOsc = null;
         let sirenGain = null;
@@ -838,10 +1079,19 @@
         let vibrateInterval = null;
 
         function bukaKunciAudioSintesis() {
+
             if (!audioCtx) {
+
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+                if (!AudioContext) {
+                    console.warn("AudioContext is not supported.");
+                    return;
+                }
+
                 audioCtx = new AudioContext();
             }
+
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
@@ -851,11 +1101,15 @@
             }
 
             const btnEl = document.getElementById('btnAudioUnlocker');
+
             if (btnEl) {
+
                 btnEl.style.background = 'var(--success-bg)';
                 btnEl.style.color = 'var(--success)';
                 btnEl.style.borderColor = 'var(--success)';
-                btnEl.innerHTML = `<i class="fa-solid fa-check"></i> Audio & Haptics Active`;
+
+                btnEl.innerHTML =
+                    `<i class="fa-solid fa-check"></i> Audio & Haptics Active`;
             }
         }
 
@@ -863,95 +1117,142 @@
         document.addEventListener('click', bukaKunciAudioSintesis, { once: true });
 
         function mulaGetaranKecemasan() {
+
             if ("vibrate" in navigator) {
+
                 navigator.vibrate([500, 200, 500, 200, 800]);
-                
+
                 if (!vibrateInterval) {
+
                     vibrateInterval = setInterval(() => {
+
                         if ("vibrate" in navigator && isSirenPlaying) {
                             navigator.vibrate([500, 200, 500, 200, 800]);
                         }
+
                     }, 2200);
                 }
             }
         }
 
         function hentikanGetaranKecemasan() {
+
             if (vibrateInterval) {
                 clearInterval(vibrateInterval);
                 vibrateInterval = null;
             }
+
             if ("vibrate" in navigator) {
                 navigator.vibrate(0);
             }
         }
 
         function mulaMembunyikanSirenSintesis() {
+
             bukaKunciAudioSintesis();
             mulaGetaranKecemasan();
 
-            if (isSirenPlaying) return;
+            if (isSirenPlaying || !audioCtx) return;
 
             try {
+
                 sirenOsc = audioCtx.createOscillator();
                 sirenGain = audioCtx.createGain();
 
                 sirenOsc.type = 'sawtooth';
-                sirenOsc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                sirenGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+
+                sirenOsc.frequency.setValueAtTime(
+                    600,
+                    audioCtx.currentTime
+                );
+
+                sirenGain.gain.setValueAtTime(
+                    0.3,
+                    audioCtx.currentTime
+                );
 
                 sirenOsc.connect(sirenGain);
                 sirenGain.connect(audioCtx.destination);
 
                 sirenOsc.start();
+
                 isSirenPlaying = true;
 
                 let highPitch = false;
+
                 sirenInterval = setInterval(() => {
+
                     if (audioCtx && sirenOsc) {
+
                         let targetFreq = highPitch ? 600 : 950;
-                        sirenOsc.frequency.exponentialRampToValueAtTime(targetFreq, audioCtx.currentTime + 0.35);
+
+                        sirenOsc.frequency.exponentialRampToValueAtTime(
+                            targetFreq,
+                            audioCtx.currentTime + 0.35
+                        );
+
                         highPitch = !highPitch;
                     }
+
                 }, 400);
+
             } catch (e) {
                 console.warn("Synthesis audio play failed:", e);
             }
         }
 
         function hentikanSirenSintesis() {
+
             hentikanGetaranKecemasan();
 
             if (sirenInterval) {
                 clearInterval(sirenInterval);
                 sirenInterval = null;
             }
+
             if (sirenOsc) {
+
                 try {
                     sirenOsc.stop();
                     sirenOsc.disconnect();
-                } catch(e){}
+                } catch(e) {}
+
                 sirenOsc = null;
             }
+
             isSirenPlaying = false;
         }
 
-        // ================= DIGITAL CLOCK FUNCTION =================
+        // ================= DIGITAL CLOCK =================
         function kemaskiniJamDigital() {
+
             const sekarang = new Date();
+
             let jam = sekarang.getHours();
             let minit = sekarang.getMinutes();
             let saat = sekarang.getSeconds();
+
             let ampm = jam >= 12 ? 'PM' : 'AM';
-            
+
             jam = jam % 12;
             jam = jam ? jam : 12;
+
             minit = minit < 10 ? '0' + minit : minit;
             saat = saat < 10 ? '0' + saat : saat;
-            
+
             const stringMasa = `${jam}:${minit}:${saat} ${ampm}`;
-            const pilihanTarikh = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
-            const stringTarikh = sekarang.toLocaleDateString('en-US', pilihanTarikh);
+
+            const pilihanTarikh = {
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            };
+
+            const stringTarikh = sekarang.toLocaleDateString(
+                'en-US',
+                pilihanTarikh
+            );
 
             document.getElementById('clockTime').innerText = stringMasa;
             document.getElementById('clockDate').innerText = stringTarikh;
@@ -960,9 +1261,93 @@
         setInterval(kemaskiniJamDigital, 1000);
         kemaskiniJamDigital();
 
+        // ================= INCIDENT DATE/TIME CONVERSION =================
+        // FIX: ESP32 stores date in Firebase using the "datetime" field.
+        // Example: 2026-11-05_11-22-22
+
+        function parseIncidentDateTime(logData) {
+
+            if (!logData) return null;
+
+            // Support Unix timestamp in milliseconds or seconds
+            if (typeof logData.timestamp === "number") {
+
+                const timestamp = logData.timestamp;
+
+                return new Date(
+                    timestamp < 1000000000000
+                        ? timestamp * 1000
+                        : timestamp
+                );
+            }
+
+            // Read datetime first, then time as fallback
+            const value = logData.datetime || logData.time;
+
+            if (typeof value === "number") {
+
+                return new Date(
+                    value < 1000000000000
+                        ? value * 1000
+                        : value
+                );
+            }
+
+            if (typeof value === "string") {
+
+                const match = value.match(
+                    /^(\d{4})-(\d{2})-(\d{2})[_ T](\d{2})[-:](\d{2})[-:](\d{2})$/
+                );
+
+                if (match) {
+
+                    const year = Number(match[1]);
+                    const month = Number(match[2]) - 1;
+                    const day = Number(match[3]);
+
+                    const hour = Number(match[4]);
+                    const minute = Number(match[5]);
+                    const second = Number(match[6]);
+
+                    const date = new Date(
+                        year,
+                        month,
+                        day,
+                        hour,
+                        minute,
+                        second
+                    );
+
+                    // Reject invalid dates rather than silently changing them
+                    if (
+                        date.getFullYear() !== year ||
+                        date.getMonth() !== month ||
+                        date.getDate() !== day ||
+                        date.getHours() !== hour ||
+                        date.getMinutes() !== minute ||
+                        date.getSeconds() !== second
+                    ) {
+                        return null;
+                    }
+
+                    return date;
+                }
+
+                // Support standard ISO date strings
+                const parsedDate = new Date(value);
+
+                if (!Number.isNaN(parsedDate.getTime())) {
+                    return parsedDate;
+                }
+            }
+
+            // Important: Never use Date.now() for missing historical dates
+            return null;
+        }
+
         // ================= FIREBASE CONFIG =================
         const firebaseConfig = {
-            apiKey: "AIzaSyA5m8zKt61dcXGYUS3T77G21KFgw9lWjbg",
+            apiKey: "YOUR_FIREBASE_API_KEY",
             authDomain: "panic-button-10305.firebaseapp.com",
             databaseURL: "https://panic-button-10305-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "panic-button-10305",
@@ -975,134 +1360,224 @@
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
+
         const database = firebase.database();
 
-        let isTestingSound = false; 
-        let arraySemuaLog = []; 
-        let activeEmergencyRooms = {}; 
+        let isTestingSound = false;
+        let arraySemuaLog = [];
+        let activeEmergencyRooms = {};
 
         let deviceNodesState = {
-            1: { lastSeen: 0, battery: 100, isEmergency: false },
-            2: { lastSeen: 0, battery: 100, isEmergency: false },
-            3: { lastSeen: 0, battery: 100, isEmergency: false }
+
+            1: {
+                lastSeen: 0,
+                battery: 100,
+                isEmergency: false
+            },
+
+            2: {
+                lastSeen: 0,
+                battery: 100,
+                isEmergency: false
+            },
+
+            3: {
+                lastSeen: 0,
+                battery: 100,
+                isEmergency: false
+            }
         };
 
         const bodyTag = document.getElementById('bodyTag');
         const statusPaparan = document.getElementById('statusPaparan');
+
         const logTableBody = document.getElementById('logTableBody');
         const fullLogTableBody = document.getElementById('fullLogTableBody');
+
         const statKes = document.getElementById('statKes');
         const statActiveKes = document.getElementById('statActiveKes');
-        const activeEmergencyContainer = document.getElementById('activeEmergencyContainer');
-        
+
+        const activeEmergencyContainer =
+            document.getElementById('activeEmergencyContainer');
+
         const loginModal = document.getElementById('loginModal');
+
         const nurseNameInput = document.getElementById('nurseNameInput');
         const roomSelectInput = document.getElementById('roomSelectInput');
 
+        // ================= INITIALIZE WEB APP =================
         window.addEventListener('DOMContentLoaded', () => {
+
             let namaAktif = sessionStorage.getItem("nama_jururawat");
             let bilikAktif = sessionStorage.getItem("bilik_jururawat");
-            
+
             if (!namaAktif || namaAktif.trim() === "") {
+
                 loginModal.classList.add('active');
-                setTimeout(() => nurseNameInput.focus(), 300);
+
+                setTimeout(() => {
+                    nurseNameInput.focus();
+                }, 300);
+
             } else {
-                kemaskiniInterfaceStaf(namaAktif, bilikAktif || "All Rooms");
+
+                kemaskiniInterfaceStaf(
+                    namaAktif,
+                    bilikAktif || "All Rooms"
+                );
             }
 
-            if ("Notification" in window && Notification.permission === "default") {
-                Notification.requestPermission();
-            }
             kekalkanSkrin();
-            
+
             setInterval(semakDeviceHeartbeat, 5000);
-            
+
             dengarTriggerBilik(1);
             dengarTriggerBilik(2);
             dengarTriggerBilik(3);
         });
 
+        // ================= STAFF REGISTRATION =================
         function sahkanNamaPetugas() {
+
             const namaDimasukkan = nurseNameInput.value.trim();
             const bilikDipilih = roomSelectInput.value;
 
-            if(namaDimasukkan === "") {
+            if (namaDimasukkan === "") {
+
                 alert("Sila masukkan nama petugas terlebih dahulu.");
+
                 nurseNameInput.focus();
+
                 return;
             }
 
-            sessionStorage.setItem("nama_jururawat", namaDimasukkan);
-            sessionStorage.setItem("bilik_jururawat", bilikDipilih);
-            
+            sessionStorage.setItem(
+                "nama_jururawat",
+                namaDimasukkan
+            );
+
+            sessionStorage.setItem(
+                "bilik_jururawat",
+                bilikDipilih
+            );
+
             loginModal.classList.remove('active');
-            kemaskiniInterfaceStaf(namaDimasukkan, bilikDipilih);
+
+            kemaskiniInterfaceStaf(
+                namaDimasukkan,
+                bilikDipilih
+            );
         }
 
         function tukarBilikSahaja() {
-            let namaSemasa = sessionStorage.getItem("nama_jururawat") || "";
-            let bilikSemasa = sessionStorage.getItem("bilik_jururawat") || "All Rooms";
-            
+
+            let namaSemasa =
+                sessionStorage.getItem("nama_jururawat") || "";
+
+            let bilikSemasa =
+                sessionStorage.getItem("bilik_jururawat") || "All Rooms";
+
             nurseNameInput.value = namaSemasa;
             roomSelectInput.value = bilikSemasa;
-            
+
             loginModal.classList.add('active');
         }
 
         function logOutStaff() {
+
             sessionStorage.removeItem("nama_jururawat");
             sessionStorage.removeItem("bilik_jururawat");
-            
+
             nurseNameInput.value = "";
             roomSelectInput.value = "All Rooms";
-            
+
             kemaskiniInterfaceStaf("Unassigned", "None");
-            
+
             loginModal.classList.add('active');
-            setTimeout(() => nurseNameInput.focus(), 300);
+
+            setTimeout(() => {
+                nurseNameInput.focus();
+            }, 300);
         }
 
         nurseNameInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") { bukaKunciAudioSintesis(); sahkanNamaPetugas(); }
+
+            if (e.key === "Enter") {
+
+                bukaKunciAudioSintesis();
+                sahkanNamaPetugas();
+            }
         });
 
         function kemaskiniInterfaceStaf(nama, bilik) {
+
             const staffEl = document.getElementById("nama-staff");
             const roomEl = document.getElementById("bilik-staff");
-            if (staffEl) staffEl.innerText = nama;
-            if (roomEl) roomEl.innerText = bilik;
+
+            if (staffEl) {
+                staffEl.innerText = nama;
+            }
+
+            if (roomEl) {
+                roomEl.innerText = bilik;
+            }
         }
 
+        // ================= BROWSER NOTIFICATION =================
         function hantarNotifikasiBrowser(mesejKecemasan) {
-            if ("Notification" in window && Notification.permission === "granted") {
+
+            if (
+                "Notification" in window &&
+                Notification.permission === "granted"
+            ) {
+
                 if ('serviceWorker' in navigator) {
+
                     navigator.serviceWorker.ready.then(function(reg) {
+
                         reg.showNotification("🚨 EMERGENCY ALERT!", {
+
                             body: mesejKecemasan,
+
                             icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
+
                             badge: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
+
                             tag: "emergency-panic-alert",
+
                             renotify: true,
+
                             requireInteraction: true,
+
                             vibrate: [500, 200, 500, 200, 500, 200, 1000],
-                            data: { url: '/' }
+
+                            data: {
+                                url: '/'
+                            }
                         });
                     });
+
                 } else {
+
                     new Notification("🚨 EMERGENCY ALERT!", {
+
                         body: mesejKecemasan,
+
                         icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png"
                     });
                 }
             }
         }
 
+        // ================= MOBILE MENU =================
         function toggleMobileMenu() {
+
             const dropdown = document.getElementById('mobileDropdown');
             const icon = document.getElementById('hamburger-icon');
-            
+
             dropdown.classList.toggle('show');
-            if(dropdown.classList.contains('show')) {
+
+            if (dropdown.classList.contains('show')) {
                 icon.className = "fa-solid fa-xmark";
             } else {
                 icon.className = "fa-solid fa-bars";
@@ -1110,82 +1585,143 @@
         }
 
         function tukarTabDropdown(event, targetViewId) {
+
             event.preventDefault();
+
             toggleMobileMenu();
-            
-            document.querySelectorAll('.mobile-drop-item').forEach(item => item.classList.remove('active'));
+
+            document.querySelectorAll('.mobile-drop-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
             event.currentTarget.classList.add('active');
-            
-            document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
+
+            document.querySelectorAll('.tab-view').forEach(view => {
+                view.classList.remove('active');
+            });
+
             document.getElementById(targetViewId).classList.add('active');
-            
+
             singkronasiSidebar(targetViewId);
-            if (targetViewId !== 'view-tetapan' && isTestingSound) { ujiBunyiSiren(); }
         }
 
         function tukarTab(event, targetViewId) {
+
             event.preventDefault();
-            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-            document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
-            
+
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            document.querySelectorAll('.tab-view').forEach(view => {
+                view.classList.remove('active');
+            });
+
             event.currentTarget.classList.add('active');
+
             document.getElementById(targetViewId).classList.add('active');
-            
+
             singkronasiDropdownMobile(targetViewId);
-            if (targetViewId !== 'view-tetapan' && isTestingSound) { ujiBunyiSiren(); }
         }
 
         function singkronasiDropdownMobile(viewId) {
-            document.querySelectorAll('.mobile-drop-item').forEach(item => item.classList.remove('active'));
+
+            document.querySelectorAll('.mobile-drop-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
             const mapId = {
+
                 'view-dashboard': 'm-nav-dashboard',
                 'view-log': 'm-nav-log',
                 'view-peta': 'm-nav-peta',
                 'view-tetapan': 'm-nav-tetapan'
             };
+
             const targetBtn = document.getElementById(mapId[viewId]);
-            if (targetBtn) targetBtn.classList.add('active');
+
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
         }
 
         function singkronasiSidebar(viewId) {
-            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
             const menuItems = document.querySelectorAll('.menu-item');
+
             const indexMap = {
+
                 'view-dashboard': 0,
                 'view-log': 1,
                 'view-peta': 2,
                 'view-tetapan': 3
             };
+
             const targetIdx = indexMap[viewId];
-            if (menuItems[targetIdx]) menuItems[targetIdx].classList.add('active');
+
+            if (menuItems[targetIdx]) {
+                menuItems[targetIdx].classList.add('active');
+            }
         }
 
+        // ================= TEST SIREN =================
         function ujiBunyiSiren() {
+
             bukaKunciAudioSintesis();
+
             const btnTest = document.getElementById('btnTestSound');
+
             if (!isTestingSound) {
+
                 isTestingSound = true;
-                btnTest.innerHTML = `<i class="fa-solid fa-stop"></i> Stop Test`;
+
+                btnTest.innerHTML =
+                    `<i class="fa-solid fa-stop"></i> Stop Test`;
+
                 mulaMembunyikanSirenSintesis();
+
             } else {
+
                 isTestingSound = false;
-                btnTest.innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
+
+                btnTest.innerHTML =
+                    `<i class="fa-solid fa-play"></i> Run Test`;
+
                 hentikanSirenSintesis();
             }
         }
 
         // ================= HARDWARE TELEMETRY & HEARTBEAT =================
         database.ref('devices').on('value', (snapshot) => {
-            if(snapshot.exists()){
+
+            if (snapshot.exists()) {
+
                 const devicesData = snapshot.val();
+
                 Object.keys(devicesData).forEach(nodeId => {
+
                     let dev = devicesData[nodeId];
+
                     let roomNum = parseInt(dev.room) || 1;
-                    if (roomNum < 1 || roomNum > 3) roomNum = 1;
+
+                    if (roomNum < 1 || roomNum > 3) {
+                        roomNum = 1;
+                    }
 
                     if (deviceNodesState[roomNum]) {
-                        deviceNodesState[roomNum].lastSeen = dev.lastSeen || Date.now();
-                        deviceNodesState[roomNum].battery = (dev.battery !== undefined) ? dev.battery : 100;
+
+                        deviceNodesState[roomNum].lastSeen =
+                            dev.lastSeen || Date.now();
+
+                        deviceNodesState[roomNum].battery =
+                            (dev.battery !== undefined)
+                                ? dev.battery
+                                : 100;
+
                         kemaskiniPaparanNodePeta(roomNum);
                     }
                 });
@@ -1193,22 +1729,40 @@
         });
 
         function semakDeviceHeartbeat() {
+
             const masaMasaSekarang = Date.now();
+
             for (let idx = 1; idx <= 3; idx++) {
+
                 let node = deviceNodesState[idx];
-                if (node.lastSeen > 0 && (masaMasaSekarang - node.lastSeen > 30000)) {
+
+                if (
+                    node.lastSeen > 0 &&
+                    (masaMasaSekarang - node.lastSeen > 30000)
+                ) {
+
                     kemaskiniPaparanNodePeta(idx, true);
+
                 } else if (node.lastSeen > 0) {
+
                     kemaskiniPaparanNodePeta(idx, false);
                 }
             }
         }
 
         function kemaskiniPaparanNodePeta(idx, isOfflineTimeout = false) {
-            const bedCard = document.getElementById(`peta-katil-${idx}`);
-            const txtPeta = document.getElementById(`txt-peta-${idx}`);
-            const nodeStatusEl = document.getElementById(`node-status-${idx}`);
-            const batValEl = document.getElementById(`bat-val-${idx}`);
+
+            const bedCard =
+                document.getElementById(`peta-katil-${idx}`);
+
+            const txtPeta =
+                document.getElementById(`txt-peta-${idx}`);
+
+            const nodeStatusEl =
+                document.getElementById(`node-status-${idx}`);
+
+            const batValEl =
+                document.getElementById(`bat-val-${idx}`);
 
             if (!bedCard) return;
 
@@ -1216,52 +1770,95 @@
 
             let batIcon = 'fa-battery-full';
             let batColor = '#6dd58c';
+
             if (node.battery < 20) {
+
                 batIcon = 'fa-battery-quarter';
                 batColor = '#f2b8b5';
+
             } else if (node.battery < 50) {
+
                 batIcon = 'fa-battery-half';
                 batColor = '#ffbe6b';
             }
 
             if (batValEl) {
-                batValEl.innerHTML = `<i class="fa-solid ${batIcon}" style="color:${batColor}"></i> ${node.battery}%`;
+
+                batValEl.innerHTML =
+                    `<i class="fa-solid ${batIcon}" style="color:${batColor}"></i> ${node.battery}%`;
             }
 
             if (!node.isEmergency) {
+
                 if (isOfflineTimeout) {
+
                     bedCard.className = "bed-card status-offline";
-                    if (txtPeta) txtPeta.innerText = "⚠️ Offline";
-                    if (nodeStatusEl) nodeStatusEl.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="color: var(--warning)"></i> No Signal`;
+
+                    if (txtPeta) {
+                        txtPeta.innerText = "⚠️ Offline";
+                    }
+
+                    if (nodeStatusEl) {
+
+                        nodeStatusEl.innerHTML =
+                            `<i class="fa-solid fa-circle-exclamation" style="color: var(--warning)"></i> No Signal`;
+                    }
+
                 } else {
+
                     bedCard.className = "bed-card status-normal";
-                    if (txtPeta) txtPeta.innerText = "🟢 Secured";
-                    if (nodeStatusEl) nodeStatusEl.innerHTML = `<i class="fa-solid fa-circle-dot" style="color: var(--success)"></i> Node Active`;
+
+                    if (txtPeta) {
+                        txtPeta.innerText = "🟢 Secured";
+                    }
+
+                    if (nodeStatusEl) {
+
+                        nodeStatusEl.innerHTML =
+                            `<i class="fa-solid fa-circle-dot" style="color: var(--success)"></i> Node Active`;
+                    }
                 }
             }
         }
 
         // ================= MULTI-ROOM REAL-TIME TRIGGER LISTENERS =================
         function dengarTriggerBilik(roomNumber) {
+
             database.ref(`emergency/room${roomNumber}/isTriggered`).on('value', (snapshot) => {
+
                 const isEmergency = snapshot.val();
-                
+
                 if (isEmergency === true) {
+
                     activeEmergencyRooms[roomNumber] = true;
+
                     deviceNodesState[roomNumber].isEmergency = true;
+
                     deviceNodesState[roomNumber].lastSeen = Date.now();
 
-                    const targetBed = document.getElementById(`peta-katil-${roomNumber}`);
-                    const targetTxt = document.getElementById(`txt-peta-${roomNumber}`);
+                    const targetBed =
+                        document.getElementById(`peta-katil-${roomNumber}`);
+
+                    const targetTxt =
+                        document.getElementById(`txt-peta-${roomNumber}`);
+
                     if (targetBed && targetTxt) {
+
                         targetBed.className = "bed-card status-emergency";
+
                         targetTxt.innerText = "🚨 INCIDENT!";
                     }
-                    
-                    hantarNotifikasiBrowser(`ROOM ${roomNumber} - BED 1 REQUIRES IMMEDIATE HELP!`);
+
+                    hantarNotifikasiBrowser(
+                        `ROOM ${roomNumber} - BED 1 REQUIRES IMMEDIATE HELP!`
+                    );
+
                 } else {
+
                     delete activeEmergencyRooms[roomNumber];
+
                     deviceNodesState[roomNumber].isEmergency = false;
+
                     kemaskiniPaparanNodePeta(roomNumber);
                 }
 
@@ -1269,55 +1866,103 @@
             });
         }
 
+        // ================= GLOBAL EMERGENCY STATUS =================
         function kemaskiniKeadaanKecemasanGlobal() {
+
             const keysActive = Object.keys(activeEmergencyRooms);
+
             const totalActive = keysActive.length;
 
             if (statActiveKes) {
+
                 statActiveKes.innerText = `${totalActive} Active`;
-                statActiveKes.style.color = totalActive > 0 ? "var(--danger)" : "var(--success)";
+
+                statActiveKes.style.color =
+                    totalActive > 0
+                        ? "var(--danger)"
+                        : "var(--success)";
             }
 
             if (totalActive > 0) {
+
                 bodyTag.classList.add('kecemasan-aktif');
-                statusPaparan.innerText = `🚨 CRITICAL EMERGENCY: ${totalActive} Sector(s) Requiring Attention!`;
+
+                statusPaparan.innerText =
+                    `🚨 CRITICAL EMERGENCY: ${totalActive} Sector(s) Requiring Attention!`;
 
                 if (isTestingSound) {
+
                     isTestingSound = false;
-                    document.getElementById('btnTestSound').innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
+
+                    document.getElementById('btnTestSound').innerHTML =
+                        `<i class="fa-solid fa-play"></i> Run Test`;
                 }
 
                 mulaMembunyikanSirenSintesis();
+
             } else {
+
                 bodyTag.classList.remove('kecemasan-aktif');
-                statusPaparan.innerText = "✅ System Standby: All Sectors Secured";
-                
+
+                statusPaparan.innerText =
+                    "✅ System Standby: All Sectors Secured";
+
                 hentikanSirenSintesis();
             }
 
             binaButangMuteSpesifik();
         }
 
+        // ================= ROOM MUTE BUTTONS =================
         function binaButangMuteSpesifik() {
+
             const keysActive = Object.keys(activeEmergencyRooms);
-            
+
             if (keysActive.length === 0) {
-                activeEmergencyContainer.innerHTML = `<p style="color: var(--text-sub); font-size: 0.88rem; margin-top:14px;">🟢 No active emergency triggers at the moment.</p>`;
+
+                activeEmergencyContainer.innerHTML =
+                    `<p style="color: var(--text-sub); font-size: 0.88rem; margin-top:14px;">🟢 No active emergency triggers at the moment.</p>`;
+
                 return;
             }
 
             let htmlContent = "";
+
             keysActive.forEach((roomNum) => {
+
                 htmlContent += `
+
                     <div class="alert-item-card">
+
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <strong style="color:var(--danger); font-size:1rem;">🚨 Room ${roomNum} - Bed 1</strong>
-                            <span style="font-size:0.75rem; background:var(--danger-bg); color:var(--danger); padding:3px 8px; border-radius:10px; border:1px solid var(--danger);">CRITICAL</span>
+
+                            <strong style="color:var(--danger); font-size:1rem;">
+                                🚨 Room ${roomNum} - Bed 1
+                            </strong>
+
+                            <span style="font-size:0.75rem; background:var(--danger-bg); color:var(--danger); padding:3px 8px; border-radius:10px; border:1px solid var(--danger);">
+                                CRITICAL
+                            </span>
+
                         </div>
-                        <input type="text" id="txtCatatan_${roomNum}" class="input-box" placeholder="e.g. Attending Room ${roomNum}, patient OK" style="width:100%;">
-                        <button class="btn btn-danger" style="width:100%;" onclick="tekanMuteBilikSpesifik(${roomNum})">
-                            <i class="fa-solid fa-bell-slash"></i> Mute Room ${roomNum} Siren
+
+                        <input
+                            type="text"
+                            id="txtCatatan_${roomNum}"
+                            class="input-box"
+                            placeholder="e.g. Attending Room ${roomNum}, patient OK"
+                            style="width:100%;"
+                        >
+
+                        <button
+                            class="btn btn-danger"
+                            style="width:100%;"
+                            onclick="tekanMuteBilikSpesifik(${roomNum})"
+                        >
+                            <i class="fa-solid fa-bell-slash"></i>
+                            Mute Room ${roomNum} Siren
                         </button>
+
                     </div>
                 `;
             });
@@ -1325,238 +1970,545 @@
             activeEmergencyContainer.innerHTML = htmlContent;
         }
 
+        // ================= MUTE SPECIFIC ROOM =================
         function tekanMuteBilikSpesifik(roomNum) {
-            const inputEl = document.getElementById(`txtCatatan_${roomNum}`);
-            let mesejCatatan = inputEl ? inputEl.value.trim() : "";
-            if(mesejCatatan === "") { mesejCatatan = `Attended Room ${roomNum} Bed 1 & acknowledged`; }
 
-            let namaPetugas = sessionStorage.getItem("nama_jururawat") || "General Duty Staff";
-            let bilikPetugas = sessionStorage.getItem("bilik_jururawat") || "All Rooms";
-            let rekodPetugasFull = `${namaPetugas} (${bilikPetugas})`;
+            const inputEl =
+                document.getElementById(`txtCatatan_${roomNum}`);
+
+            let mesejCatatan = inputEl
+                ? inputEl.value.trim()
+                : "";
+
+            if (mesejCatatan === "") {
+
+                mesejCatatan =
+                    `Attended Room ${roomNum} Bed 1 & acknowledged`;
+            }
+
+            let namaPetugas =
+                sessionStorage.getItem("nama_jururawat") ||
+                "General Duty Staff";
+
+            let bilikPetugas =
+                sessionStorage.getItem("bilik_jururawat") ||
+                "All Rooms";
+
+            let rekodPetugasFull =
+                `${namaPetugas} (${bilikPetugas})`;
 
             let targetLogId = null;
+
+            // Find the latest unassigned incident for this room
             for (let i = 0; i < arraySemuaLog.length; i++) {
-                if (parseInt(arraySemuaLog[i].numBilik) === parseInt(roomNum)) {
-                    if (!arraySemuaLog[i].dikendalikan_oleh || arraySemuaLog[i].dikendalikan_oleh.includes("Unassigned")) {
+
+                if (
+                    parseInt(arraySemuaLog[i].numBilik) ===
+                    parseInt(roomNum)
+                ) {
+
+                    if (
+                        !arraySemuaLog[i].dikendalikan_oleh ||
+                        arraySemuaLog[i].dikendalikan_oleh.includes("Unassigned")
+                    ) {
+
                         targetLogId = arraySemuaLog[i].id;
+
                         break;
                     }
                 }
             }
-            
+
+            // Fallback: find the latest incident for this room
             if (!targetLogId) {
+
                 for (let i = 0; i < arraySemuaLog.length; i++) {
-                    if (parseInt(arraySemuaLog[i].numBilik) === parseInt(roomNum)) {
+
+                    if (
+                        parseInt(arraySemuaLog[i].numBilik) ===
+                        parseInt(roomNum)
+                    ) {
+
                         targetLogId = arraySemuaLog[i].id;
+
                         break;
                     }
                 }
             }
 
             if (targetLogId) {
-                database.ref('history/' + targetLogId).update({ 
+
+                database.ref('history/' + targetLogId).update({
+
                     catatan: mesejCatatan,
+
                     dikendalikan_oleh: rekodPetugasFull
+
+                }).catch(error => {
+
+                    console.error("History update failed:", error);
+
+                    alert("Failed to update incident record.");
                 });
             }
-            
-            database.ref(`emergency/room${roomNum}/isTriggered`).set(false);
-            database.ref(`patients/room${roomNum}/bed1/status`).set("NORMAL");
 
-            alert(`Siren bagi Room ${roomNum} telah di-mute dan dikemaskini!`);
+            database.ref(
+                `emergency/room${roomNum}/isTriggered`
+            ).set(false);
+
+            database.ref(
+                `patients/room${roomNum}/bed1/status`
+            ).set("NORMAL");
+
+            alert(
+                `Siren bagi Room ${roomNum} telah di-mute dan dikemaskini!`
+            );
         }
 
+        // ================= FIREBASE HISTORY LISTENER =================
+        // IMPORTANT FIX:
+        // Reads logData.datetime instead of only logData.time.
+        // Does not use Date.now() for historical incident records.
+
         database.ref('history').on('value', (snapshot) => {
+
             logTableBody.innerHTML = "";
+
             arraySemuaLog = [];
+
             let countKes = 0;
 
             if (snapshot.exists()) {
-                snapshot.forEach((childSnapshot) => {
-                    let logData = childSnapshot.val();
-                    
-                    // Sokongan fleksibel untuk baca 'time' (milisaat/saat) atau 'datetime' (string teks dari ESP32)
-                    let rawTime;
-                    if (logData.time) {
-                        rawTime = typeof logData.time === 'number' && logData.time < 10000000000 ? logData.time * 1000 : logData.time;
-                    } else if (logData.datetime) {
-                        let formattedStr = logData.datetime.replace('_', ' ').replace(/-/g, '/').replace(' ', 'T');
-                        rawTime = new Date(formattedStr).getTime();
-                        if (isNaN(rawTime)) rawTime = Date.now();
-                    } else {
-                        rawTime = Date.now();
-                    }
-                    let dateObj = new Date(rawTime);
-                    
-                    let tarikhFormatted = dateObj.toLocaleDateString('ms-MY');
-                    let masaFormatted = dateObj.toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit' });
 
-                    let record = { 
-                        id: childSnapshot.key, 
-                        rawTimestamp: dateObj.getTime(),
+                snapshot.forEach((childSnapshot) => {
+
+                    let logData = childSnapshot.val();
+
+                    // Convert original Firebase date and time
+                    let dateObj = parseIncidentDateTime(logData);
+
+                    let validDate =
+                        dateObj && !Number.isNaN(dateObj.getTime());
+
+                    let tarikhFormatted = validDate
+                        ? dateObj.toLocaleDateString('ms-MY')
+                        : "Unknown";
+
+                    let masaFormatted = validDate
+                        ? dateObj.toLocaleTimeString('ms-MY', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: true
+                        })
+                        : "Unknown";
+
+                    let roomNumber = logData.room || "1";
+                    let bedNumber = logData.bed || "1";
+
+                    let record = {
+
+                        id: childSnapshot.key,
+
+                        // Original incident timestamp
+                        rawTimestamp: validDate
+                            ? dateObj.getTime()
+                            : 0,
+
                         tarikh: tarikhFormatted,
+
                         masa: masaFormatted,
-                        numBilik: logData.room || "1",
-                        numKatil: logData.bed || "1",
-                        bilik: "Room " + (logData.room || "1"),
-                        katil: "Bed " + (logData.bed || "1"),
+
+                        numBilik: roomNumber,
+
+                        numKatil: bedNumber,
+
+                        bilik: "Room " + roomNumber,
+
+                        katil: "Bed " + bedNumber,
+
                         catatan: logData.catatan || null,
-                        dikendalikan_oleh: logData.dikendalikan_oleh || null
+
+                        dikendalikan_oleh:
+                            logData.dikendalikan_oleh || null
                     };
-                    
+
                     arraySemuaLog.push(record);
+
                     countKes++;
                 });
 
-                arraySemuaLog.sort((a, b) => b.rawTimestamp - a.rawTimestamp);
+                // Newest incident first
+                arraySemuaLog.sort((a, b) => {
 
-                statKes.innerText = countKes + (countKes === 1 ? " Incident" : " Incidents");
-
-                let ringkasanData = arraySemuaLog.slice(0, 5);
-                let counter = 1;
-                ringkasanData.forEach((data) => {
-                    let isiCatatan = data.catatan ? data.catatan : `<span style="color:var(--text-sub);">No comments</span>`;
-                    let petugas = data.dikendalikan_oleh ? data.dikendalikan_oleh : `<span style="color:var(--text-sub);">Unassigned</span>`;
-                    logTableBody.innerHTML += `<tr>
-                        <td><b>${counter++}</b></td>
-                        <td>${data.tarikh}</td>
-                        <td>${data.masa}</td>
-                        <td>${data.bilik}</td>
-                        <td>${data.katil}</td>
-                        <td>${isiCatatan}</td>
-                        <td><strong>${petugas}</strong></td>
-                    </tr>`;
+                    return b.rawTimestamp - a.rawTimestamp;
                 });
 
+                statKes.innerText = countKes +
+                    (countKes === 1
+                        ? " Incident"
+                        : " Incidents");
+
+                // Show latest 5 incidents on dashboard
+                let ringkasanData =
+                    arraySemuaLog.slice(0, 5);
+
+                let counter = 1;
+
+                ringkasanData.forEach((data) => {
+
+                    let isiCatatan = data.catatan
+                        ? data.catatan
+                        : `<span style="color:var(--text-sub);">No comments</span>`;
+
+                    let petugas = data.dikendalikan_oleh
+                        ? data.dikendalikan_oleh
+                        : `<span style="color:var(--text-sub);">Unassigned</span>`;
+
+                    logTableBody.innerHTML += `
+
+                        <tr>
+
+                            <td><b>${counter++}</b></td>
+
+                            <td>${data.tarikh}</td>
+
+                            <td>${data.masa}</td>
+
+                            <td>${data.bilik}</td>
+
+                            <td>${data.katil}</td>
+
+                            <td>${isiCatatan}</td>
+
+                            <td><strong>${petugas}</strong></td>
+
+                        </tr>
+                    `;
+                });
+
+                // Display all historical records
                 binaJadualPenuh(arraySemuaLog);
+
             } else {
+
                 statKes.innerText = "0 Incidents";
-                let emptyRow = `<tr><td colspan="7" style="text-align:center; color:var(--text-sub); padding:20px;">No telemetry log history records found.</td></tr>`;
+
+                let emptyRow = `
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            style="text-align:center; color:var(--text-sub); padding:20px;"
+                        >
+                            No telemetry log history records found.
+                        </td>
+
+                    </tr>
+                `;
+
                 logTableBody.innerHTML = emptyRow;
+
                 fullLogTableBody.innerHTML = emptyRow;
             }
         });
 
+        // ================= FULL INCIDENT LOG TABLE =================
         function binaJadualPenuh(dataArray) {
+
             fullLogTableBody.innerHTML = "";
+
             let counter = 1;
+
             dataArray.forEach((data) => {
-                let isiCatatan = data.catatan ? data.catatan : `<span style="color:var(--text-sub);">No comments</span>`;
-                let petugas = data.dikendalikan_oleh ? data.dikendalikan_oleh : `<span style="color:var(--text-sub);">Unassigned</span>`;
-                fullLogTableBody.innerHTML += `<tr>
-                    <td><b>${counter++}</b></td>
-                    <td>${data.tarikh}</td>
-                    <td>${data.masa}</td>
-                    <td>${data.bilik}</td>
-                    <td>${data.katil}</td>
-                    <td>${isiCatatan}</td>
-                    <td><strong>${petugas}</strong></td>
-                </tr>`;
+
+                let isiCatatan = data.catatan
+                    ? data.catatan
+                    : `<span style="color:var(--text-sub);">No comments</span>`;
+
+                let petugas = data.dikendalikan_oleh
+                    ? data.dikendalikan_oleh
+                    : `<span style="color:var(--text-sub);">Unassigned</span>`;
+
+                fullLogTableBody.innerHTML += `
+
+                    <tr>
+
+                        <td><b>${counter++}</b></td>
+
+                        <td>${data.tarikh}</td>
+
+                        <td>${data.masa}</td>
+
+                        <td>${data.bilik}</td>
+
+                        <td>${data.katil}</td>
+
+                        <td>${isiCatatan}</td>
+
+                        <td><strong>${petugas}</strong></td>
+
+                    </tr>
+                `;
             });
         }
 
+        // ================= SEARCH INCIDENT LOG =================
         function tapisLogJadual() {
-            let carian = document.getElementById('logSearchInput').value.toLowerCase();
+
+            let carian = document
+                .getElementById('logSearchInput')
+                .value
+                .toLowerCase();
+
             let hasilTapis = arraySemuaLog.filter(item => {
+
                 let tarikh = (item.tarikh || "").toLowerCase();
+
                 let masa = (item.masa || "").toLowerCase();
+
                 let bilik = (item.bilik || "").toLowerCase();
+
                 let katil = (item.katil || "").toLowerCase();
+
                 let catatan = (item.catatan || "").toLowerCase();
+
                 let staff = (item.dikendalikan_oleh || "").toLowerCase();
-                
-                return tarikh.includes(carian) || masa.includes(carian) || bilik.includes(carian) || 
-                       katil.includes(carian) || catatan.includes(carian) || staff.includes(carian);
+
+                return (
+
+                    tarikh.includes(carian) ||
+
+                    masa.includes(carian) ||
+
+                    bilik.includes(carian) ||
+
+                    katil.includes(carian) ||
+
+                    catatan.includes(carian) ||
+
+                    staff.includes(carian)
+                );
             });
+
             binaJadualPenuh(hasilTapis);
         }
 
+        // ================= DOWNLOAD PDF INCIDENT REPORT =================
         function muatTurunPDFLog() {
+
             if (arraySemuaLog.length === 0) {
+
                 alert("Tiada rekod log untuk dimuat turun.");
+
                 return;
             }
 
-            const pilihanJulat = document.getElementById('selectPdfRange').value;
+            const pilihanJulat =
+                document.getElementById('selectPdfRange').value;
+
             const sekarangMs = new Date().getTime();
 
-            const msSeminggu = 7 * 24 * 60 * 60 * 1000;
-            const msSebulan = 30 * 24 * 60 * 60 * 1000;
+            const msSeminggu =
+                7 * 24 * 60 * 60 * 1000;
+
+            const msSebulan =
+                30 * 24 * 60 * 60 * 1000;
 
             let logDitapis = arraySemuaLog.filter(item => {
-                if (pilihanJulat === "minggu") {
-                    return (sekarangMs - item.rawTimestamp) <= msSeminggu;
-                } else if (pilihanJulat === "bulan") {
-                    return (sekarangMs - item.rawTimestamp) <= msSebulan;
+
+                // Ignore records without a valid original date
+                if (!item.rawTimestamp) {
+                    return pilihanJulat === "semua";
                 }
-                return true; 
+
+                if (pilihanJulat === "minggu") {
+
+                    const age = sekarangMs - item.rawTimestamp;
+
+                    return age >= 0 && age <= msSeminggu;
+
+                } else if (pilihanJulat === "bulan") {
+
+                    const age = sekarangMs - item.rawTimestamp;
+
+                    return age >= 0 && age <= msSebulan;
+                }
+
+                return true;
             });
 
             if (logDitapis.length === 0) {
-                alert(`Tiada rekod log ditemui bagi julat: ${pilihanJulat === 'minggu' ? '1 Minggu Terakhir' : '1 Bulan Terakhir'}`);
+
+                alert(
+                    `Tiada rekod log ditemui bagi julat: ${
+                        pilihanJulat === 'minggu'
+                            ? '1 Minggu Terakhir'
+                            : '1 Bulan Terakhir'
+                    }`
+                );
+
                 return;
             }
 
             const { jsPDF } = window.jspdf;
+
             const doc = new jsPDF();
 
             doc.setFontSize(18);
+
             doc.setTextColor(30, 31, 32);
-            doc.text("CARE MONITOR - INCIDENT TELEMETRY REPORT", 14, 20);
+
+            doc.text(
+                "CARE MONITOR - INCIDENT TELEMETRY REPORT",
+                14,
+                20
+            );
 
             doc.setFontSize(10);
+
             doc.setTextColor(100);
-            let tajukJulat = pilihanJulat === "minggu" ? "1 Minggu Terakhir" : (pilihanJulat === "bulan" ? "1 Bulan Terakhir" : "Semua Rekod Log");
-            doc.text(`Julat Masa Laporan: ${tajukJulat}`, 14, 27);
-            doc.text(`Jumlah Kes: ${logDitapis.length} Rekod Insiden`, 14, 33);
-            doc.text(`Tarikh Dijana: ${new Date().toLocaleString('ms-MY')}`, 14, 39);
+
+            let tajukJulat =
+                pilihanJulat === "minggu"
+                    ? "1 Minggu Terakhir"
+                    : (
+                        pilihanJulat === "bulan"
+                            ? "1 Bulan Terakhir"
+                            : "Semua Rekod Log"
+                    );
+
+            doc.text(
+                `Julat Masa Laporan: ${tajukJulat}`,
+                14,
+                27
+            );
+
+            doc.text(
+                `Jumlah Kes: ${logDitapis.length} Rekod Insiden`,
+                14,
+                33
+            );
+
+            doc.text(
+                `Tarikh Dijana: ${new Date().toLocaleString('ms-MY')}`,
+                14,
+                39
+            );
 
             doc.setLineWidth(0.5);
+
             doc.setDrawColor(200, 200, 200);
+
             doc.line(14, 43, 196, 43);
 
             const tableRows = [];
+
             logDitapis.forEach((item, index) => {
+
                 tableRows.push([
+
                     index + 1,
+
                     item.tarikh,
+
                     item.masa,
+
                     item.bilik,
+
                     item.katil,
-                    item.catatan ? item.catatan : "Tiada Catatan",
-                    item.dikendalikan_oleh ? item.dikendalikan_oleh : "Unassigned"
+
+                    item.catatan
+                        ? item.catatan
+                        : "Tiada Catatan",
+
+                    item.dikendalikan_oleh
+                        ? item.dikendalikan_oleh
+                        : "Unassigned"
                 ]);
             });
 
             doc.autoTable({
+
                 startY: 47,
-                head: [['#', 'Tarikh', 'Masa', 'Bilik', 'Katil', 'Catatan', 'Petugas']],
+
+                head: [[
+                    '#',
+                    'Tarikh',
+                    'Masa',
+                    'Bilik',
+                    'Katil',
+                    'Catatan',
+                    'Petugas'
+                ]],
+
                 body: tableRows,
+
                 theme: 'striped',
-                headStyles: { fillColor: [40, 56, 80], textColor: [168, 199, 250], fontStyle: 'bold' },
-                styles: { fontSize: 8, cellPadding: 3 },
-                alternateRowStyles: { fillColor: [245, 247, 250] },
+
+                headStyles: {
+                    fillColor: [40, 56, 80],
+                    textColor: [168, 199, 250],
+                    fontStyle: 'bold'
+                },
+
+                styles: {
+                    fontSize: 8,
+                    cellPadding: 3
+                },
+
+                alternateRowStyles: {
+                    fillColor: [245, 247, 250]
+                }
             });
 
-            const namaFail = `Incident_Log_${pilihanJulat}_${new Date().toISOString().slice(0,10)}.pdf`;
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const namaFail =
+                `Incident_Log_${pilihanJulat}_${new Date().toISOString().slice(0,10)}.pdf`;
+
+            const isIOS =
+                /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+                !window.MSStream;
 
             if (isIOS) {
+
                 const pdfBlob = doc.output('blob');
+
                 const blobUrl = URL.createObjectURL(pdfBlob);
+
                 const newWindow = window.open(blobUrl, '_blank');
+
                 if (!newWindow) {
-                    alert("Sila izinkan Pop-up pada Safari anda untuk memuat turun PDF.");
+
+                    alert(
+                        "Sila izinkan Pop-up pada Safari anda untuk memuat turun PDF."
+                    );
                 }
+
             } else {
+
                 doc.save(namaFail);
             }
         }
 
+        // ================= KEEP SCREEN AWAKE =================
         let wakeLock = null;
+
         async function kekalkanSkrin() {
-            try { if ('wakeLock' in navigator) { wakeLock = await navigator.wakeLock.request('screen'); } } catch (e) {}
+
+            try {
+
+                if ('wakeLock' in navigator) {
+
+                    wakeLock = await navigator.wakeLock.request('screen');
+                }
+
+            } catch (e) {
+
+                console.log("Wake Lock unavailable:", e);
+            }
         }
+
     </script>
 </body>
 </html>
