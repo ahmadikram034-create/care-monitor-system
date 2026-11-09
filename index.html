@@ -37,8 +37,6 @@
             --success-bg: #0f3818;
             --warning: #ffbe6b;
             --warning-bg: #3e2723;
-            --offline: #8e8e93;
-            --offline-bg: #2c2c2e;
             --border-color: #333537;
         }
 
@@ -405,16 +403,18 @@
 
         .room-card {
             border: 1px solid var(--border-color);
-            padding: 20px;
+            padding: 24px;
             border-radius: 20px;
             text-align: center;
             font-weight: 600;
             background: var(--input-bg);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            min-height: 140px;
+            justify-content: center;
+            align-items: center;
+            min-height: 120px;
             transition: all 0.3s ease;
+            gap: 10px;
         }
 
         .room-card.status-normal {
@@ -430,27 +430,9 @@
             animation: blink 1s infinite alternate;
         }
 
-        .room-card.status-offline {
-            border-color: var(--border-color);
-            color: var(--offline);
-            background: var(--offline-bg);
-            opacity: 0.7;
-        }
-
         @keyframes blink {
             from { opacity: 1; }
             to { opacity: 0.6; }
-        }
-
-        .room-meta-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.78rem;
-            margin-top: 12px;
-            padding-top: 8px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-weight: 500;
         }
 
         .btn {
@@ -925,7 +907,7 @@
                         </h3>
 
                         <p style="color: var(--text-sub); font-size: 0.82rem; margin-top:2px;">
-                            Real-time hardware heartbeat & battery telemetry monitoring
+                            Real-time room status monitoring
                         </p>
                     </div>
                 </div>
@@ -933,56 +915,23 @@
                 <div class="room-grid">
 
                     <div class="room-card status-normal" id="peta-bilik-1">
-                        <div>Room 1</div>
-
-                        <div id="txt-peta-1" style="font-size: 0.9rem; margin-top:6px;">
+                        <div style="font-size: 1.1rem; font-weight: 700;">Room 1</div>
+                        <div id="txt-peta-1" style="font-size: 0.95rem;">
                             🟢 Secured
-                        </div>
-
-                        <div class="room-meta-bar">
-                            <span id="node-status-1">
-                                <i class="fa-solid fa-circle-dot"></i> Node Active
-                            </span>
-
-                            <span id="bat-val-1">
-                                <i class="fa-solid fa-battery-full"></i> 100%
-                            </span>
                         </div>
                     </div>
 
                     <div class="room-card status-normal" id="peta-bilik-2">
-                        <div>Room 2</div>
-
-                        <div id="txt-peta-2" style="font-size: 0.9rem; margin-top:6px;">
+                        <div style="font-size: 1.1rem; font-weight: 700;">Room 2</div>
+                        <div id="txt-peta-2" style="font-size: 0.95rem;">
                             🟢 Secured
-                        </div>
-
-                        <div class="room-meta-bar">
-                            <span id="node-status-2">
-                                <i class="fa-solid fa-circle-dot"></i> Node Active
-                            </span>
-
-                            <span id="bat-val-2">
-                                <i class="fa-solid fa-battery-full"></i> 100%
-                            </span>
                         </div>
                     </div>
 
                     <div class="room-card status-normal" id="peta-bilik-3">
-                        <div>Room 3</div>
-
-                        <div id="txt-peta-3" style="font-size: 0.9rem; margin-top:6px;">
+                        <div style="font-size: 1.1rem; font-weight: 700;">Room 3</div>
+                        <div id="txt-peta-3" style="font-size: 0.95rem;">
                             🟢 Secured
-                        </div>
-
-                        <div class="room-meta-bar">
-                            <span id="node-status-3">
-                                <i class="fa-solid fa-circle-dot"></i> Node Active
-                            </span>
-
-                            <span id="bat-val-3">
-                                <i class="fa-solid fa-battery-full"></i> 100%
-                            </span>
                         </div>
                     </div>
 
@@ -1033,35 +982,23 @@
 
         // ================= SERVICE WORKER =================
         if ('serviceWorker' in navigator && 'PushManager' in window) {
-
             window.addEventListener('load', function() {
-
                 navigator.serviceWorker.register('sw.js')
-
-                    .then(function(reg) {
-                        console.log('✅ Service Worker registered:', reg.scope);
-                    })
-
-                    .catch(function(err) {
-                        console.error('❌ SW Fail:', err);
-                    });
+                    .then(function(reg) { console.log('✅ Service Worker registered:', reg.scope); })
+                    .catch(function(err) { console.error('❌ SW Fail:', err); });
             });
         }
 
         // ================= NOTIFICATION PERMISSION =================
         function mintaKebenaranNotifikasi() {
-
             if ('Notification' in window) {
-
                 Notification.requestPermission().then(function(permission) {
-
                     if (permission === 'granted') {
                         alert('✅ Kebenaran notifikasi diluluskan!');
                     } else {
                         alert('⚠️ Kebenaran notifikasi ditolak.');
                     }
                 });
-
             } else {
                 alert('Pelayar ini tidak menyokong fungsi Notifikasi.');
             }
@@ -1076,37 +1013,23 @@
         let vibrateInterval = null;
 
         function bukaKunciAudioSintesis() {
-
             if (!audioCtx) {
-
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
-
-                if (!AudioContext) {
-                    console.warn("AudioContext is not supported.");
-                    return;
-                }
-
+                if (!AudioContext) return;
                 audioCtx = new AudioContext();
             }
-
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
-
             if ("vibrate" in navigator) {
                 navigator.vibrate(50);
             }
-
             const btnEl = document.getElementById('btnAudioUnlocker');
-
             if (btnEl) {
-
                 btnEl.style.background = 'var(--success-bg)';
                 btnEl.style.color = 'var(--success)';
                 btnEl.style.borderColor = 'var(--success)';
-
-                btnEl.innerHTML =
-                    `<i class="fa-solid fa-check"></i> Audio & Haptics Active`;
+                btnEl.innerHTML = `<i class="fa-solid fa-check"></i> Audio & Haptics Active`;
             }
         }
 
@@ -1114,142 +1037,88 @@
         document.addEventListener('click', bukaKunciAudioSintesis, { once: true });
 
         function mulaGetaranKecemasan() {
-
             if ("vibrate" in navigator) {
-
                 navigator.vibrate([500, 200, 500, 200, 800]);
-
                 if (!vibrateInterval) {
-
                     vibrateInterval = setInterval(() => {
-
                         if ("vibrate" in navigator && isSirenPlaying) {
                             navigator.vibrate([500, 200, 500, 200, 800]);
                         }
-
                     }, 2200);
                 }
             }
         }
 
         function hentikanGetaranKecemasan() {
-
             if (vibrateInterval) {
                 clearInterval(vibrateInterval);
                 vibrateInterval = null;
             }
-
             if ("vibrate" in navigator) {
                 navigator.vibrate(0);
             }
         }
 
         function mulaMembunyikanSirenSintesis() {
-
             bukaKunciAudioSintesis();
             mulaGetaranKecemasan();
-
             if (isSirenPlaying || !audioCtx) return;
 
             try {
-
                 sirenOsc = audioCtx.createOscillator();
                 sirenGain = audioCtx.createGain();
-
                 sirenOsc.type = 'sawtooth';
-
-                sirenOsc.frequency.setValueAtTime(
-                    600,
-                    audioCtx.currentTime
-                );
-
-                sirenGain.gain.setValueAtTime(
-                    0.3,
-                    audioCtx.currentTime
-                );
-
+                sirenOsc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                sirenGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 sirenOsc.connect(sirenGain);
                 sirenGain.connect(audioCtx.destination);
-
                 sirenOsc.start();
-
                 isSirenPlaying = true;
-
                 let highPitch = false;
 
                 sirenInterval = setInterval(() => {
-
                     if (audioCtx && sirenOsc) {
-
                         let targetFreq = highPitch ? 600 : 950;
-
-                        sirenOsc.frequency.exponentialRampToValueAtTime(
-                            targetFreq,
-                            audioCtx.currentTime + 0.35
-                        );
-
+                        sirenOsc.frequency.exponentialRampToValueAtTime(targetFreq, audioCtx.currentTime + 0.35);
                         highPitch = !highPitch;
                     }
-
                 }, 400);
-
             } catch (e) {
                 console.warn("Synthesis audio play failed:", e);
             }
         }
 
         function hentikanSirenSintesis() {
-
             hentikanGetaranKecemasan();
-
             if (sirenInterval) {
                 clearInterval(sirenInterval);
                 sirenInterval = null;
             }
-
             if (sirenOsc) {
-
                 try {
                     sirenOsc.stop();
                     sirenOsc.disconnect();
                 } catch(e) {}
-
                 sirenOsc = null;
             }
-
             isSirenPlaying = false;
         }
 
         // ================= DIGITAL CLOCK =================
         function kemaskiniJamDigital() {
-
             const sekarang = new Date();
-
             let jam = sekarang.getHours();
             let minit = sekarang.getMinutes();
             let saat = sekarang.getSeconds();
-
             let ampm = jam >= 12 ? 'PM' : 'AM';
-
             jam = jam % 12;
             jam = jam ? jam : 12;
-
             minit = minit < 10 ? '0' + minit : minit;
             saat = saat < 10 ? '0' + saat : saat;
 
             const stringMasa = `${jam}:${minit}:${saat} ${ampm}`;
-
-            const pilihanTarikh = {
-                weekday: 'short',
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            };
-
-            const stringTarikh = sekarang.toLocaleDateString(
-                'en-US',
-                pilihanTarikh
-            );
+            const pilihanTarikh = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+            const stringTarikh = sekarang.toLocaleDateString('en-US', pilihanTarikh);
 
             document.getElementById('clockTime').innerText = stringMasa;
             document.getElementById('clockDate').innerText = stringTarikh;
@@ -1260,72 +1129,39 @@
 
         // ================= INCIDENT DATE/TIME CONVERSION =================
         function parseIncidentDateTime(logData) {
-
             if (!logData) return null;
-
             if (typeof logData.timestamp === "number") {
                 const timestamp = logData.timestamp;
-                return new Date(
-                    timestamp < 1000000000000
-                        ? timestamp * 1000
-                        : timestamp
-                );
+                return new Date(timestamp < 1000000000000 ? timestamp * 1000 : timestamp);
             }
 
             const value = logData.datetime || logData.time;
-
             if (typeof value === "number") {
-                return new Date(
-                    value < 1000000000000
-                        ? value * 1000
-                        : value
-                );
+                return new Date(value < 1000000000000 ? value * 1000 : value);
             }
 
             if (typeof value === "string") {
-                const match = value.match(
-                    /^(\d{4})-(\d{2})-(\d{2})[_ T](\d{2})[-:](\d{2})[-:](\d{2})$/
-                );
-
+                const match = value.match(/^(\d{4})-(\d{2})-(\d{2})[_ T](\d{2})[-:](\d{2})[-:](\d{2})$/);
                 if (match) {
                     const year = Number(match[1]);
                     const month = Number(match[2]) - 1;
                     const day = Number(match[3]);
-
                     const hour = Number(match[4]);
                     const minute = Number(match[5]);
                     const second = Number(match[6]);
 
-                    const date = new Date(
-                        year,
-                        month,
-                        day,
-                        hour,
-                        minute,
-                        second
-                    );
-
-                    if (
-                        date.getFullYear() !== year ||
-                        date.getMonth() !== month ||
-                        date.getDate() !== day ||
-                        date.getHours() !== hour ||
-                        date.getMinutes() !== minute ||
-                        date.getSeconds() !== second
-                    ) {
+                    const date = new Date(year, month, day, hour, minute, second);
+                    if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day || date.getHours() !== hour || date.getMinutes() !== minute || date.getSeconds() !== second) {
                         return null;
                     }
-
                     return date;
                 }
 
                 const parsedDate = new Date(value);
-
                 if (!Number.isNaN(parsedDate.getTime())) {
                     return parsedDate;
                 }
             }
-
             return null;
         }
 
@@ -1351,12 +1187,6 @@
         let arraySemuaLog = [];
         let activeEmergencyRooms = {};
 
-        let deviceNodesState = {
-            1: { lastSeen: 0, battery: 100, isEmergency: false },
-            2: { lastSeen: 0, battery: 100, isEmergency: false },
-            3: { lastSeen: 0, battery: 100, isEmergency: false }
-        };
-
         const bodyTag = document.getElementById('bodyTag');
         const statusPaparan = document.getElementById('statusPaparan');
 
@@ -1366,9 +1196,7 @@
         const statKes = document.getElementById('statKes');
         const statActiveKes = document.getElementById('statActiveKes');
 
-        const activeEmergencyContainer =
-            document.getElementById('activeEmergencyContainer');
-
+        const activeEmergencyContainer = document.getElementById('activeEmergencyContainer');
         const loginModal = document.getElementById('loginModal');
 
         const nurseNameInput = document.getElementById('nurseNameInput');
@@ -1376,29 +1204,17 @@
 
         // ================= INITIALIZE WEB APP =================
         window.addEventListener('DOMContentLoaded', () => {
-
             let namaAktif = sessionStorage.getItem("nama_jururawat");
             let bilikAktif = sessionStorage.getItem("bilik_jururawat");
 
             if (!namaAktif || namaAktif.trim() === "") {
-
                 loginModal.classList.add('active');
-
-                setTimeout(() => {
-                    nurseNameInput.focus();
-                }, 300);
-
+                setTimeout(() => { nurseNameInput.focus(); }, 300);
             } else {
-
-                kemaskiniInterfaceStaf(
-                    namaAktif,
-                    bilikAktif || "All Rooms"
-                );
+                kemaskiniInterfaceStaf(namaAktif, bilikAktif || "All Rooms");
             }
 
             kekalkanSkrin();
-
-            setInterval(semakDeviceHeartbeat, 5000);
 
             dengarTriggerBilik(1);
             dengarTriggerBilik(2);
@@ -1407,57 +1223,40 @@
 
         // ================= STAFF REGISTRATION =================
         function sahkanNamaPetugas() {
-
             const namaDimasukkan = nurseNameInput.value.trim();
             const bilikDipilih = roomSelectInput.value;
 
             if (namaDimasukkan === "") {
-
                 alert("Sila masukkan nama petugas terlebih dahulu.");
-
                 nurseNameInput.focus();
-
                 return;
             }
 
             sessionStorage.setItem("nama_jururawat", namaDimasukkan);
             sessionStorage.setItem("bilik_jururawat", bilikDipilih);
-
             loginModal.classList.remove('active');
-
             kemaskiniInterfaceStaf(namaDimasukkan, bilikDipilih);
         }
 
         function tukarBilikSahaja() {
-
             let namaSemasa = sessionStorage.getItem("nama_jururawat") || "";
             let bilikSemasa = sessionStorage.getItem("bilik_jururawat") || "All Rooms";
-
             nurseNameInput.value = namaSemasa;
             roomSelectInput.value = bilikSemasa;
-
             loginModal.classList.add('active');
         }
 
         function logOutStaff() {
-
             sessionStorage.removeItem("nama_jururawat");
             sessionStorage.removeItem("bilik_jururawat");
-
             nurseNameInput.value = "";
             roomSelectInput.value = "All Rooms";
-
             kemaskiniInterfaceStaf("Unassigned", "None");
-
             loginModal.classList.add('active');
-
-            setTimeout(() => {
-                nurseNameInput.focus();
-            }, 300);
+            setTimeout(() => { nurseNameInput.focus(); }, 300);
         }
 
         nurseNameInput.addEventListener("keypress", (e) => {
-
             if (e.key === "Enter") {
                 bukaKunciAudioSintesis();
                 sahkanNamaPetugas();
@@ -1465,33 +1264,18 @@
         });
 
         function kemaskiniInterfaceStaf(nama, bilik) {
-
             const staffEl = document.getElementById("nama-staff");
             const roomEl = document.getElementById("bilik-staff");
-
-            if (staffEl) {
-                staffEl.innerText = nama;
-            }
-
-            if (roomEl) {
-                roomEl.innerText = bilik;
-            }
+            if (staffEl) staffEl.innerText = nama;
+            if (roomEl) roomEl.innerText = bilik;
         }
 
         // ================= BROWSER NOTIFICATION =================
         function hantarNotifikasiBrowser(mesejKecemasan) {
-
-            if (
-                "Notification" in window &&
-                Notification.permission === "granted"
-            ) {
-
+            if ("Notification" in window && Notification.permission === "granted") {
                 if ('serviceWorker' in navigator) {
-
                     navigator.serviceWorker.ready.then(function(reg) {
-
                         reg.showNotification("🚨 EMERGENCY ALERT!", {
-
                             body: mesejKecemasan,
                             icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
                             badge: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
@@ -1502,11 +1286,8 @@
                             data: { url: '/' }
                         });
                     });
-
                 } else {
-
                     new Notification("🚨 EMERGENCY ALERT!", {
-
                         body: mesejKecemasan,
                         icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png"
                     });
@@ -1516,12 +1297,9 @@
 
         // ================= MOBILE MENU =================
         function toggleMobileMenu() {
-
             const dropdown = document.getElementById('mobileDropdown');
             const icon = document.getElementById('hamburger-icon');
-
             dropdown.classList.toggle('show');
-
             if (dropdown.classList.contains('show')) {
                 icon.className = "fa-solid fa-xmark";
             } else {
@@ -1530,296 +1308,110 @@
         }
 
         function tukarTabDropdown(event, targetViewId) {
-
             event.preventDefault();
             toggleMobileMenu();
-
-            document.querySelectorAll('.mobile-drop-item').forEach(item => {
-                item.classList.remove('active');
-            });
-
+            document.querySelectorAll('.mobile-drop-item').forEach(item => { item.classList.remove('active'); });
             event.currentTarget.classList.add('active');
-
-            document.querySelectorAll('.tab-view').forEach(view => {
-                view.classList.remove('active');
-            });
-
+            document.querySelectorAll('.tab-view').forEach(view => { view.classList.remove('active'); });
             document.getElementById(targetViewId).classList.add('active');
-
             singkronasiSidebar(targetViewId);
         }
 
         function tukarTab(event, targetViewId) {
-
             event.preventDefault();
-
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('active');
-            });
-
-            document.querySelectorAll('.tab-view').forEach(view => {
-                view.classList.remove('active');
-            });
-
+            document.querySelectorAll('.menu-item').forEach(item => { item.classList.remove('active'); });
+            document.querySelectorAll('.tab-view').forEach(view => { view.classList.remove('active'); });
             event.currentTarget.classList.add('active');
-
             document.getElementById(targetViewId).classList.add('active');
-
             singkronasiDropdownMobile(targetViewId);
         }
 
         function singkronasiDropdownMobile(viewId) {
-
-            document.querySelectorAll('.mobile-drop-item').forEach(item => {
-                item.classList.remove('active');
-            });
-
+            document.querySelectorAll('.mobile-drop-item').forEach(item => { item.classList.remove('active'); });
             const mapId = {
                 'view-dashboard': 'm-nav-dashboard',
                 'view-log': 'm-nav-log',
                 'view-peta': 'm-nav-peta',
                 'view-tetapan': 'm-nav-tetapan'
             };
-
             const targetBtn = document.getElementById(mapId[viewId]);
-
-            if (targetBtn) {
-                targetBtn.classList.add('active');
-            }
+            if (targetBtn) targetBtn.classList.add('active');
         }
 
         function singkronasiSidebar(viewId) {
-
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('active');
-            });
-
+            document.querySelectorAll('.menu-item').forEach(item => { item.classList.remove('active'); });
             const menuItems = document.querySelectorAll('.menu-item');
-
             const indexMap = {
                 'view-dashboard': 0,
                 'view-log': 1,
                 'view-peta': 2,
                 'view-tetapan': 3
             };
-
             const targetIdx = indexMap[viewId];
-
-            if (menuItems[targetIdx]) {
-                menuItems[targetIdx].classList.add('active');
-            }
+            if (menuItems[targetIdx]) menuItems[targetIdx].classList.add('active');
         }
 
         // ================= TEST SIREN =================
         function ujiBunyiSiren() {
-
             bukaKunciAudioSintesis();
-
             const btnTest = document.getElementById('btnTestSound');
-
             if (!isTestingSound) {
-
                 isTestingSound = true;
-
                 btnTest.innerHTML = `<i class="fa-solid fa-stop"></i> Stop Test`;
-
                 mulaMembunyikanSirenSintesis();
-
             } else {
-
                 isTestingSound = false;
-
                 btnTest.innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
-
                 hentikanSirenSintesis();
-            }
-        }
-
-        // ================= HARDWARE TELEMETRY & HEARTBEAT =================
-        database.ref('devices').on('value', (snapshot) => {
-
-            if (snapshot.exists()) {
-
-                const devicesData = snapshot.val();
-
-                Object.keys(devicesData).forEach(nodeId => {
-
-                    let dev = devicesData[nodeId];
-
-                    let roomNum = parseInt(dev.room) || 1;
-
-                    if (roomNum < 1 || roomNum > 3) {
-                        roomNum = 1;
-                    }
-
-                    if (deviceNodesState[roomNum]) {
-
-                        deviceNodesState[roomNum].lastSeen =
-                            dev.lastSeen || Date.now();
-
-                        deviceNodesState[roomNum].battery =
-                            (dev.battery !== undefined)
-                                ? dev.battery
-                                : 100;
-
-                        kemaskiniPaparanNodePeta(roomNum);
-                    }
-                });
-            }
-        });
-
-        function semakDeviceHeartbeat() {
-
-            const masaMasaSekarang = Date.now();
-
-            for (let idx = 1; idx <= 3; idx++) {
-
-                let node = deviceNodesState[idx];
-
-                if (
-                    node.lastSeen > 0 &&
-                    (masaMasaSekarang - node.lastSeen > 30000)
-                ) {
-
-                    kemaskiniPaparanNodePeta(idx, true);
-
-                } else if (node.lastSeen > 0) {
-
-                    kemaskiniPaparanNodePeta(idx, false);
-                }
-            }
-        }
-
-        function kemaskiniPaparanNodePeta(idx, isOfflineTimeout = false) {
-
-            const roomCard = document.getElementById(`peta-bilik-${idx}`);
-            const txtPeta = document.getElementById(`txt-peta-${idx}`);
-            const nodeStatusEl = document.getElementById(`node-status-${idx}`);
-            const batValEl = document.getElementById(`bat-val-${idx}`);
-
-            if (!roomCard) return;
-
-            let node = deviceNodesState[idx];
-
-            let batIcon = 'fa-battery-full';
-            let batColor = '#6dd58c';
-
-            if (node.battery < 20) {
-                batIcon = 'fa-battery-quarter';
-                batColor = '#f2b8b5';
-            } else if (node.battery < 50) {
-                batIcon = 'fa-battery-half';
-                batColor = '#ffbe6b';
-            }
-
-            if (batValEl) {
-                batValEl.innerHTML =
-                    `<i class="fa-solid ${batIcon}" style="color:${batColor}"></i> ${node.battery}%`;
-            }
-
-            if (!node.isEmergency) {
-
-                if (isOfflineTimeout) {
-
-                    roomCard.className = "room-card status-offline";
-
-                    if (txtPeta) {
-                        txtPeta.innerText = "⚠️ Offline";
-                    }
-
-                    if (nodeStatusEl) {
-                        nodeStatusEl.innerHTML =
-                            `<i class="fa-solid fa-circle-exclamation" style="color: var(--warning)"></i> No Signal`;
-                    }
-
-                } else {
-
-                    roomCard.className = "room-card status-normal";
-
-                    if (txtPeta) {
-                        txtPeta.innerText = "🟢 Secured";
-                    }
-
-                    if (nodeStatusEl) {
-                        nodeStatusEl.innerHTML =
-                            `<i class="fa-solid fa-circle-dot" style="color: var(--success)"></i> Node Active`;
-                    }
-                }
             }
         }
 
         // ================= MULTI-ROOM REAL-TIME TRIGGER LISTENERS =================
         function dengarTriggerBilik(roomNumber) {
-
             database.ref(`emergency/room${roomNumber}/isTriggered`).on('value', (snapshot) => {
-
                 const isEmergency = snapshot.val();
+                const targetRoom = document.getElementById(`peta-bilik-${roomNumber}`);
+                const targetTxt = document.getElementById(`txt-peta-${roomNumber}`);
 
                 if (isEmergency === true) {
-
                     activeEmergencyRooms[roomNumber] = true;
-
-                    deviceNodesState[roomNumber].isEmergency = true;
-                    deviceNodesState[roomNumber].lastSeen = Date.now();
-
-                    const targetRoom = document.getElementById(`peta-bilik-${roomNumber}`);
-                    const targetTxt = document.getElementById(`txt-peta-${roomNumber}`);
-
                     if (targetRoom && targetTxt) {
                         targetRoom.className = "room-card status-emergency";
                         targetTxt.innerText = "🚨 INCIDENT!";
                     }
-
-                    hantarNotifikasiBrowser(
-                        `ROOM ${roomNumber} REQUIRES IMMEDIATE HELP!`
-                    );
-
+                    hantarNotifikasiBrowser(`ROOM ${roomNumber} REQUIRES IMMEDIATE HELP!`);
                 } else {
-
                     delete activeEmergencyRooms[roomNumber];
-                    deviceNodesState[roomNumber].isEmergency = false;
-
-                    kemaskiniPaparanNodePeta(roomNumber);
+                    if (targetRoom && targetTxt) {
+                        targetRoom.className = "room-card status-normal";
+                        targetTxt.innerText = "🟢 Secured";
+                    }
                 }
-
                 kemaskiniKeadaanKecemasanGlobal();
             });
         }
 
         // ================= GLOBAL EMERGENCY STATUS =================
         function kemaskiniKeadaanKecemasanGlobal() {
-
             const keysActive = Object.keys(activeEmergencyRooms);
             const totalActive = keysActive.length;
 
             if (statActiveKes) {
                 statActiveKes.innerText = `${totalActive} Active`;
-                statActiveKes.style.color =
-                    totalActive > 0
-                        ? "var(--danger)"
-                        : "var(--success)";
+                statActiveKes.style.color = totalActive > 0 ? "var(--danger)" : "var(--success)";
             }
 
             if (totalActive > 0) {
-
                 bodyTag.classList.add('kecemasan-aktif');
-
-                statusPaparan.innerText =
-                    `🚨 CRITICAL EMERGENCY: ${totalActive} Sector(s) Requiring Attention!`;
-
+                statusPaparan.innerText = `🚨 CRITICAL EMERGENCY: ${totalActive} Sector(s) Requiring Attention!`;
                 if (isTestingSound) {
                     isTestingSound = false;
-                    document.getElementById('btnTestSound').innerHTML =
-                        `<i class="fa-solid fa-play"></i> Run Test`;
+                    document.getElementById('btnTestSound').innerHTML = `<i class="fa-solid fa-play"></i> Run Test`;
                 }
-
                 mulaMembunyikanSirenSintesis();
-
             } else {
-
                 bodyTag.classList.remove('kecemasan-aktif');
                 statusPaparan.innerText = "✅ System Standby: All Sectors Secured";
-
                 hentikanSirenSintesis();
             }
 
@@ -1828,34 +1420,24 @@
 
         // ================= ROOM MUTE BUTTONS =================
         function binaButangMuteSpesifik() {
-
             const keysActive = Object.keys(activeEmergencyRooms);
-
             if (keysActive.length === 0) {
-
-                activeEmergencyContainer.innerHTML =
-                    `<p style="color: var(--text-sub); font-size: 0.88rem; margin-top:14px;">🟢 No active emergency triggers at the moment.</p>`;
-
+                activeEmergencyContainer.innerHTML = `<p style="color: var(--text-sub); font-size: 0.88rem; margin-top:14px;">🟢 No active emergency triggers at the moment.</p>`;
                 return;
             }
 
             let htmlContent = "";
-
             keysActive.forEach((roomNum) => {
-
                 htmlContent += `
                     <div class="alert-item-card">
-
                         <div style="display:flex; justify-content:space-between; align-items:center;">
                             <strong style="color:var(--danger); font-size:1rem;">
                                 🚨 Room ${roomNum}
                             </strong>
-
                             <span style="font-size:0.75rem; background:var(--danger-bg); color:var(--danger); padding:3px 8px; border-radius:10px; border:1px solid var(--danger);">
                                 CRITICAL
                             </span>
                         </div>
-
                         <input
                             type="text"
                             id="txtCatatan_${roomNum}"
@@ -1863,7 +1445,6 @@
                             placeholder="e.g. Attending Room ${roomNum}, patient OK"
                             style="width:100%;"
                         >
-
                         <button
                             class="btn btn-danger"
                             style="width:100%;"
@@ -1872,7 +1453,6 @@
                             <i class="fa-solid fa-bell-slash"></i>
                             Mute Room ${roomNum} Siren
                         </button>
-
                     </div>
                 `;
             });
@@ -1882,40 +1462,22 @@
 
         // ================= MUTE SPECIFIC ROOM =================
         function tekanMuteBilikSpesifik(roomNum) {
-
             const inputEl = document.getElementById(`txtCatatan_${roomNum}`);
-
-            let mesejCatatan = inputEl
-                ? inputEl.value.trim()
-                : "";
+            let mesejCatatan = inputEl ? inputEl.value.trim() : "";
 
             if (mesejCatatan === "") {
                 mesejCatatan = `Attended Room ${roomNum} & acknowledged`;
             }
 
-            let namaPetugas =
-                sessionStorage.getItem("nama_jururawat") ||
-                "General Duty Staff";
-
-            let bilikPetugas =
-                sessionStorage.getItem("bilik_jururawat") ||
-                "All Rooms";
-
+            let namaPetugas = sessionStorage.getItem("nama_jururawat") || "General Duty Staff";
+            let bilikPetugas = sessionStorage.getItem("bilik_jururawat") || "All Rooms";
             let rekodPetugasFull = `${namaPetugas} (${bilikPetugas})`;
 
             let targetLogId = null;
 
             for (let i = 0; i < arraySemuaLog.length; i++) {
-
-                if (
-                    parseInt(arraySemuaLog[i].numBilik) ===
-                    parseInt(roomNum)
-                ) {
-
-                    if (
-                        !arraySemuaLog[i].dikendalikan_oleh ||
-                        arraySemuaLog[i].dikendalikan_oleh.includes("Unassigned")
-                    ) {
+                if (parseInt(arraySemuaLog[i].numBilik) === parseInt(roomNum)) {
+                    if (!arraySemuaLog[i].dikendalikan_oleh || arraySemuaLog[i].dikendalikan_oleh.includes("Unassigned")) {
                         targetLogId = arraySemuaLog[i].id;
                         break;
                     }
@@ -1923,13 +1485,8 @@
             }
 
             if (!targetLogId) {
-
                 for (let i = 0; i < arraySemuaLog.length; i++) {
-
-                    if (
-                        parseInt(arraySemuaLog[i].numBilik) ===
-                        parseInt(roomNum)
-                    ) {
+                    if (parseInt(arraySemuaLog[i].numBilik) === parseInt(roomNum)) {
                         targetLogId = arraySemuaLog[i].id;
                         break;
                     }
@@ -1937,12 +1494,9 @@
             }
 
             if (targetLogId) {
-
                 database.ref('history/' + targetLogId).update({
-
                     catatan: mesejCatatan,
                     dikendalikan_oleh: rekodPetugasFull
-
                 }).catch(error => {
                     console.error("History update failed:", error);
                     alert("Failed to update incident record.");
@@ -1950,59 +1504,35 @@
             }
 
             database.ref(`emergency/room${roomNum}/isTriggered`).set(false);
-            database.ref(`patients/room${roomNum}/status`).set("NORMAL");
-
             alert(`Siren bagi Room ${roomNum} telah di-mute dan dikemaskini!`);
         }
 
         // ================= FIREBASE HISTORY LISTENER =================
         database.ref('history').on('value', (snapshot) => {
-
             logTableBody.innerHTML = "";
             arraySemuaLog = [];
             let countKes = 0;
 
             if (snapshot.exists()) {
-
                 snapshot.forEach((childSnapshot) => {
-
                     let logData = childSnapshot.val();
-
                     let dateObj = parseIncidentDateTime(logData);
+                    let validDate = dateObj && !Number.isNaN(dateObj.getTime());
 
-                    let validDate =
-                        dateObj && !Number.isNaN(dateObj.getTime());
-
-                    let tarikhFormatted = validDate
-                        ? dateObj.toLocaleDateString('ms-MY')
-                        : "Unknown";
-
-                    let masaFormatted = validDate
-                        ? dateObj.toLocaleTimeString('ms-MY', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit',
-                            hour12: true
-                        })
-                        : "Unknown";
+                    let tarikhFormatted = validDate ? dateObj.toLocaleDateString('ms-MY') : "Unknown";
+                    let masaFormatted = validDate ? dateObj.toLocaleTimeString('ms-MY', {
+                        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+                    }) : "Unknown";
 
                     let roomNumber = logData.room || logData.roomNumber || logData.roomNum || "1";
 
                     let record = {
-
                         id: childSnapshot.key,
-
-                        rawTimestamp: validDate
-                            ? dateObj.getTime()
-                            : 0,
-
+                        rawTimestamp: validDate ? dateObj.getTime() : 0,
                         tarikh: tarikhFormatted,
                         masa: masaFormatted,
-
                         numBilik: roomNumber,
-
                         bilik: "Room " + roomNumber,
-
                         catatan: logData.catatan || null,
                         dikendalikan_oleh: logData.dikendalikan_oleh || null
                     };
@@ -2011,25 +1541,16 @@
                     countKes++;
                 });
 
-                arraySemuaLog.sort((a, b) => {
-                    return b.rawTimestamp - a.rawTimestamp;
-                });
+                arraySemuaLog.sort((a, b) => { return b.rawTimestamp - a.rawTimestamp; });
 
-                statKes.innerText = countKes +
-                    (countKes === 1 ? " Incident" : " Incidents");
+                statKes.innerText = countKes + (countKes === 1 ? " Incident" : " Incidents");
 
                 let ringkasanData = arraySemuaLog.slice(0, 5);
                 let counter = 1;
 
                 ringkasanData.forEach((data) => {
-
-                    let isiCatatan = data.catatan
-                        ? data.catatan
-                        : `<span style="color:var(--text-sub);">No comments</span>`;
-
-                    let petugas = data.dikendalikan_oleh
-                        ? data.dikendalikan_oleh
-                        : `<span style="color:var(--text-sub);">Unassigned</span>`;
+                    let isiCatatan = data.catatan ? data.catatan : `<span style="color:var(--text-sub);">No comments</span>`;
+                    let petugas = data.dikendalikan_oleh ? data.dikendalikan_oleh : `<span style="color:var(--text-sub);">Unassigned</span>`;
 
                     logTableBody.innerHTML += `
                         <tr>
@@ -2046,9 +1567,7 @@
                 binaJadualPenuh(arraySemuaLog);
 
             } else {
-
                 statKes.innerText = "0 Incidents";
-
                 let emptyRow = `
                     <tr>
                         <td colspan="6" style="text-align:center; color:var(--text-sub); padding:20px;">
@@ -2056,7 +1575,6 @@
                         </td>
                     </tr>
                 `;
-
                 logTableBody.innerHTML = emptyRow;
                 fullLogTableBody.innerHTML = emptyRow;
             }
@@ -2064,19 +1582,12 @@
 
         // ================= FULL INCIDENT LOG TABLE =================
         function binaJadualPenuh(dataArray) {
-
             fullLogTableBody.innerHTML = "";
             let counter = 1;
 
             dataArray.forEach((data) => {
-
-                let isiCatatan = data.catatan
-                    ? data.catatan
-                    : `<span style="color:var(--text-sub);">No comments</span>`;
-
-                let petugas = data.dikendalikan_oleh
-                    ? data.dikendalikan_oleh
-                    : `<span style="color:var(--text-sub);">Unassigned</span>`;
+                let isiCatatan = data.catatan ? data.catatan : `<span style="color:var(--text-sub);">No comments</span>`;
+                let petugas = data.dikendalikan_oleh ? data.dikendalikan_oleh : `<span style="color:var(--text-sub);">Unassigned</span>`;
 
                 fullLogTableBody.innerHTML += `
                     <tr>
@@ -2093,35 +1604,21 @@
 
         // ================= SEARCH INCIDENT LOG =================
         function tapisLogJadual() {
-
-            let carian = document
-                .getElementById('logSearchInput')
-                .value
-                .toLowerCase();
-
+            let carian = document.getElementById('logSearchInput').value.toLowerCase();
             let hasilTapis = arraySemuaLog.filter(item => {
-
                 let tarikh = (item.tarikh || "").toLowerCase();
                 let masa = (item.masa || "").toLowerCase();
                 let bilik = (item.bilik || "").toLowerCase();
                 let catatan = (item.catatan || "").toLowerCase();
                 let staff = (item.dikendalikan_oleh || "").toLowerCase();
 
-                return (
-                    tarikh.includes(carian) ||
-                    masa.includes(carian) ||
-                    bilik.includes(carian) ||
-                    catatan.includes(carian) ||
-                    staff.includes(carian)
-                );
+                return tarikh.includes(carian) || masa.includes(carian) || bilik.includes(carian) || catatan.includes(carian) || staff.includes(carian);
             });
-
             binaJadualPenuh(hasilTapis);
         }
 
         // ================= DOWNLOAD PDF INCIDENT REPORT =================
         function muatTurunPDFLog() {
-
             if (arraySemuaLog.length === 0) {
                 alert("Tiada rekod log untuk dimuat turun.");
                 return;
@@ -2129,16 +1626,11 @@
 
             const pilihanJulat = document.getElementById('selectPdfRange').value;
             const sekarangMs = new Date().getTime();
-
             const msSeminggu = 7 * 24 * 60 * 60 * 1000;
             const msSebulan = 30 * 24 * 60 * 60 * 1000;
 
             let logDitapis = arraySemuaLog.filter(item => {
-
-                if (!item.rawTimestamp) {
-                    return pilihanJulat === "semua";
-                }
-
+                if (!item.rawTimestamp) return pilihanJulat === "semua";
                 if (pilihanJulat === "minggu") {
                     const age = sekarangMs - item.rawTimestamp;
                     return age >= 0 && age <= msSeminggu;
@@ -2146,18 +1638,11 @@
                     const age = sekarangMs - item.rawTimestamp;
                     return age >= 0 && age <= msSebulan;
                 }
-
                 return true;
             });
 
             if (logDitapis.length === 0) {
-                alert(
-                    `Tiada rekod log ditemui bagi julat: ${
-                        pilihanJulat === 'minggu'
-                            ? '1 Minggu Terakhir'
-                            : '1 Bulan Terakhir'
-                    }`
-                );
+                alert(`Tiada rekod log ditemui bagi julat yang dipilih.`);
                 return;
             }
 
@@ -2170,26 +1655,13 @@
 
             doc.setFontSize(10);
             doc.setTextColor(100);
-
-            let tajukJulat =
-                pilihanJulat === "minggu"
-                    ? "1 Minggu Terakhir"
-                    : (
-                        pilihanJulat === "bulan"
-                            ? "1 Bulan Terakhir"
-                            : "Semua Rekod Log"
-                    );
-
-            doc.text(`Julat Masa Laporan: ${tajukJulat}`, 14, 27);
-            doc.text(`Jumlah Kes: ${logDitapis.length} Rekod Insiden`, 14, 33);
-            doc.text(`Tarikh Dijana: ${new Date().toLocaleString('ms-MY')}`, 14, 39);
+            doc.text(`Tarikh Dijana: ${new Date().toLocaleString('ms-MY')}`, 14, 27);
 
             doc.setLineWidth(0.5);
             doc.setDrawColor(200, 200, 200);
-            doc.line(14, 43, 196, 43);
+            doc.line(14, 31, 196, 31);
 
             const tableRows = [];
-
             logDitapis.forEach((item, index) => {
                 tableRows.push([
                     index + 1,
@@ -2202,7 +1674,7 @@
             });
 
             doc.autoTable({
-                startY: 47,
+                startY: 35,
                 head: [['#', 'Tarikh', 'Masa', 'Bilik', 'Catatan', 'Petugas']],
                 body: tableRows,
                 theme: 'striped',
@@ -2211,33 +1683,15 @@
                     textColor: [168, 199, 250],
                     fontStyle: 'bold'
                 },
-                styles: {
-                    fontSize: 8,
-                    cellPadding: 3
-                },
-                alternateRowStyles: {
-                    fillColor: [245, 247, 250]
-                }
+                styles: { fontSize: 8, cellPadding: 3 }
             });
 
             const namaFail = `Incident_Log_${pilihanJulat}_${new Date().toISOString().slice(0,10)}.pdf`;
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-            if (isIOS) {
-                const pdfBlob = doc.output('blob');
-                const blobUrl = URL.createObjectURL(pdfBlob);
-                const newWindow = window.open(blobUrl, '_blank');
-                if (!newWindow) {
-                    alert("Sila izinkan Pop-up pada Safari anda untuk memuat turun PDF.");
-                }
-            } else {
-                doc.save(namaFail);
-            }
+            doc.save(namaFail);
         }
 
         // ================= KEEP SCREEN AWAKE =================
         let wakeLock = null;
-
         async function kekalkanSkrin() {
             try {
                 if ('wakeLock' in navigator) {
